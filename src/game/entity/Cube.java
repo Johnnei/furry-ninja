@@ -10,7 +10,7 @@ import java.nio.FloatBuffer;
 
 import org.lwjgl.BufferUtils;
 
-public class Cube extends Entity {
+public class Cube extends LivingEntity {
 
 	private Team team;
 	
