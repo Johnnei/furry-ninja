@@ -1,0 +1,21 @@
+Furry Ninja
+
+Changelog 0.1a
+
+General:
+
+Fall Damage has been added
+	Free Fall Distance: 5 units
+	Damage per unit: 0.5 hp (floored)
+	
+Cube:
+	Base health is 100 hp
+	
+Game Data:
+
+u/s = Units per Second
+
+Cube:
+	Health: 100
+	Fall Speed: 5 u/s
+	Movement Speed: 0 u/s

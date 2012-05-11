@@ -10,11 +10,14 @@ public class WormsGame {
 	public WormsGame() {
 		teams = new Team[2];
 		for(int i = 0; i < teams.length; i++) {
-			teams[i] = new Team(4, TeamColor.values()[0].getColor());
+			teams[i] = new Team(4, TeamColor.values()[0].getColor(), this);
 		}
 	}
 	
 	public void onTick() {
+		for(int i = 0; i < teams.length; i++) {
+			teams[i].onTick();
+		}
 		
 	}
 	

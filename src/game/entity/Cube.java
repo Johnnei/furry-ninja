@@ -4,6 +4,7 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.*;
 
 import game.Team;
+import game.WormsGame;
 
 import java.nio.FloatBuffer;
 
@@ -13,8 +14,8 @@ public class Cube extends Entity {
 
 	private Team team;
 	
-	public Cube(int health, Team team) {
-		super(health, 16, 16);
+	public Cube(int health, Team team, WormsGame wormsGame) {
+		super(wormsGame, health, 16, 16);
 		this.team = team;
 		generateVertexData();
 		generateColorData();
@@ -43,9 +44,18 @@ public class Cube extends Entity {
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 	
+	
+	
 	@Override
 	public void onTick() {
-		//TODO Logic
+		//Calculate Movement
+		if(!isOnGround()) {
+			yMotion -= 0.25F;
+			setFalling(true);
+		}
+		
+		//Do movement
+		doMovement();
 		
 		if(needRenderUpdate()) {
 			generateVertexData();

@@ -77,9 +77,10 @@ public class Game {
 	 */
 	private void initOpenGL() {
 		try {
+			
 			//Init Display
 			Display.setDisplayMode(new DisplayMode(1280, 720));
-			Display.setTitle("Furry Ninja");
+			Display.setTitle("Furry Ninja v0.1a");
 			//Display.setVSyncEnabled(true);
 			Display.create();
 			
