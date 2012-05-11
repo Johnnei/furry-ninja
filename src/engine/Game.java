@@ -16,7 +16,6 @@ public class Game {
 	 * Creates a new instance of the Game Engine
 	 */
 	public Game() {
-		game = new WormsGame();
 	}
 	
 	/**
@@ -24,7 +23,10 @@ public class Game {
 	 */
 	public void run() {
 		initOpenGL();
+		game = new WormsGame();
 		long lastTick = getCurrentMillis();
+		long lastFps = getCurrentMillis();
+		int fps = 0;
 		
 		while(!Display.isCloseRequested()) {
 			
@@ -39,7 +41,14 @@ public class Game {
 			
 			//LWJGL Updating
 			Display.update();
-			Display.sync(60);
+			//Display.sync(60);
+			
+			++fps;
+			if(getCurrentMillis() - lastFps >= 1000) {
+				System.out.println(fps);
+				fps = 0;
+				lastFps += 1000;
+			}
 		}
 	}
 	
@@ -71,7 +80,7 @@ public class Game {
 			//Init Display
 			Display.setDisplayMode(new DisplayMode(1280, 720));
 			Display.setTitle("Furry Ninja");
-			Display.setVSyncEnabled(true);
+			//Display.setVSyncEnabled(true);
 			Display.create();
 			
 			//Init OpenGL Frame
