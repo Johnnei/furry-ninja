@@ -7,11 +7,11 @@ public class Team {
 	private Cube[] cubes;
 	private float[] color;
 	
-	public Team(int size, float[] color, WormsGame wormsGame) {
+	public Team(int size, float[] color, WormsGame wormsGame, int[] spawnsX, int[] spawnsY) {
 		this.color = color;
 		cubes = new Cube[size];
 		for(int i = 0; i < size; i++) {
-			cubes[i] = new Cube(100, this, wormsGame);
+			cubes[i] = new Cube(spawnsX[i], spawnsY[i], 100, this, wormsGame);
 		}
 	}
 	

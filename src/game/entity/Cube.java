@@ -14,8 +14,8 @@ public class Cube extends LivingEntity {
 
 	private Team team;
 	
-	public Cube(int health, Team team, WormsGame wormsGame) {
-		super(wormsGame, health, 16, 16);
+	public Cube(int x, int y, int health, Team team, WormsGame wormsGame) {
+		super(wormsGame, health, x, y, 16, 16);
 		this.team = team;
 		generateVertexData();
 		generateColorData();

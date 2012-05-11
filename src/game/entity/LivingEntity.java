@@ -7,8 +7,8 @@ public abstract class LivingEntity extends Entity {
 	//Health
 	private int health;
 	
-	public LivingEntity(WormsGame wormsGame, int health, int width, int height) {
-		super(wormsGame, width, height);
+	public LivingEntity(WormsGame wormsGame, int health, int x, int y, int width, int height) {
+		super(wormsGame, x, y, width, height);
 		this.health = health;
 	}
 	

@@ -19,10 +19,10 @@ public abstract class Entity extends Renderable {
 	protected WormsGame wormsGame;
 	
 	
-	public Entity(WormsGame wormsGame, int width, int height) {
+	public Entity(WormsGame wormsGame, int x, int y, int width, int height) {
 		super();
-		x = 0;
-		y = 0;
+		this.x = x;
+		this.y = y;
 		this.width = width;
 		this.height = height;
 		this.wormsGame = wormsGame;

@@ -4,7 +4,8 @@ import static org.lwjgl.opengl.GL11.*;
 
 import java.awt.Rectangle;
 
-import engine.render.TeamColor;
+import game.data.TeamColor;
+import game.data.TeamSpawn;
 import game.entity.Entity;
 
 public class WormsGame {
@@ -15,7 +16,7 @@ public class WormsGame {
 	public WormsGame() {
 		teams = new Team[2];
 		for(int i = 0; i < teams.length; i++) {
-			teams[i] = new Team(4, TeamColor.values()[0].getColor(), this);
+			teams[i] = new Team(4, TeamColor.values()[i].getColor(), this, TeamSpawn.values()[i].getSpawnsX(), TeamSpawn.values()[i].getSpawnsY());
 		}
 		world = new World();
 	}
