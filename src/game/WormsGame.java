@@ -28,7 +28,6 @@ public class WormsGame {
 		for(int i = 0; i < teams.length; i++) {
 			teams[i].onTick();
 		}
-		
 	}
 	
 	/**
@@ -50,6 +49,14 @@ public class WormsGame {
 		
 		glDisableClientState(GL_VERTEX_ARRAY);
 		glDisableClientState(GL_COLOR_ARRAY);
+	}
+	
+	public boolean collides(Entity entity) {
+		return collides(entity, 0, 0);
+	}
+	
+	public boolean collides(Entity entity, float xOffset, float yOffset) {
+		return collides(entity, (int)xOffset, (int)yOffset);
 	}
 
 	public boolean collides(Entity entity, int xOffset, int yOffset) {

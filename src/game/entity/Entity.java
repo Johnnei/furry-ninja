@@ -42,6 +42,10 @@ public abstract class Entity extends Renderable {
 			setRenderUpdate(true);
 			x += xMotion;
 			y -= yMotion;
+			while(wormsGame.collides(this, 0, 1)) {
+				--y;
+				--yMotion;
+			}
 			if(fallDuration > 0)
 				fallDistance += WMath.abs_f(yMotion);
 			xMotion = yMotion = 0;
