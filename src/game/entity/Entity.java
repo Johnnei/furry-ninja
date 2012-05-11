@@ -44,7 +44,10 @@ public abstract class Entity extends Renderable {
 			y -= yMotion;
 			while(wormsGame.collides(this, 0, 1)) {
 				--y;
-				--yMotion;
+				if(yMotion < 0)
+					++yMotion;
+				else
+					--yMotion;
 			}
 			if(fallDuration > 0)
 				fallDistance += WMath.abs_f(yMotion);
