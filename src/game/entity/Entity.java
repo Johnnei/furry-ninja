@@ -1,5 +1,7 @@
 package game.entity;
 
+import java.awt.Rectangle;
+
 import engine.WMath;
 import engine.render.Renderable;
 import game.WormsGame;
@@ -10,7 +12,7 @@ public abstract class Entity extends Renderable {
 	protected float x, y, width, height;
 	//Movement
 	protected float xMotion, yMotion;
-	protected boolean isFalling;
+	protected float fallDuration;
 	protected float fallDistance;
 	
 	//Game Reference
@@ -28,11 +30,11 @@ public abstract class Entity extends Renderable {
 	}
 	
 	public void setFalling(boolean b) {
-		isFalling = b;
+		fallDuration = (b) ? 1 : 0;
 	}
 	
 	public boolean isOnGround() {
-		return false;
+		return wormsGame.collides(this, 0, -1);
 	}
 	
 	public void doMovement() {
@@ -40,12 +42,20 @@ public abstract class Entity extends Renderable {
 			setRenderUpdate(true);
 			x += xMotion;
 			y -= yMotion;
-			if(isFalling)
+			if(fallDuration > 0)
 				fallDistance += WMath.abs_f(yMotion);
 			xMotion = yMotion = 0;
 		}
 	}
 	
 	public abstract void onTick();
+	
+	public boolean isFalling() {
+		return fallDuration > 0;
+	}
+	
+	public Rectangle getCollisionBox() {
+		return new Rectangle((int)x, (int)y, (int)width, (int)height);
+	}
 
 }

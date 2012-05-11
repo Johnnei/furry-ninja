@@ -12,12 +12,19 @@ public abstract class LivingEntity extends Entity {
 		this.health = health;
 	}
 	
+	public void onTick() {
+		if(isFalling()) {
+			fallDuration++;
+		}
+	}
+	
 	public void setFalling(boolean b) {
-		if(isFalling && !b && fallDistance > 0) {
+		if(isFalling() && !b && fallDistance > 0) {
 			int fallDamage = (int)((fallDistance - 5) * 0.5);
 			takeDamgage(fallDamage);
 		}
-		isFalling = b;
+		if(!isFalling())
+			fallDuration = (b) ? 1 : 0;
 	}
 	
 	public void takeDamgage(int dmg) {

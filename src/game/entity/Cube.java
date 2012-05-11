@@ -48,9 +48,13 @@ public class Cube extends LivingEntity {
 	
 	@Override
 	public void onTick() {
+		super.onTick();
 		//Calculate Movement
 		if(!isOnGround()) {
-			yMotion -= 0.25F;
+			float yAdjust = 1 + (float)Math.pow(1.1D, (double)fallDuration);
+			if(yAdjust > 5)
+				yAdjust = 5;
+			yMotion -= yAdjust;
 			setFalling(true);
 		}
 		

@@ -30,5 +30,13 @@ public class Team {
 			cubes[i].onTick();
 		}
 	}
+	
+	public Cube getCube(int index) {
+		return cubes[index];
+	}
+
+	public int getSize() {
+		return cubes.length;
+	}
 
 }
