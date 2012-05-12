@@ -85,7 +85,7 @@ public class Cube extends LivingEntity {
 		glDisableClientState(GL_VERTEX_ARRAY);
 		glDisableClientState(GL_COLOR_ARRAY);
 		
-		//TextRender.getTextRender().draw(x, y - 40, "" + getHealth(), glColorId);
+		TextRender.getTextRender().drawCentered(x, y - 20, "" + getHealth(), glColorId);
 	}
 
 }

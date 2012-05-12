@@ -66,8 +66,8 @@ public class TextRender {
 			
 			FloatBuffer vertexBuffer = BufferUtils.createFloatBuffer(12);
 			
-			final float width = 128F;
-			final float height = 128F;
+			final float width = 9F;
+			final float height = 13F;
 			
 			vertexBuffer.put(new float[] {0, height, 0, width, height, 0, width, 0, 0, 0, 0, 0});
 			vertexBuffer.flip();
@@ -88,21 +88,27 @@ public class TextRender {
 	 */
 	public void load(int charStart, int charEnd) {
 		for(int i = charStart; i <= charEnd; i++) {
+			if(glTextureCoordId[i] != 0) {
+				System.out.println("Skipping: " + i + ", Already Loaded");
+			}
 			glTextureCoordId[i] = glGenBuffers();
 			
 			FloatBuffer textureBuffer = BufferUtils.createFloatBuffer(8); //2 (x, y) * 4
 			int xOffset = (i - 48) % 13;
 			int yOffset = (i - 48) / 13;
 			
-//			float x = 1F / xOffset;
-//			float xMax = x + 0.07692307692307692307692307692308F; // x + 1/13
-//			float y = 1F / yOffset;
-//			float yMax = y + 0.07692307692307692307692307692308F; // y + 1/13
+			String s = "" + ((char)i);
+			System.out.println(s + " " + xOffset + " " + yOffset);
 			
-			float x = 0F;
-			float xMax = 1F;
-			float y = 0F;
-			float yMax = 1F;
+			float x = 07692307692307692307692307692308F * xOffset;
+			float xMax = x + 0.07692307692307692307692307692308F; // x + 1/13
+			float y = 0.125F * yOffset;
+			float yMax = y + 0.125F; // y + 1/8
+			
+//			float x = 0F;
+//			float xMax = 0.07692307692307692307692307692308F;
+//			float y = 0F;
+//			float yMax = 0.125F;
 			
 			textureBuffer.put(new float[] { x, yMax, xMax, yMax, xMax, y, x, y });
 			textureBuffer.flip();
@@ -111,6 +117,11 @@ public class TextRender {
 			glBufferData(GL_ARRAY_BUFFER, textureBuffer, GL_STATIC_DRAW);
 			glBindBuffer(GL_ARRAY_BUFFER, GL_NONE);
 		}
+	}
+	
+	public void drawCentered(float x, float y, String text, int glColorId) {
+		float width = text.length() * 15;
+		draw(x - (width / 4F), y, text, glColorId);
 	}
 	
 	public void draw(float x, float y, String text, int glColorId) {
@@ -123,7 +134,7 @@ public class TextRender {
 		//Draw
 		for(int i = 0; i < text.length(); i++) {
 			glPushMatrix();
-			glTranslatef(x + (i * 14), y, 0F);
+			glTranslatef(x + (i * 15), y, 0F);
 			char c = text.charAt(i);
 			
 			if(glTextureCoordId[c] == GL_NONE) {

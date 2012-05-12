@@ -46,8 +46,6 @@ public class WormsGame {
 		for(int i = 0; i < teams.length; i++) {
 			teams[i].render();
 		}
-		
-		TextRender.getTextRender().draw(10, 10, "0", 1);
 	}
 	
 	public boolean collides(Entity entity) {
