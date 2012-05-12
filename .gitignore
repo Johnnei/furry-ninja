@@ -1,5 +1,9 @@
 *.class
 
+# Resource Files #
+*.ttf
+*.png
+
 # Package Files #
 *.jar
 *.war
