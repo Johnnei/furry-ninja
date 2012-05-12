@@ -3,6 +3,7 @@ package game.entity;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.*;
 
+import engine.render.TextRender;
 import game.Team;
 import game.WormsGame;
 
@@ -30,7 +31,7 @@ public class Cube extends LivingEntity {
 		
 		glBindBuffer(GL_ARRAY_BUFFER, glColorId);
 		glBufferData(GL_ARRAY_BUFFER, color, GL_STATIC_DRAW);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindBuffer(GL_ARRAY_BUFFER, GL_NONE);
 	}
 
 	@Override
@@ -41,7 +42,7 @@ public class Cube extends LivingEntity {
 		
 		glBindBuffer(GL_ARRAY_BUFFER, glVertexId);
 		glBufferData(GL_ARRAY_BUFFER, vertex, GL_STATIC_DRAW);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindBuffer(GL_ARRAY_BUFFER, GL_NONE);
 	}
 	
 	
@@ -76,6 +77,8 @@ public class Cube extends LivingEntity {
 		glColorPointer(3, GL_FLOAT, 0, 0L);
 		
 		glDrawArrays(GL_QUADS, 0, 4);
+		
+		TextRender.getTextRender().draw(x, y - 40, "" + getHealth(), glColorId);
 	}
 
 }

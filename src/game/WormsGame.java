@@ -4,6 +4,8 @@ import static org.lwjgl.opengl.GL11.*;
 
 import java.awt.Rectangle;
 
+import engine.render.TextRender;
+
 import game.data.TeamColor;
 import game.data.TeamSpawn;
 import game.entity.Entity;
@@ -19,6 +21,7 @@ public class WormsGame {
 			teams[i] = new Team(4, TeamColor.values()[i].getColor(), this, TeamSpawn.values()[i].getSpawnsX(), TeamSpawn.values()[i].getSpawnsY());
 		}
 		world = new World();
+		TextRender.getTextRender().load(48, 57);
 	}
 	
 	/**
@@ -36,7 +39,9 @@ public class WormsGame {
 	public void render() {
 		glClear(GL_COLOR_BUFFER_BIT);
 		
+		glEnable(GL_TEXTURE_2D);
 		glEnableClientState(GL_COLOR_ARRAY);
+		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 		glEnableClientState(GL_VERTEX_ARRAY);
 		
 		//Render World
@@ -48,7 +53,9 @@ public class WormsGame {
 		}
 		
 		glDisableClientState(GL_VERTEX_ARRAY);
+		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 		glDisableClientState(GL_COLOR_ARRAY);
+		glDisable(GL_TEXTURE_2D);
 	}
 	
 	public boolean collides(Entity entity) {
