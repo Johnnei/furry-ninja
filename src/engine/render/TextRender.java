@@ -54,6 +54,7 @@ public class TextRender {
 	        in.close();
 	        
 	        //Register Texture
+	        glActiveTexture(GL_TEXTURE0);
 	        glTextureId = glGenTextures();
 	        glBindTexture(GL_TEXTURE_2D, glTextureId);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -64,7 +65,11 @@ public class TextRender {
 			glVertexId = glGenBuffers();
 			
 			FloatBuffer vertexBuffer = BufferUtils.createFloatBuffer(12);
-			vertexBuffer.put(new float[] {0, 13, 0, 9, 13, 0, 9, 0, 0, 0, 0, 0});
+			
+			final float width = 128F;
+			final float height = 128F;
+			
+			vertexBuffer.put(new float[] {0, height, 0, width, height, 0, width, 0, 0, 0, 0, 0});
 			vertexBuffer.flip();
 			
 			glBindBuffer(GL_ARRAY_BUFFER, glVertexId);
@@ -89,10 +94,15 @@ public class TextRender {
 			int xOffset = (i - 48) % 13;
 			int yOffset = (i - 48) / 13;
 			
-			float x = 1F / xOffset;
-			float xMax = x + 0.07692307692307692307692307692308F; // x + 1/13
-			float y = 1F / yOffset;
-			float yMax = y + 0.07692307692307692307692307692308F; // y + 1/13
+//			float x = 1F / xOffset;
+//			float xMax = x + 0.07692307692307692307692307692308F; // x + 1/13
+//			float y = 1F / yOffset;
+//			float yMax = y + 0.07692307692307692307692307692308F; // y + 1/13
+			
+			float x = 0F;
+			float xMax = 1F;
+			float y = 0F;
+			float yMax = 1F;
 			
 			textureBuffer.put(new float[] { x, yMax, xMax, yMax, xMax, y, x, y });
 			textureBuffer.flip();
@@ -104,6 +114,10 @@ public class TextRender {
 	}
 	
 	public void draw(float x, float y, String text, int glColorId) {
+		glEnable(GL_TEXTURE_2D);
+		//glEnableClientState(GL_COLOR_ARRAY);
+		glEnableClientState(GL_VERTEX_ARRAY);
+		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, glTextureId);
 		//Draw
@@ -129,6 +143,11 @@ public class TextRender {
 		}
 		
 		glBindTexture(GL_TEXTURE_2D, GL_NONE);
+		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+		glDisableClientState(GL_VERTEX_ARRAY);
+		//glDisableClientState(GL_COLOR_ARRAY);
+		
+		glDisable(GL_TEXTURE_2D);
 	}
 	
 	public static TextRender getTextRender() {

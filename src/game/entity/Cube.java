@@ -71,6 +71,10 @@ public class Cube extends LivingEntity {
 	@Override
 	public void render() {
 		
+		
+		glEnableClientState(GL_COLOR_ARRAY);
+		glEnableClientState(GL_VERTEX_ARRAY);
+		
 		glBindBuffer(GL_ARRAY_BUFFER, glVertexId);
 		glVertexPointer(3, GL_FLOAT, 0, 0L);
 		glBindBuffer(GL_ARRAY_BUFFER, glColorId);
@@ -78,7 +82,10 @@ public class Cube extends LivingEntity {
 		
 		glDrawArrays(GL_QUADS, 0, 4);
 		
-		TextRender.getTextRender().draw(x, y - 40, "" + getHealth(), glColorId);
+		glDisableClientState(GL_VERTEX_ARRAY);
+		glDisableClientState(GL_COLOR_ARRAY);
+		
+		//TextRender.getTextRender().draw(x, y - 40, "" + getHealth(), glColorId);
 	}
 
 }

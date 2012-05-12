@@ -39,11 +39,6 @@ public class WormsGame {
 	public void render() {
 		glClear(GL_COLOR_BUFFER_BIT);
 		
-		glEnable(GL_TEXTURE_2D);
-		glEnableClientState(GL_COLOR_ARRAY);
-		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-		glEnableClientState(GL_VERTEX_ARRAY);
-		
 		//Render World
 		world.render();
 		
@@ -52,10 +47,7 @@ public class WormsGame {
 			teams[i].render();
 		}
 		
-		glDisableClientState(GL_VERTEX_ARRAY);
-		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-		glDisableClientState(GL_COLOR_ARRAY);
-		glDisable(GL_TEXTURE_2D);
+		TextRender.getTextRender().draw(10, 10, "0", 1);
 	}
 	
 	public boolean collides(Entity entity) {

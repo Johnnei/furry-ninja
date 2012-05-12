@@ -39,12 +39,18 @@ public class World {
 	}
 	
 	public void render() {
+		glEnableClientState(GL_COLOR_ARRAY);
+		glEnableClientState(GL_VERTEX_ARRAY);
+		
 		glBindBuffer(GL_ARRAY_BUFFER, glVertexId);
 		glVertexPointer(3, GL_FLOAT, 0, 0L);
 		glBindBuffer(GL_ARRAY_BUFFER, glColorId);
 		glColorPointer(3, GL_FLOAT, 0, 0L);
 		
 		glDrawArrays(GL_QUADS, 0, 4);
+		
+		glDisableClientState(GL_VERTEX_ARRAY);
+		glDisableClientState(GL_COLOR_ARRAY);
 	}
 	
 	public Rectangle getCollisionBox() {
