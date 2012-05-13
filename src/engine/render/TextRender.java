@@ -97,18 +97,12 @@ public class TextRender {
 			int xOffset = (i - 48) % 13;
 			int yOffset = (i - 48) / 13;
 			
-			String s = "" + ((char)i);
-			System.out.println(s + " " + xOffset + " " + yOffset);
-			
-			float x = 07692307692307692307692307692308F * xOffset;
+			float x = 0.07692307692307692307692307692308F * xOffset;
 			float xMax = x + 0.07692307692307692307692307692308F; // x + 1/13
-			float y = 0.125F * yOffset;
-			float yMax = y + 0.125F; // y + 1/8
+			float y = 0.120F * yOffset;
+			float yMax = y + 0.120F; // y + 1/8
 			
-//			float x = 0F;
-//			float xMax = 0.07692307692307692307692307692308F;
-//			float y = 0F;
-//			float yMax = 0.125F;
+//			System.out.println((char)i + " " + xOffset + " " + yOffset + " " + x + " " + y + " " + xMax + " " + yMax);
 			
 			textureBuffer.put(new float[] { x, yMax, xMax, yMax, xMax, y, x, y });
 			textureBuffer.flip();
@@ -120,13 +114,13 @@ public class TextRender {
 	}
 	
 	public void drawCentered(float x, float y, String text, int glColorId) {
-		float width = text.length() * 15;
+		float width = text.length() * 9;
 		draw(x - (width / 4F), y, text, glColorId);
 	}
 	
 	public void draw(float x, float y, String text, int glColorId) {
 		glEnable(GL_TEXTURE_2D);
-		//glEnableClientState(GL_COLOR_ARRAY);
+		glEnableClientState(GL_COLOR_ARRAY);
 		glEnableClientState(GL_VERTEX_ARRAY);
 		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 		glActiveTexture(GL_TEXTURE0);
@@ -134,7 +128,7 @@ public class TextRender {
 		//Draw
 		for(int i = 0; i < text.length(); i++) {
 			glPushMatrix();
-			glTranslatef(x + (i * 15), y, 0F);
+			glTranslatef(x + (i * 9F), y, 0F);
 			char c = text.charAt(i);
 			
 			if(glTextureCoordId[c] == GL_NONE) {
@@ -156,7 +150,7 @@ public class TextRender {
 		glBindTexture(GL_TEXTURE_2D, GL_NONE);
 		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 		glDisableClientState(GL_VERTEX_ARRAY);
-		//glDisableClientState(GL_COLOR_ARRAY);
+		glDisableClientState(GL_COLOR_ARRAY);
 		
 		glDisable(GL_TEXTURE_2D);
 	}
