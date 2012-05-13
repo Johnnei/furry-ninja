@@ -5,6 +5,7 @@ import java.awt.Rectangle;
 import engine.WMath;
 import engine.render.Renderable;
 import game.WormsGame;
+import game.data.TurnPhase;
 
 public abstract class Entity extends Renderable {
 	
@@ -55,7 +56,8 @@ public abstract class Entity extends Renderable {
 		}
 	}
 	
-	public abstract void onTick();
+	public abstract void onTick(TurnPhase turn);
+	public abstract void onTurnChange(TurnPhase turn);
 	
 	public boolean isFalling() {
 		return fallDuration > 0;

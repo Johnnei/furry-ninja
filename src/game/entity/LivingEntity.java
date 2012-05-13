@@ -1,20 +1,39 @@
 package game.entity;
 
+import engine.render.TextRender;
 import game.WormsGame;
+import game.data.TurnPhase;
+import static game.data.TurnPhase.*;
 
 public abstract class LivingEntity extends Entity {
 
 	//Health
 	private int health;
+	private int takeDamage;
+	
+	//Render
+	private int fullDamage;
+	private int showDamageTime;
 	
 	public LivingEntity(WormsGame wormsGame, int health, int x, int y, int width, int height) {
 		super(wormsGame, x, y, width, height);
 		this.health = health;
 	}
 	
-	public void onTick() {
-		if(isFalling()) {
-			fallDuration++;
+	public void onTick(TurnPhase turn) {
+		if(turn == PLAY) {
+			if(isFalling()) {
+				fallDuration++;
+			}
+		} else if(turn == DAMAGE) {
+			if(takeDamage > 0) {
+				if(health <= 0) {
+					takeDamage = 0;
+				} else {
+					--health;
+					--takeDamage;
+				}
+			}
 		}
 	}
 	
@@ -28,9 +47,8 @@ public abstract class LivingEntity extends Entity {
 	}
 	
 	public void takeDamgage(int dmg) {
-		health -= dmg;
-		if(health < 0)
-			health = 0;
+		takeDamage += dmg;
+		fullDamage = takeDamage;
 	}
 	
 	public boolean isDead() {
@@ -39,6 +57,22 @@ public abstract class LivingEntity extends Entity {
 	
 	public int getHealth() {
 		return health;
+	}
+	
+	public void onTurnChange(TurnPhase turn) {
+		if(turn == DAMAGE) {
+			if(fullDamage > 0) {
+				showDamageTime = 20;
+			}
+		}
+	}
+	
+	public void render() {
+		if(showDamageTime > 0) {
+			TextRender.getTextRender().drawCentered(x, y - 40 - showDamageTime, "-" + fullDamage, glColorId);
+			if(--showDamageTime == 0)
+				fullDamage = 0;
+		}
 	}
 
 }

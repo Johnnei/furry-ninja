@@ -1,5 +1,6 @@
 package game;
 
+import game.data.TurnPhase;
 import game.entity.Cube;
 
 public class Team {
@@ -25,9 +26,9 @@ public class Team {
 		return color;
 	}
 
-	public void onTick() {
+	public void onTick(TurnPhase turn) {
 		for(int i = 0; i < cubes.length; i++) {
-			cubes[i].onTick();
+			cubes[i].onTick(turn);
 		}
 	}
 	

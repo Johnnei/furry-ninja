@@ -8,12 +8,23 @@ import engine.render.TextRender;
 
 import game.data.TeamColor;
 import game.data.TeamSpawn;
+import game.data.TurnPhase;
 import game.entity.Entity;
 
 public class WormsGame {
 	
+	/**
+	 * The competing teams
+	 */
 	private Team[] teams;
+	/**
+	 * The world on which is being played
+	 */
 	private World world;
+	/**
+	 * The current game phase
+	 */
+	private TurnPhase turnPhase;
 	
 	public WormsGame() {
 		teams = new Team[2];
@@ -29,7 +40,7 @@ public class WormsGame {
 	 */
 	public void onTick() {
 		for(int i = 0; i < teams.length; i++) {
-			teams[i].onTick();
+			teams[i].onTick(turnPhase);
 		}
 	}
 	

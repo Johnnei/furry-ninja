@@ -6,18 +6,22 @@ import static org.lwjgl.opengl.GL15.*;
 import engine.render.TextRender;
 import game.Team;
 import game.WormsGame;
+import game.data.TurnPhase;
 
 import java.nio.FloatBuffer;
 
 import org.lwjgl.BufferUtils;
+import org.lwjgl.input.Keyboard;
 
 public class Cube extends LivingEntity {
 
 	private Team team;
+	private boolean myTurn;
 	
 	public Cube(int x, int y, int health, Team team, WormsGame wormsGame) {
 		super(wormsGame, health, x, y, 16, 16);
 		this.team = team;
+		myTurn = false;
 		generateVertexData();
 		generateColorData();
 	}
@@ -45,11 +49,9 @@ public class Cube extends LivingEntity {
 		glBindBuffer(GL_ARRAY_BUFFER, GL_NONE);
 	}
 	
-	
-	
 	@Override
-	public void onTick() {
-		super.onTick();
+	public void onTick(TurnPhase turn) {
+		super.onTick(turn);
 		//Calculate Movement
 		if(!isOnGround()) {
 			float yAdjust = 1 + (float)Math.pow(1.1D, (double)fallDuration);
@@ -57,6 +59,13 @@ public class Cube extends LivingEntity {
 				yAdjust = 5;
 			yMotion -= yAdjust;
 			setFalling(true);
+		}
+		//Add Keyboard input
+		if(myTurn) {
+			if(Keyboard.isKeyDown(Keyboard.KEY_LEFT))
+				xMotion -= 5;
+			if(Keyboard.isKeyDown(Keyboard.KEY_RIGHT))
+				xMotion += 5;
 		}
 		
 		//Do movement
@@ -70,8 +79,6 @@ public class Cube extends LivingEntity {
 
 	@Override
 	public void render() {
-		
-		
 		glEnableClientState(GL_COLOR_ARRAY);
 		glEnableClientState(GL_VERTEX_ARRAY);
 		
@@ -86,6 +93,11 @@ public class Cube extends LivingEntity {
 		glDisableClientState(GL_COLOR_ARRAY);
 		
 		TextRender.getTextRender().drawCentered(x, y - 20, "" + getHealth(), glColorId);
+		super.render();
+	}
+	
+	public void setMyTurn(boolean b) {
+		myTurn = b;
 	}
 
 }

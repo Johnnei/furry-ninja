@@ -113,14 +113,31 @@ public class TextRender {
 		}
 	}
 	
+	/**
+	 * Draws the text and will recalculate the x to make it centered
+	 * if glColorId param is 0 (GL_NONE) it wont use any color. Therefore it will be white
+	 * @param x
+	 * @param y
+	 * @param text
+	 * @param glColorId
+	 */
 	public void drawCentered(float x, float y, String text, int glColorId) {
 		float width = text.length() * 9;
 		draw(x - (width / 4F), y, text, glColorId);
 	}
 	
+	/**
+	 * Draws the text
+	 * if glColorId param is 0 (GL_NONE) it wont use any color. therefore it will be white
+	 * @param x
+	 * @param y
+	 * @param text
+	 * @param glColorId
+	 */
 	public void draw(float x, float y, String text, int glColorId) {
 		glEnable(GL_TEXTURE_2D);
-		glEnableClientState(GL_COLOR_ARRAY);
+		if(glColorId != GL_NONE)
+			glEnableClientState(GL_COLOR_ARRAY);
 		glEnableClientState(GL_VERTEX_ARRAY);
 		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 		glActiveTexture(GL_TEXTURE0);
@@ -138,8 +155,10 @@ public class TextRender {
 			
 			glBindBuffer(GL_ARRAY_BUFFER, glVertexId);
 			glVertexPointer(3, GL_FLOAT, 0, 0L);
-			glBindBuffer(GL_ARRAY_BUFFER, glColorId);
-			glColorPointer(3, GL_FLOAT, 0, 0L);
+			if(glColorId != GL_NONE) {
+				glBindBuffer(GL_ARRAY_BUFFER, glColorId);
+				glColorPointer(3, GL_FLOAT, 0, 0L);
+			}
 			glBindBuffer(GL_ARRAY_BUFFER, glTextureCoordId[c]);
 			glTexCoordPointer(2, GL_FLOAT, 0, 0L);
 			
@@ -150,11 +169,16 @@ public class TextRender {
 		glBindTexture(GL_TEXTURE_2D, GL_NONE);
 		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 		glDisableClientState(GL_VERTEX_ARRAY);
-		glDisableClientState(GL_COLOR_ARRAY);
+		if(glColorId != GL_NONE)
+			glDisableClientState(GL_COLOR_ARRAY);
 		
 		glDisable(GL_TEXTURE_2D);
 	}
 	
+	/**
+	 * Gets the singleton instance of TextRender
+	 * @return
+	 */
 	public static TextRender getTextRender() {
 		return textRender;
 	}
