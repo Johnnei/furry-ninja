@@ -69,10 +69,14 @@ public class Cube extends LivingEntity {
 				xMotion -= 5;
 			if(Keyboard.isKeyDown(Keyboard.KEY_RIGHT))
 				xMotion += 5;
-			if((Keyboard.isKeyDown(Keyboard.KEY_RETURN) && isOnGround()) || (isJumping() && fallDuration < 10)) {
-				jump();
-				yMotion += 1 * fallDuration;
+			if((Keyboard.isKeyDown(Keyboard.KEY_RETURN) && isOnGround())) {
+				setJumping(true);
 			}
+		}
+		
+		//Calculate Jumping
+		if(isJumping() && fallDuration < 10) {
+			yMotion += 1 * fallDuration;
 		}
 		
 		//Do movement

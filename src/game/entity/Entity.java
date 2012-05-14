@@ -62,7 +62,6 @@ public abstract class Entity extends Renderable {
 					--yMotion;
 				if(!wormsGame.collides(this, 0, 0)) {
 					fallDuration = 0F;
-					isJumping = false;
 					break;
 				}
 			}
@@ -71,6 +70,7 @@ public abstract class Entity extends Renderable {
 			xMotion = 0;
 			if(isOnGround()) {
 				yMotion = 0;
+				isJumping = false;
 				setFalling(false);
 			}
 		}
@@ -87,8 +87,10 @@ public abstract class Entity extends Renderable {
 		return new Rectangle((int)x, (int)y, (int)width, (int)height);
 	}
 	
-	public void jump() {
-		isJumping = true;
+	public void setJumping(boolean b) {
+		isJumping = b;
+		if(b)
+			fallDuration = 1F;
 	}
 	
 	public boolean isJumping() {
