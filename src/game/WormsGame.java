@@ -138,6 +138,7 @@ public class WormsGame {
 		//Render GUI
 		int time = turnTime / 20;
 		TextRender.getTextRender().draw(40, 40, "" + time, GL_NONE);
+		TextRender.getTextRender().draw(40, 80, "0123456789", GL_NONE);
 	}
 	
 	public boolean collides(Entity entity) {

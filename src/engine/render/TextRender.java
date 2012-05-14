@@ -93,17 +93,25 @@ public class TextRender {
 			}
 			glTextureCoordId[i] = glGenBuffers();
 			
+			
+			int xOffset = (i - 1) % 13;
+			int yOffset = (i - 1) / 13;
+			
+			float spacing = 1F / 13F;
+			
+			float x = xOffset * spacing;
+			float y = yOffset * 0.06F;
+			
+			float xMax = x + spacing;
+			if(xMax > 1F)
+				xMax = 1F;
+			float yMax = y + 0.06F;
+			if(yMax > 1F)
+				yMax = 1F;
+			
+			System.out.println(i + " " + (char)i + " " + xOffset + " " + yOffset + " (" + x + ", " + y + ") (" + xMax + ", " + yMax + ")");
+			
 			FloatBuffer textureBuffer = BufferUtils.createFloatBuffer(8); //2 (x, y) * 4
-			int xOffset = (i - 48) % 13;
-			int yOffset = (i - 48) / 13;
-			
-			float x = 0.07692307692307692307692307692308F * xOffset;
-			float xMax = x + 0.07692307692307692307692307692308F; // x + 1/13
-			float y = 0.120F * yOffset;
-			float yMax = y + 0.120F; // y + 1/8
-			
-//			System.out.println((char)i + " " + xOffset + " " + yOffset + " " + x + " " + y + " " + xMax + " " + yMax);
-			
 			textureBuffer.put(new float[] { x, yMax, xMax, yMax, xMax, y, x, y });
 			textureBuffer.flip();
 			
