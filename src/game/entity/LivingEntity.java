@@ -12,12 +12,25 @@ public abstract class LivingEntity extends Entity {
 	private int takeDamage;
 	
 	//Render
+	/**
+	 * The full amount of damage that has been given this turn
+	 */
 	private int fullDamage;
+	/**
+	 * Determines if the damage shoud be shown
+	 */
+	private boolean showDamage;
+	/**
+	 * The time that the damage has been shown
+	 */
 	private int showDamageTime;
 	
 	public LivingEntity(WormsGame wormsGame, int health, int x, int y, int width, int height) {
 		super(wormsGame, x, y, width, height);
 		this.health = health;
+		showDamage = false;
+		fullDamage = 0;
+		showDamageTime = 0;
 	}
 	
 	public void onTick(TurnPhase turn) {
@@ -62,16 +75,29 @@ public abstract class LivingEntity extends Entity {
 	public void onTurnChange(TurnPhase turn) {
 		if(turn == DAMAGE) {
 			if(fullDamage > 0) {
-				showDamageTime = 20;
+				showDamage = true;
 			}
 		}
 	}
 	
+	/**
+	 * Returns if the damage has been deducted
+	 * @return
+	 */
+	public boolean canAdvance() {
+		return !showDamage;
+	}
+	
 	public void render() {
-		if(showDamageTime > 0) {
+		if(showDamage) {
 			TextRender.getTextRender().drawCentered(x, y - 40 - showDamageTime, "-" + fullDamage, glColorId);
-			if(--showDamageTime == 0)
+			if(takeDamage == 0) {
 				fullDamage = 0;
+				showDamageTime = 0;
+				showDamage = false;
+			} else {
+				showDamageTime++;
+			}
 		}
 	}
 

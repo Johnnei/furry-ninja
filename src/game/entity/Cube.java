@@ -15,7 +15,13 @@ import org.lwjgl.input.Keyboard;
 
 public class Cube extends LivingEntity {
 
+	/**
+	 * The Team this Cube is part of
+	 */
 	private Team team;
+	/**
+	 * Determines if this worm can be controlled
+	 */
 	private boolean myTurn;
 	
 	public Cube(int x, int y, int health, Team team, WormsGame wormsGame) {
@@ -61,7 +67,7 @@ public class Cube extends LivingEntity {
 			setFalling(true);
 		}
 		//Add Keyboard input
-		if(myTurn) {
+		if(myTurn && turn == TurnPhase.PLAY) {
 			if(Keyboard.isKeyDown(Keyboard.KEY_LEFT))
 				xMotion -= 5;
 			if(Keyboard.isKeyDown(Keyboard.KEY_RIGHT))
