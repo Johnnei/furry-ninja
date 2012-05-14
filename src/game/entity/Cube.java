@@ -6,6 +6,7 @@ import static org.lwjgl.opengl.GL15.*;
 import engine.render.TextRender;
 import game.Team;
 import game.WormsGame;
+import game.data.Gamemode;
 import game.data.TurnPhase;
 
 import java.nio.FloatBuffer;
@@ -76,7 +77,7 @@ public class Cube extends LivingEntity {
 		
 		//Calculate Jumping
 		if(isJumping() && fallDuration < 10) {
-			yMotion += 1 * fallDuration;
+			yMotion += Gamemode.JUMP_SPEED * fallDuration;
 		}
 		
 		//Do movement
