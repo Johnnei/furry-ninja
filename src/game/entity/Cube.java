@@ -60,10 +60,7 @@ public class Cube extends LivingEntity {
 		super.onTick(turn);
 		//Calculate Movement
 		if(!isOnGround()) {
-			float yAdjust = 1 + (float)Math.pow(1.1D, (double)fallDuration);
-			if(yAdjust > 5)
-				yAdjust = 5;
-			yMotion -= yAdjust;
+			yMotion = -1;
 			setFalling(true);
 		}
 		//Add Keyboard input
@@ -72,6 +69,9 @@ public class Cube extends LivingEntity {
 				xMotion -= 5;
 			if(Keyboard.isKeyDown(Keyboard.KEY_RIGHT))
 				xMotion += 5;
+			if(Keyboard.isKeyDown(Keyboard.KEY_RETURN) && isOnGround()) {
+				yMotion += 5;
+			}
 		}
 		
 		//Do movement
@@ -98,7 +98,7 @@ public class Cube extends LivingEntity {
 		glDisableClientState(GL_VERTEX_ARRAY);
 		glDisableClientState(GL_COLOR_ARRAY);
 		
-		TextRender.getTextRender().drawCentered(x, y - 20, "" + getHealth(), glColorId);
+		TextRender.getTextRender().drawCentered(x + (width / 2), y - 20, "" + getHealth(), glColorId);
 		super.render();
 	}
 	

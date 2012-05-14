@@ -5,6 +5,7 @@ import java.awt.Rectangle;
 import engine.WMath;
 import engine.render.Renderable;
 import game.WormsGame;
+import game.data.Gamemode;
 import game.data.TurnPhase;
 
 public abstract class Entity extends Renderable {
@@ -35,24 +36,36 @@ public abstract class Entity extends Renderable {
 	}
 	
 	public boolean isOnGround() {
-		return wormsGame.collides(this, 0, -1);
+		return wormsGame.collides(this, 0, 1);
 	}
 	
 	public void doMovement() {
 		if(xMotion != 0 || yMotion != 0) {
+			if(yMotion != 0) {
+				//Apply Global Gravity
+				yMotion *= 1 + (fallDuration * Gamemode.GRAVITY);
+			}
+			
 			setRenderUpdate(true);
 			x += xMotion;
 			y -= yMotion;
-			while(wormsGame.collides(this, 0, 1)) {
+			while(isOnGround()) {
 				--y;
 				if(yMotion < 0)
 					++yMotion;
 				else
 					--yMotion;
+				if(!wormsGame.collides(this, 0, 0)) {
+					break;
+				}
 			}
-			if(fallDuration > 0)
+			if(fallDuration > 0 && yMotion < 0)
 				fallDistance += WMath.abs_f(yMotion);
-			xMotion = yMotion = 0;
+			xMotion = 0;
+			if(isOnGround()) {
+				yMotion = 0;
+				setFalling(false);
+			}
 		}
 	}
 	

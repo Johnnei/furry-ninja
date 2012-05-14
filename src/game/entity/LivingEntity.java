@@ -52,11 +52,19 @@ public abstract class LivingEntity extends Entity {
 	
 	public void setFalling(boolean b) {
 		if(isFalling() && !b && fallDistance > 0) {
-			int fallDamage = (int)((fallDistance - 5) * 0.5);
-			takeDamgage(fallDamage);
+			int dmgDistance = (int)fallDistance - 100;
+			if(dmgDistance > 0) {
+				int fallDamage = (int)(dmgDistance * 0.01);
+				System.out.println("Taking fall dmg over " + dmgDistance + " units");
+				takeDamgage(fallDamage);
+			}
 		}
-		if(!isFalling())
+		if(!isFalling()) {
 			fallDuration = (b) ? 1 : 0;
+			if(!b) {
+				fallDistance = 0F;
+			}
+		}
 	}
 	
 	public void takeDamgage(int dmg) {
@@ -90,7 +98,8 @@ public abstract class LivingEntity extends Entity {
 	
 	public void render() {
 		if(showDamage) {
-			TextRender.getTextRender().drawCentered(x, y - 40 - showDamageTime, "-" + fullDamage, glColorId);
+			if(y - 20 - showDamageTime >= 0)
+				TextRender.getTextRender().drawCentered(x + (width / 2), y - 20 - showDamageTime, "" + fullDamage, glColorId);
 			if(takeDamage == 0) {
 				fullDamage = 0;
 				showDamageTime = 0;

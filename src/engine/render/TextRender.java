@@ -122,8 +122,8 @@ public class TextRender {
 	 * @param glColorId
 	 */
 	public void drawCentered(float x, float y, String text, int glColorId) {
-		float width = text.length() * 9;
-		draw(x - (width / 4F), y, text, glColorId);
+		x -= (text.length() * 4.5F);
+		draw(x, y, text, glColorId);
 	}
 	
 	/**
