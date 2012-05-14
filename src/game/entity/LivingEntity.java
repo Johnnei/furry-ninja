@@ -2,6 +2,7 @@ package game.entity;
 
 import engine.render.TextRender;
 import game.WormsGame;
+import game.data.Gamemode;
 import game.data.TurnPhase;
 import static game.data.TurnPhase.*;
 
@@ -50,20 +51,18 @@ public abstract class LivingEntity extends Entity {
 		}
 	}
 	
-	public void setFalling(boolean b) {
-		if(isFalling() && !b && fallDistance > 0) {
-			int dmgDistance = (int)fallDistance - 100;
+	public void setFalling(boolean newIsFalling) {
+		if(isFalling() && !newIsFalling && fallDistance > 0) {
+			int dmgDistance = (int)fallDistance - Gamemode.FREE_FALL_DISTANCE;
 			if(dmgDistance > 0) {
-				int fallDamage = (int)(dmgDistance * 0.01);
-				System.out.println("Taking fall dmg over " + dmgDistance + " units");
+				int fallDamage = (int)(dmgDistance * 0.1);
+				System.out.println("Taking " + fallDamage + " fall dmg over " + dmgDistance + " units");
 				takeDamgage(fallDamage);
 			}
+			fallDistance = 0F;
 		}
 		if(!isFalling()) {
-			fallDuration = (b) ? 1 : 0;
-			if(!b) {
-				fallDistance = 0F;
-			}
+			fallDuration = (newIsFalling) ? 1 : 0;
 		}
 	}
 	

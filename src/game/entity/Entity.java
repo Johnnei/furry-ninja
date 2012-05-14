@@ -16,6 +16,10 @@ public abstract class Entity extends Renderable {
 	protected float xMotion, yMotion;
 	protected float fallDuration;
 	protected float fallDistance;
+	/**
+	 * If the Entity is jumping
+	 */
+	private boolean isJumping;
 	
 	//Game Reference
 	protected WormsGame wormsGame;
@@ -29,6 +33,7 @@ public abstract class Entity extends Renderable {
 		this.height = height;
 		this.wormsGame = wormsGame;
 		setFalling(false);
+		isJumping = false;
 	}
 	
 	public void setFalling(boolean b) {
@@ -56,6 +61,8 @@ public abstract class Entity extends Renderable {
 				else
 					--yMotion;
 				if(!wormsGame.collides(this, 0, 0)) {
+					fallDuration = 0F;
+					isJumping = false;
 					break;
 				}
 			}
@@ -78,6 +85,14 @@ public abstract class Entity extends Renderable {
 	
 	public Rectangle getCollisionBox() {
 		return new Rectangle((int)x, (int)y, (int)width, (int)height);
+	}
+	
+	public void jump() {
+		isJumping = true;
+	}
+	
+	public boolean isJumping() {
+		return isJumping;
 	}
 
 }
