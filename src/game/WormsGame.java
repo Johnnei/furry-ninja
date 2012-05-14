@@ -6,6 +6,7 @@ import java.awt.Rectangle;
 
 import engine.render.TextRender;
 
+import game.data.Gamemode;
 import game.data.TeamColor;
 import game.data.TeamSpawn;
 import game.data.TurnPhase;
@@ -46,7 +47,7 @@ public class WormsGame {
 		//Initialising First Turn
 		turnIndex = 0;
 		teams[turnIndex].onAdvanceTurn();
-		turnTime = 1200; //60 seconds
+		turnTime = Gamemode.TURN_TIME;
 		turnPhase = TurnPhase.PLAY;
 	}
 	
@@ -54,12 +55,14 @@ public class WormsGame {
 	 * Executes all onTick events
 	 */
 	public void onTick() {
-		boolean canAdvance = true;
+		boolean canAdvance = false;
+		boolean noAdvance = false;
 		for(int i = 0; i < teams.length; i++) {
 			teams[i].onTick(turnPhase);
 			if(turnPhase == TurnPhase.DAMAGE) {
-				if(!teams[i].canAdvance())
-					canAdvance = false;
+				if(!teams[i].canAdvance()) {
+					noAdvance = true;
+				}
 			}
 		}
 		
@@ -70,9 +73,13 @@ public class WormsGame {
 		if((turnPhase == TurnPhase.PLAY || turnPhase == TurnPhase.CUBE_CHANGE ) && turnTime == 0) 
 			canAdvance = true;
 		
+		if(turnPhase == TurnPhase.DAMAGE) {
+			canAdvance = !noAdvance;
+		}
+		
 		if(canAdvance) {
+			advanceTurnPhase();
 			for(int i = 0; i < teams.length; i++) {
-				advanceTurnPhase();
 				teams[i].onTurnPhaseChange(turnPhase);
 			}
 		}
@@ -83,10 +90,16 @@ public class WormsGame {
 	 */
 	private void onAdvanceTurn() {
 		teams[turnIndex].onTurnCompleted();
+		System.out.println("Completed Turn for Team: " + turnIndex);
 		if(++turnIndex == teams.length)
 			turnIndex = 0;
+		System.out.println("Started Turn for Team: " + turnIndex);
 		teams[turnIndex].onAdvanceTurn();
-		turnTime = 100;
+		turnTime = Gamemode.CHANGE_TIME;
+	}
+	
+	private void onTurnPlay() {
+		turnTime = Gamemode.TURN_TIME; //60 seconds
 	}
 	
 	/**
@@ -94,10 +107,14 @@ public class WormsGame {
 	 */
 	private void advanceTurnPhase() {
 		if(turnPhase == TurnPhase.CUBE_CHANGE) {
+			System.out.println("Changed phase from CUBE_CHANGE to PLAY");
 			turnPhase = TurnPhase.PLAY;
+			onTurnPlay();
 		} else if(turnPhase == TurnPhase.PLAY) {
+			System.out.println("Changed phase from PLAY to DAMAGE");
 			turnPhase = TurnPhase.DAMAGE;
 		} else if(turnPhase == TurnPhase.DAMAGE) {
+			System.out.println("Changed phase from DAMAGE to CUBE_CHANGE");
 			turnPhase = TurnPhase.CUBE_CHANGE;
 			onAdvanceTurn();
 		} else
