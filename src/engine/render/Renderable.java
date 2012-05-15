@@ -14,6 +14,11 @@ public abstract class Renderable {
 		needRenderUpdate = false;
 	}
 	
+	public void overrideGlColorId(int glColorId) {
+		glDeleteBuffers(glColorId);
+		this.glColorId = glColorId;
+	}
+	
 	/**
 	 * Generates the VBO Color data to render
 	 */

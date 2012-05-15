@@ -83,29 +83,29 @@ public class TextRender {
 	
 	/**
 	 * Calculates the texture coords and saves those.
-	 * @param charStart
-	 * @param charEnd
+	 * @param charStart first character to load
+	 * @param charEnd last character to load
 	 */
 	public void load(int charStart, int charEnd) {
 		for(int i = charStart; i <= charEnd; i++) {
-			if(glTextureCoordId[i] != 0) {
+			if(glTextureCoordId[i] != GL_NONE) {
 				System.out.println("Skipping: " + i + ", Already Loaded");
 			}
 			glTextureCoordId[i] = glGenBuffers();
 			
-			
-			int xOffset = (i - 1) % 13;
+			int xOffset = (i) % 13;
 			int yOffset = (i - 1) / 13;
 			
-			float spacing = 1F / 13F;
+			float xSpacing = 1F / 13F;
+			float ySpacing = 1F / 16F;
 			
-			float x = xOffset * spacing;
-			float y = yOffset * 0.06F;
+			float x = xOffset * xSpacing;
+			float y = yOffset * ySpacing;
 			
-			float xMax = x + spacing;
+			float xMax = x + xSpacing;
 			if(xMax > 1F)
 				xMax = 1F;
-			float yMax = y + 0.06F;
+			float yMax = y + ySpacing;
 			if(yMax > 1F)
 				yMax = 1F;
 			
