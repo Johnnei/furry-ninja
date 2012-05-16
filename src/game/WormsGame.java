@@ -4,6 +4,7 @@ import static org.lwjgl.opengl.GL11.*;
 
 import java.awt.Rectangle;
 
+import engine.WMath;
 import engine.render.TextRender;
 
 import game.data.Gamemode;
@@ -136,7 +137,7 @@ public class WormsGame {
 		}
 		
 		//Render GUI
-		int time = turnTime / 20;
+		int time = WMath.ceil_i(turnTime / 20D);
 		TextRender.getTextRender().draw(40, 40, "" + time, GL_NONE);
 	}
 	
