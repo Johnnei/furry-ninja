@@ -93,10 +93,10 @@ public class TextRender {
 			}
 			glTextureCoordId[i] = glGenBuffers();
 			
-			int xOffset = (i) % 13;
-			int yOffset = (i - 1) / 13;
+			int xOffset = i % 13;
+			int yOffset = i / 13;
 			
-			float xSpacing = 1F / 13F;
+			float xSpacing = 0.078F;
 			float ySpacing = 1F / 16F;
 			
 			float x = xOffset * xSpacing;
