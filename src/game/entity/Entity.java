@@ -36,8 +36,14 @@ public abstract class Entity extends Renderable {
 		isJumping = false;
 	}
 	
-	public void setFalling(boolean b) {
-		fallDuration = (b) ? 1 : 0;
+	public void setFalling(boolean fallState) {
+		if(fallState) {
+			if(!isJumping)
+				fallDuration = 1;
+		} else {
+			if(!isJumping)
+				fallDuration = 0;
+		}
 	}
 	
 	public boolean isOnGround() {
@@ -47,6 +53,7 @@ public abstract class Entity extends Renderable {
 	public void doMovement() {
 		if(xMotion != 0 || yMotion != 0) {
 			if(yMotion != 0) {
+				System.out.println(yMotion);
 				//Apply Global Gravity
 				yMotion *= 1 + (fallDuration * Gamemode.GRAVITY);
 			}
@@ -54,7 +61,7 @@ public abstract class Entity extends Renderable {
 			setRenderUpdate(true);
 			x += xMotion;
 			y -= yMotion;
-			while(isOnGround()) {
+			while(wormsGame.collides(this, 0, 0)) {
 				--y;
 				if(yMotion < 0)
 					++yMotion;

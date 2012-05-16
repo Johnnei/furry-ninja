@@ -109,7 +109,7 @@ public class TextRender {
 			if(yMax > 1F)
 				yMax = 1F;
 			
-			System.out.println(i + " " + (char)i + " " + xOffset + " " + yOffset + " (" + x + ", " + y + ") (" + xMax + ", " + yMax + ")");
+			//System.out.println(i + " " + (char)i + " " + xOffset + " " + yOffset + " (" + x + ", " + y + ") (" + xMax + ", " + yMax + ")");
 			
 			FloatBuffer textureBuffer = BufferUtils.createFloatBuffer(8); //2 (x, y) * 4
 			textureBuffer.put(new float[] { x, yMax, xMax, yMax, xMax, y, x, y });

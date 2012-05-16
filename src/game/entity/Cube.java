@@ -63,6 +63,9 @@ public class Cube extends LivingEntity {
 		if(!isOnGround()) {
 			yMotion = -1;
 			setFalling(true);
+		} else {
+			yMotion = 0;
+			setFalling(false);
 		}
 		//Add Keyboard input
 		if(myTurn && turn == TurnPhase.PLAY) {
@@ -77,7 +80,7 @@ public class Cube extends LivingEntity {
 		
 		//Calculate Jumping
 		if(isJumping() && fallDuration < 10) {
-			yMotion += Gamemode.JUMP_SPEED * fallDuration;
+			yMotion += Gamemode.JUMP_SPEED / (fallDuration * 0.1D);
 		}
 		
 		//Do movement
