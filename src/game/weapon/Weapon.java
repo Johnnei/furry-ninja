@@ -4,7 +4,7 @@ import game.data.WeaponType;
 import game.entity.Cube;
 import game.entity.Projectile;
 
-public abstract class Weapon {
+public class Weapon {
 	
 	private final int id;
 	private int ammo;
@@ -14,8 +14,12 @@ public abstract class Weapon {
 		this.ammo = ammo;
 	}
 	
+	/**
+	 * Fires the weapon
+	 * @param owner
+	 */
 	public void fire(Cube owner) {
-		Projectile p = new Projectile(owner.getWormsGame(), owner, (int)owner.getX(), (int)owner.getY(), WeaponType.weaponWidth[id], WeaponType.weaponWidth[id]); 
+		Projectile p = new Projectile(owner.getWormsGame(), owner, (int)owner.getX(), (int)owner.getY(), id); 
 		owner.getWormsGame().addProjectile(p);
 	}
 	

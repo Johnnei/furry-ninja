@@ -1,7 +1,9 @@
 package game;
 
 import game.data.TurnPhase;
+import game.data.WeaponType;
 import game.entity.Cube;
+import game.weapon.Weapon;
 
 public class Team {
 	
@@ -17,6 +19,7 @@ public class Team {
 	 * The index of the current cube which turn it is, By default -1 so the first turn it will become index 0
 	 */
 	private int turnIndex;
+	private Weapon[] weapons;
 	
 	public Team(int size, float[] color, WormsGame wormsGame, int[] spawnsX, int[] spawnsY) {
 		this.color = color;
@@ -25,6 +28,10 @@ public class Team {
 			cubes[i] = new Cube(spawnsX[i], spawnsY[i], 100, this, wormsGame);
 		}
 		turnIndex = -1;
+		weapons = new Weapon[WeaponType.weaponName.length];
+		for(int i = 0; i < weapons.length; i++) {
+			weapons[i] = new Weapon(i, WeaponType.weaponStartingAmmo[i]);
+		}
 	}
 	
 	public void render() {

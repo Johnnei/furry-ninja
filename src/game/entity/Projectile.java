@@ -7,10 +7,9 @@ import java.nio.FloatBuffer;
 
 import org.lwjgl.BufferUtils;
 
-import engine.render.TextRender;
-
 import game.WormsGame;
 import game.data.TurnPhase;
+import game.data.WeaponType;
 
 public class Projectile extends Entity {
 	
@@ -19,8 +18,11 @@ public class Projectile extends Entity {
 	private float damageRange;
 	private Cube owner;
 	
-	public Projectile(WormsGame wormsGame, Cube owner, int x, int y, int width, int height) {
-		super(wormsGame, x, y, width, height);
+	public Projectile(WormsGame wormsGame, Cube owner, int x, int y, int id) {
+		super(wormsGame, x, y, WeaponType.weaponWidth[id], WeaponType.weaponHeight[id]);
+		minDamage = WeaponType.projectileMinDamage[id];
+		maxDamage = WeaponType.projectileMaxDamage[id];
+		damageRange = WeaponType.projectileDamageRange[id];
 	}
 	
 	/**

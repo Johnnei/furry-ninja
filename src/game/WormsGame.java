@@ -46,15 +46,17 @@ public class WormsGame {
 	public WormsGame() {
 		//Initialising
 		projectiles = new ArrayList<Projectile>();
+		
+		//Defining Weapons
+		WeaponType.setWeapons(1);
+		WeaponType.registerWeapon(0, "Bazooka", 16, 16, 255, 1, 50, 100);
+		
 		//Preparing Data
 		teams = new Team[2];
 		for(int i = 0; i < teams.length; i++) {
 			teams[i] = new Team(4, TeamColor.values()[i].getColor(), this, TeamSpawn.values()[i].getSpawnsX(), TeamSpawn.values()[i].getSpawnsY());
 		}
 		world = new World();
-		//Defining Weapons
-		WeaponType.setWeapons(1);
-		WeaponType.registerWeapon(0, "Bazooka", 16, 16);
 		
 		//Loading Text Engine
 		TextRender.getTextRender().load(48, 57);
@@ -84,12 +86,16 @@ public class WormsGame {
 			--turnTime;
 		
 		//Override the canAdvance if the time has passed
-		if((turnPhase == TurnPhase.PLAY || turnPhase == TurnPhase.CUBE_CHANGE ) && turnTime == 0 && projectiles.size() == 0) 
+		if((turnPhase == TurnPhase.PLAY || turnPhase == TurnPhase.CUBE_CHANGE ) && turnTime == 0) 
+			canAdvance = true;
+		
+		if(turnPhase == TurnPhase.PROJECTILE_WAIT && projectiles.size() == 0)
 			canAdvance = true;
 		
 		if(turnPhase == TurnPhase.DAMAGE) {
 			canAdvance = !noAdvance;
 		}
+		
 		
 		if(canAdvance) {
 			advanceTurnPhase();
@@ -125,7 +131,10 @@ public class WormsGame {
 			turnPhase = TurnPhase.PLAY;
 			onTurnPlay();
 		} else if(turnPhase == TurnPhase.PLAY) {
-			System.out.println("Changed phase from PLAY to DAMAGE");
+			System.out.println("Changed phase from PLAY to PROJECTILE_WAIT");
+			turnPhase = TurnPhase.PROJECTILE_WAIT;
+		} else if(turnPhase == TurnPhase.PROJECTILE_WAIT) {
+			System.out.println("Changed phase from PROJECTILE_WAIT to DAMAGE");
 			turnPhase = TurnPhase.DAMAGE;
 		} else if(turnPhase == TurnPhase.DAMAGE) {
 			System.out.println("Changed phase from DAMAGE to CUBE_CHANGE");

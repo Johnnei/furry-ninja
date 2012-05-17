@@ -2,6 +2,6 @@ package game.data;
 
 public enum TurnPhase {
 	
-	PLAY, DAMAGE, CUBE_CHANGE
+	PLAY, DAMAGE, PROJECTILE_WAIT, CUBE_CHANGE
 
 }
