@@ -84,7 +84,7 @@ public class WormsGame {
 			--turnTime;
 		
 		//Override the canAdvance if the time has passed
-		if((turnPhase == TurnPhase.PLAY || turnPhase == TurnPhase.CUBE_CHANGE ) && turnTime == 0) 
+		if((turnPhase == TurnPhase.PLAY || turnPhase == TurnPhase.CUBE_CHANGE ) && turnTime == 0 && projectiles.size() == 0) 
 			canAdvance = true;
 		
 		if(turnPhase == TurnPhase.DAMAGE) {
@@ -147,6 +147,11 @@ public class WormsGame {
 		//Render Cubes
 		for(int i = 0; i < teams.length; i++) {
 			teams[i].render();
+		}
+		
+		//Render Projectiles
+		for(int i = 0; i < projectiles.size(); i++) {
+			projectiles.get(i).render();
 		}
 		
 		//Render GUI

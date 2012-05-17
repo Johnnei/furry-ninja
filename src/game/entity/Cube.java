@@ -119,4 +119,8 @@ public class Cube extends LivingEntity {
 		return wormsGame;
 	}
 
+	public Team getTeam() {
+		return team;
+	}
+
 }
