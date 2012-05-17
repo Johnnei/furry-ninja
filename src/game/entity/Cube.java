@@ -114,5 +114,9 @@ public class Cube extends LivingEntity {
 	public void setMyTurn(boolean b) {
 		myTurn = b;
 	}
+	
+	public WormsGame getWormsGame() {
+		return wormsGame;
+	}
 
 }

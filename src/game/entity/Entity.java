@@ -103,5 +103,13 @@ public abstract class Entity extends Renderable {
 	public boolean isJumping() {
 		return isJumping;
 	}
+	
+	public float getX() {
+		return x;
+	}
+	
+	public float getY() {
+		return y;
+	}
 
 }

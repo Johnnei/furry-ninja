@@ -3,6 +3,7 @@ package game;
 import static org.lwjgl.opengl.GL11.*;
 
 import java.awt.Rectangle;
+import java.util.ArrayList;
 
 import engine.WMath;
 import engine.render.TextRender;
@@ -11,7 +12,9 @@ import game.data.Gamemode;
 import game.data.TeamColor;
 import game.data.TeamSpawn;
 import game.data.TurnPhase;
+import game.data.WeaponType;
 import game.entity.Entity;
+import game.entity.Projectile;
 
 public class WormsGame {
 	
@@ -35,15 +38,25 @@ public class WormsGame {
 	 * The remaining turnTime
 	 */
 	private int turnTime;
+	/**
+	 * All projectiles floating through the air
+	 */
+	private ArrayList<Projectile> projectiles;
 	
 	public WormsGame() {
+		//Initialising
+		projectiles = new ArrayList<Projectile>();
 		//Preparing Data
 		teams = new Team[2];
 		for(int i = 0; i < teams.length; i++) {
 			teams[i] = new Team(4, TeamColor.values()[i].getColor(), this, TeamSpawn.values()[i].getSpawnsX(), TeamSpawn.values()[i].getSpawnsY());
 		}
 		world = new World();
-		//Loading Data
+		//Defining Weapons
+		WeaponType.setWeapons(1);
+		WeaponType.registerWeapon(0, "Bazooka", 16, 16);
+		
+		//Loading Text Engine
 		TextRender.getTextRender().load(48, 57);
 		//Initialising First Turn
 		turnIndex = 0;
@@ -141,14 +154,41 @@ public class WormsGame {
 		TextRender.getTextRender().draw(40, 40, "" + time, GL_NONE);
 	}
 	
+	/**
+	 * Add the projectile the projectileList
+	 * @param p
+	 */
+	public void addProjectile(Projectile p) {
+		projectiles.add(p);
+	}
+	
+	/**
+	 * Returns whether the entity collides
+	 * @param entity
+	 * @return
+	 */
 	public boolean collides(Entity entity) {
 		return collides(entity, 0, 0);
 	}
 	
+	/**
+	 * Returns whether the entity collides
+	 * @param entity
+	 * @param xOffset
+	 * @param yOffset
+	 * @return
+	 */
 	public boolean collides(Entity entity, float xOffset, float yOffset) {
 		return collides(entity, (int)xOffset, (int)yOffset);
 	}
 
+	/**
+	 * Returns whether the entity collides
+	 * @param entity
+	 * @param xOffset
+	 * @param yOffset
+	 * @return
+	 */
 	public boolean collides(Entity entity, int xOffset, int yOffset) {
 		Rectangle colBox = entity.getCollisionBox();
 		colBox.x += xOffset;
