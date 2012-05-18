@@ -16,6 +16,10 @@ public class WeaponType {
 		weaponWidth = new int[size];
 		weaponHeight = new int[size];
 		weaponStartingAmmo = new int[size];
+		weaponStartingAmmo = new int[size];
+		projectileMinDamage = new int[size];
+		projectileMaxDamage = new int[size];
+		projectileDamageRange = new float[size];
 	}
 	
 	public static void registerWeapon(int id, String name, int width, int height, int startingAmmo, int minDamage, int maxDamage, float range) {
