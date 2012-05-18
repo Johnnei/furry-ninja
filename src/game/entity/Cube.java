@@ -24,13 +24,19 @@ public class Cube extends LivingEntity {
 	 * Determines if this worm can be controlled
 	 */
 	private boolean myTurn;
+	/**
+	 * Aiming Angle
+	 */
+	private float angle;
 	
 	public Cube(int x, int y, int health, Team team, WormsGame wormsGame) {
 		super(wormsGame, health, x, y, 16, 16);
 		this.team = team;
 		myTurn = false;
+		angle = 0F;
 		generateVertexData();
 		generateColorData();
+		generateTextureData();
 	}
 	
 	@Override
@@ -57,6 +63,10 @@ public class Cube extends LivingEntity {
 	}
 	
 	@Override
+	public void generateTextureData() {
+	}
+	
+	@Override
 	public void onTick(TurnPhase turn) {
 		super.onTick(turn);
 		//Calculate Movement
@@ -73,8 +83,17 @@ public class Cube extends LivingEntity {
 				xMotion -= 5;
 			if(Keyboard.isKeyDown(Keyboard.KEY_RIGHT))
 				xMotion += 5;
-			if((Keyboard.isKeyDown(Keyboard.KEY_RETURN) && isOnGround())) {
+			if((Keyboard.isKeyDown(Keyboard.KEY_RETURN) && isOnGround()))
 				setJumping(true);
+			if(Keyboard.isKeyDown(Keyboard.KEY_UP)) {
+				angle += 0.5F;
+				if(angle > 90F)
+					angle = 90F;
+			}
+			if(Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
+				angle -= 0.5F;
+				if(angle < 0F)
+					angle = 0F;
 			}
 		}
 		
@@ -108,6 +127,11 @@ public class Cube extends LivingEntity {
 		glDisableClientState(GL_COLOR_ARRAY);
 		
 		TextRender.getTextRender().drawCentered(x + (width / 2), y - 20, "" + getHealth(), glColorId);
+		
+		if(myTurn) {
+			//TODO Render Crosshair
+		}
+		
 		super.render();
 	}
 	

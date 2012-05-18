@@ -4,8 +4,25 @@ import static org.lwjgl.opengl.GL15.*;
 
 public abstract class Renderable {
 	
+	/**
+	 * VBO Vertex data id
+	 */
 	protected int glVertexId;
+	/**
+	 * VBO Color data id
+	 */
 	protected int glColorId;
+	/**
+	 * Texture id
+	 */
+	protected int glTextureId;
+	/**
+	 * VBO Texture Coord Id
+	 */
+	protected int glTextureCoordId;
+	/**
+	 * Registers if the VBO data needs to be updated
+	 */
 	private boolean needRenderUpdate;
 	
 	public Renderable() {
@@ -28,6 +45,11 @@ public abstract class Renderable {
 	 * Generates the VBO Vertex data to render
 	 */
 	public abstract void generateVertexData();
+	
+	/**
+	 * Generates the VBO Texture Data to render
+	 */
+	public abstract void generateTextureData();
 	
 	/**
 	 * Renders the VBO to the screen

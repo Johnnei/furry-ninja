@@ -58,8 +58,6 @@ public class Projectile extends Entity {
 
 	@Override
 	public void onTurnChange(TurnPhase turn) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -99,6 +97,10 @@ public class Projectile extends Entity {
 		
 		glDisableClientState(GL_VERTEX_ARRAY);
 		glDisableClientState(GL_COLOR_ARRAY);
+	}
+
+	@Override
+	public void generateTextureData() {
 	}
 
 }

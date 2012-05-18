@@ -1,6 +1,5 @@
 package game.weapon;
 
-import game.data.WeaponType;
 import game.entity.Cube;
 import game.entity.Projectile;
 
