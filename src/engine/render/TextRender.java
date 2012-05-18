@@ -55,8 +55,7 @@ public class TextRender {
 		final float width = 9F;
 		final float height = 13F;
 
-		vertexBuffer.put(new float[] { 0, height, 0, width, height, 0, width,
-				0, 0, 0, 0, 0 });
+		vertexBuffer.put(new float[] { 0, height, 0, width, height, 0, width, 0, 0, 0, 0, 0 });
 		vertexBuffer.flip();
 
 		glBindBuffer(GL_ARRAY_BUFFER, glVertexId);
@@ -99,13 +98,8 @@ public class TextRender {
 			// yOffset + " (" + x + ", " + y + ") (" + xMax + ", " + yMax +
 			// ")");
 
-			FloatBuffer textureBuffer = BufferUtils.createFloatBuffer(8); // 2
-																			// (x,
-																			// y)
-																			// *
-																			// 4
-			textureBuffer
-					.put(new float[] { x, yMax, xMax, yMax, xMax, y, x, y });
+			FloatBuffer textureBuffer = BufferUtils.createFloatBuffer(8);
+			textureBuffer.put(new float[] { x, yMax, xMax, yMax, xMax, y, x, y });
 			textureBuffer.flip();
 
 			glBindBuffer(GL_ARRAY_BUFFER, glTextureCoordId[i]);
