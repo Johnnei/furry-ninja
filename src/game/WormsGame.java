@@ -73,12 +73,28 @@ public class WormsGame {
 	public void onTick() {
 		boolean canAdvance = false;
 		boolean noAdvance = false;
+		boolean hasPlayingCube = false;
 		for(int i = 0; i < teams.length; i++) {
 			teams[i].onTick(turnPhase);
 			if(turnPhase == TurnPhase.DAMAGE) {
 				if(!teams[i].canAdvance()) {
 					noAdvance = true;
 				}
+			} else if (turnPhase == TurnPhase.PLAY) {
+				for(int j = 0; j < teams[i].getCubeCount(); j++) {
+					if(teams[i].getCube(j).hasTurn()) {
+						hasPlayingCube = true;
+					}
+				}
+			}
+		}
+		
+		
+		for(int i = 0; i < projectiles.size(); i++) {
+			projectiles.get(i).onTick(turnPhase);
+			if(projectiles.get(i).canDelete()) {
+				projectiles.remove(i);
+				--i;
 			}
 		}
 		
@@ -88,6 +104,9 @@ public class WormsGame {
 		//Override the canAdvance if the time has passed
 		if((turnPhase == TurnPhase.PLAY || turnPhase == TurnPhase.CUBE_CHANGE ) && turnTime == 0) 
 			canAdvance = true;
+		
+		if(turnPhase == TurnPhase.PLAY && !hasPlayingCube)
+			turnTime = 1;
 		
 		if(turnPhase == TurnPhase.PROJECTILE_WAIT && projectiles.size() == 0)
 			canAdvance = true;
@@ -220,6 +239,14 @@ public class WormsGame {
 			}
 		}
 		return false;
+	}
+	
+	public int getTeamCount() {
+		return teams.length;
+	}
+	
+	public Team getTeam(int i) {
+		return teams[i];
 	}
 
 }

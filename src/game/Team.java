@@ -19,6 +19,9 @@ public class Team {
 	 * The index of the current cube which turn it is, By default -1 so the first turn it will become index 0
 	 */
 	private int turnIndex;
+	/**
+	 * List of the shared team weapons
+	 */
 	private Weapon[] weapons;
 	
 	public Team(int size, float[] color, WormsGame wormsGame, int[] spawnsX, int[] spawnsY) {
@@ -75,12 +78,20 @@ public class Team {
 		}
 		return true;
 	}
+	
+	public Weapon getWeapon(int i) {
+		return weapons[i];
+	}
 
 	public void onTurnPhaseChange(TurnPhase turnPhase) {
 		for(int i = 0; i < cubes.length; i++) {
 			cubes[i].onTurnChange(turnPhase);
 		}
 		
+	}
+
+	public int getCubeCount() {
+		return cubes.length;
 	}
 
 }

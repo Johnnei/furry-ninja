@@ -18,8 +18,10 @@ public class Weapon {
 	 * @param owner
 	 */
 	public void fire(Cube owner) {
-		Projectile p = new Projectile(owner.getWormsGame(), owner, (int)owner.getX(), (int)owner.getY(), id); 
+		Projectile p = new Projectile(owner.getWormsGame(), owner, (int)owner.getX(), (int)owner.getY(), id);
+		p.setMotion(10, 15);
 		owner.getWormsGame().addProjectile(p);
+		addAmmo(-1);
 	}
 	
 	/**

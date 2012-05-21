@@ -28,12 +28,17 @@ public class Cube extends LivingEntity {
 	 * Aiming Angle
 	 */
 	private float angle;
+	/**
+	 * The currently selected weapon
+	 */
+	private int selectedWeapon;
 	
 	public Cube(int x, int y, int health, Team team, WormsGame wormsGame) {
 		super(wormsGame, health, x, y, 16, 16);
 		this.team = team;
 		myTurn = false;
 		angle = 0F;
+		selectedWeapon = 0;
 		generateVertexData();
 		generateColorData();
 		generateTextureData();
@@ -95,6 +100,10 @@ public class Cube extends LivingEntity {
 				if(angle < 0F)
 					angle = 0F;
 			}
+			if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
+				team.getWeapon(selectedWeapon).fire(this);
+				myTurn = false;
+			}
 		}
 		
 		//Calculate Jumping
@@ -145,6 +154,14 @@ public class Cube extends LivingEntity {
 
 	public Team getTeam() {
 		return team;
+	}
+
+	/**
+	 * Returns if the player has the current turn in the game
+	 * @return
+	 */
+	public boolean hasTurn() {
+		return myTurn;
 	}
 
 }

@@ -3,6 +3,7 @@ package game.entity;
 import java.awt.Rectangle;
 
 import engine.WMath;
+import engine.math.Point;
 import engine.render.Renderable;
 import game.WormsGame;
 import game.data.Gamemode;
@@ -110,6 +111,10 @@ public abstract class Entity extends Renderable {
 	
 	public float getY() {
 		return y;
+	}
+	
+	public Point getPoint() {
+		return new Point(x, y);
 	}
 
 }

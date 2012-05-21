@@ -7,7 +7,11 @@ import java.nio.FloatBuffer;
 
 import org.lwjgl.BufferUtils;
 
+import engine.math.Point;
+
+import game.Team;
 import game.WormsGame;
+import game.data.Gamemode;
 import game.data.TurnPhase;
 import game.data.WeaponType;
 
@@ -17,13 +21,44 @@ public class Projectile extends Entity {
 	private int maxDamage;
 	private float damageRange;
 	private Cube owner;
+	private boolean canDelete;
 	
 	public Projectile(WormsGame wormsGame, Cube owner, int x, int y, int id) {
 		super(wormsGame, x, y, WeaponType.weaponWidth[id], WeaponType.weaponHeight[id]);
 		minDamage = WeaponType.projectileMinDamage[id];
 		maxDamage = WeaponType.projectileMaxDamage[id];
 		damageRange = WeaponType.projectileDamageRange[id];
+		damageRange *= damageRange; //Squared because I used squared distances
+		
+		this.owner = owner;
+		
+		generateVertexData();
+		generateColorData();
+		
+		canDelete = false;
 	}
+	
+	/**
+	 * Set the motions on x and y axis
+	 * @param x
+	 * @param y
+	 */
+	public void setMotion(float x, float y) {
+		xMotion = x;
+		yMotion = y;
+	}
+	
+	/**
+	 * Execute Diffrent movement then the Entity
+	 */
+	public void doMovement() {
+		x += xMotion;
+		y -= yMotion;
+		
+		yMotion -= Gamemode.GRAVITY * fallDuration;
+		fallDuration++;
+	}
+	
 	
 	/**
 	 * Gets the recieved damage based on distance
@@ -37,16 +72,30 @@ public class Projectile extends Entity {
 		return (int)(maxDamage - (dmgLossPerUnit * distance)); 
 	}
 	
+	/**
+	 * Explodes the projectile
+	 */
 	private void explode() {
-		
+		canDelete = true;
+		Point explosionPoint = getPoint(); 
+		for(int i = 0; i < owner.getWormsGame().getTeamCount(); i++) {
+			Team t = owner.getWormsGame().getTeam(i);
+			for(int j = 0; j < t.getCubeCount(); j++) {
+				Cube c = t.getCube(j);
+				Point cubePoint = c.getPoint();
+				float dSquared = explosionPoint.getSquaredDistanceTo(cubePoint);
+				int dmg = getDamage(dSquared);
+				if(dmg > 0) {
+					System.out.println("Taking Damage " + dmg + " from projectile at " + dSquared + " distance^2");
+					c.takeDamgage(dmg);
+				}
+			}
+		}
 	}
 
 	@Override
 	public void onTick(TurnPhase turn) {
-		//Do movement but maintain x speed
-		float xMove = xMotion;
 		doMovement();
-		xMotion = xMove;
 		
 		//Test if it should explode
 		if(!owner.getCollisionBox().intersects(getCollisionBox())) { //Don't Selfkill
@@ -54,6 +103,11 @@ public class Projectile extends Entity {
 				explode();
 			}
 		}
+		
+		if(x < 0 || x > 1280 || y < 0 || y > 720)
+			canDelete = true;
+		
+		generateVertexData();
 	}
 
 	@Override
@@ -101,6 +155,10 @@ public class Projectile extends Entity {
 
 	@Override
 	public void generateTextureData() {
+	}
+	
+	public boolean canDelete() {
+		return canDelete;
 	}
 
 }
