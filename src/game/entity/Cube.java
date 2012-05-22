@@ -106,7 +106,7 @@ public class Cube extends LivingEntity {
 					angle = 0F;
 			}
 			if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
-				team.getWeapon(selectedWeapon).fire(this);
+				team.getWeapon(selectedWeapon).fire(this, crosshair);
 				myTurn = false;
 			}
 		}

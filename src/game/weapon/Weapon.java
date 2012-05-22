@@ -1,5 +1,6 @@
 package game.weapon;
 
+import game.entity.Crosshair;
 import game.entity.Cube;
 import game.entity.Projectile;
 
@@ -16,10 +17,14 @@ public class Weapon {
 	/**
 	 * Fires the weapon
 	 * @param owner
+	 * @param crosshair 
 	 */
-	public void fire(Cube owner) {
+	public void fire(Cube owner, Crosshair crosshair) {
 		Projectile p = new Projectile(owner.getWormsGame(), owner, (int)owner.getX(), (int)owner.getY(), id);
-		p.setMotion(10, 15);
+		float dCos = (float)Math.cos(crosshair.getAngle() * (Math.PI / 180));
+		float dSin = (float)Math.sin(crosshair.getAngle() * (Math.PI / 180));
+		
+		p.setMotion(10 * dSin, 15 * -dCos);
 		owner.getWormsGame().addProjectile(p);
 		addAmmo(-1);
 	}
