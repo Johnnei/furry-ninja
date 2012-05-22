@@ -32,6 +32,10 @@ public class Cube extends LivingEntity {
 	 * The currently selected weapon
 	 */
 	private int selectedWeapon;
+	/**
+	 * The cube aiming tool
+	 */
+	private Crosshair crosshair;
 	
 	public Cube(int x, int y, int health, Team team, WormsGame wormsGame) {
 		super(wormsGame, health, x, y, 16, 16);
@@ -39,6 +43,7 @@ public class Cube extends LivingEntity {
 		myTurn = false;
 		angle = 0F;
 		selectedWeapon = 0;
+		crosshair = new Crosshair(x, y);
 		generateVertexData();
 		generateColorData();
 		generateTextureData();
@@ -118,6 +123,8 @@ public class Cube extends LivingEntity {
 			generateVertexData();
 			setRenderUpdate(false);
 		}
+		
+		crosshair.onTick(getX(), getY());
 	}
 
 	@Override
@@ -138,7 +145,7 @@ public class Cube extends LivingEntity {
 		TextRender.getTextRender().drawCentered(x + (width / 2), y - 20, "" + getHealth(), glColorId);
 		
 		if(myTurn) {
-			//TODO Render Crosshair
+			crosshair.render();
 		}
 		
 		super.render();

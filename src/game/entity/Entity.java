@@ -54,7 +54,6 @@ public abstract class Entity extends Renderable {
 	public void doMovement() {
 		if(xMotion != 0 || yMotion != 0) {
 			if(yMotion != 0) {
-				System.out.println(yMotion);
 				//Apply Global Gravity
 				yMotion *= 1 + (fallDuration * Gamemode.GRAVITY);
 			}

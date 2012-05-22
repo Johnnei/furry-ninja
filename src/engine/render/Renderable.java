@@ -28,12 +28,8 @@ public abstract class Renderable {
 	public Renderable() {
 		glVertexId = glGenBuffers();
 		glColorId = glGenBuffers();
+		glTextureCoordId = glGenBuffers();
 		needRenderUpdate = false;
-	}
-	
-	public void overrideGlColorId(int glColorId) {
-		glDeleteBuffers(glColorId);
-		this.glColorId = glColorId;
 	}
 	
 	/**
