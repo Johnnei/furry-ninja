@@ -49,7 +49,8 @@ public class WormsGame {
 		
 		//Defining Weapons
 		WeaponType.setWeapons(1);
-		WeaponType.registerWeapon(0, "Bazooka", 16, 16, 255, 1, 50, 100);
+		//Id, Name, Width, Height, Ammo, minDamage, maxDamage, range
+		WeaponType.registerWeapon(0, "Bazooka", 16, 8, 255, 1, 50, 100);
 		
 		//Preparing Data
 		teams = new Team[2];
@@ -93,7 +94,8 @@ public class WormsGame {
 		for(int i = 0; i < projectiles.size(); i++) {
 			projectiles.get(i).onTick(turnPhase);
 			if(projectiles.get(i).canDelete()) {
-				projectiles.remove(i);
+				Projectile p = projectiles.remove(i);
+				p.onDelete();
 				--i;
 			}
 		}

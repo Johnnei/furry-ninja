@@ -8,6 +8,8 @@ import engine.render.Renderable;
 import game.WormsGame;
 import game.data.Gamemode;
 import game.data.TurnPhase;
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL15.*;
 
 public abstract class Entity extends Renderable {
 	
@@ -110,6 +112,17 @@ public abstract class Entity extends Renderable {
 	
 	public float getY() {
 		return y;
+	}
+	
+	public void onDelete() {
+		if(glColorId != GL_NONE)
+			glDeleteBuffers(glColorId);
+		if(glVertexId != GL_NONE)
+			glDeleteBuffers(glVertexId);
+		if(glTextureCoordId != GL_NONE)
+			glDeleteBuffers(glTextureCoordId);
+		if(glTextureId != GL_NONE)
+			glDeleteBuffers(glTextureId);
 	}
 	
 	public Point getPoint() {

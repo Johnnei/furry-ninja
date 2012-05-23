@@ -1,6 +1,8 @@
 package game.entity;
 
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
+import static org.lwjgl.opengl.GL13.glActiveTexture;
 import static org.lwjgl.opengl.GL15.*;
 
 import java.nio.FloatBuffer;
@@ -8,6 +10,7 @@ import java.nio.FloatBuffer;
 import org.lwjgl.BufferUtils;
 
 import engine.math.Point;
+import engine.render.TextureLoader;
 
 import game.Team;
 import game.WormsGame;
@@ -17,6 +20,7 @@ import game.data.WeaponType;
 
 public class Projectile extends Entity {
 	
+	private int weaponId;
 	private int minDamage;
 	private int maxDamage;
 	private float damageRange;
@@ -25,6 +29,7 @@ public class Projectile extends Entity {
 	
 	public Projectile(WormsGame wormsGame, Cube owner, int x, int y, int id) {
 		super(wormsGame, x, y, WeaponType.weaponWidth[id], WeaponType.weaponHeight[id]);
+		weaponId = id;
 		minDamage = WeaponType.projectileMinDamage[id];
 		maxDamage = WeaponType.projectileMaxDamage[id];
 		damageRange = WeaponType.projectileDamageRange[id];
@@ -33,7 +38,7 @@ public class Projectile extends Entity {
 		this.owner = owner;
 		
 		generateVertexData();
-		generateColorData();
+		generateTextureData();
 		
 		canDelete = false;
 	}
@@ -139,22 +144,35 @@ public class Projectile extends Entity {
 
 	@Override
 	public void render() {
-		glEnableClientState(GL_COLOR_ARRAY);
+		glEnable(GL_TEXTURE_2D);
 		glEnableClientState(GL_VERTEX_ARRAY);
+		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+		
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, glTextureId);
 		
 		glBindBuffer(GL_ARRAY_BUFFER, glVertexId);
 		glVertexPointer(3, GL_FLOAT, 0, 0L);
-		glBindBuffer(GL_ARRAY_BUFFER, glColorId);
-		glColorPointer(3, GL_FLOAT, 0, 0L);
+		glBindBuffer(GL_ARRAY_BUFFER, glTextureCoordId);
+		glTexCoordPointer(3, GL_FLOAT, 0, 0L);
 		
 		glDrawArrays(GL_QUADS, 0, 4);
 		
+		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 		glDisableClientState(GL_VERTEX_ARRAY);
-		glDisableClientState(GL_COLOR_ARRAY);
+		glDisable(GL_TEXTURE_2D);
 	}
 
 	@Override
 	public void generateTextureData() {
+		glTextureId = TextureLoader.loadTexture("/res/weapon/" + WeaponType.weaponName[weaponId] + "_shell.png");
+		FloatBuffer textureBuffer = BufferUtils.createFloatBuffer(8);
+		textureBuffer.put(new float[] { 0, 1, 1, 1, 1, 0, 0, 0 });
+		textureBuffer.flip();
+
+		glBindBuffer(GL_ARRAY_BUFFER, glTextureCoordId);
+		glBufferData(GL_ARRAY_BUFFER, textureBuffer, GL_STATIC_DRAW);
+		glBindBuffer(GL_ARRAY_BUFFER, GL_NONE);
 	}
 	
 	public boolean canDelete() {
