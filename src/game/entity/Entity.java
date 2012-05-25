@@ -8,8 +8,6 @@ import engine.render.Renderable;
 import game.WormsGame;
 import game.data.Gamemode;
 import game.data.TurnPhase;
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL15.*;
 
 public abstract class Entity extends Renderable {
 	
@@ -23,10 +21,19 @@ public abstract class Entity extends Renderable {
 	 * If the Entity is jumping
 	 */
 	private boolean isJumping;
+	/**
+	 * If the entity can be deleted
+	 */
+	private boolean canDelete;
 	
 	//Game Reference
 	protected WormsGame wormsGame;
 	
+	public Entity(WormsGame wormsGame, float x, float y, int width, int height) {
+		this(wormsGame, (int)x, (int)y, width, height);
+		this.x = x;
+		this.y = y;
+	}
 	
 	public Entity(WormsGame wormsGame, int x, int y, int width, int height) {
 		super();
@@ -37,6 +44,7 @@ public abstract class Entity extends Renderable {
 		this.wormsGame = wormsGame;
 		setFalling(false);
 		isJumping = false;
+		canDelete = false;
 	}
 	
 	public void setFalling(boolean fallState) {
@@ -102,6 +110,10 @@ public abstract class Entity extends Renderable {
 			fallDuration = 1F;
 	}
 	
+	public void setCanDelete(boolean b) {
+		canDelete = b;
+	}
+	
 	public boolean isJumping() {
 		return isJumping;
 	}
@@ -114,19 +126,16 @@ public abstract class Entity extends Renderable {
 		return y;
 	}
 	
-	public void onDelete() {
-		if(glColorId != GL_NONE)
-			glDeleteBuffers(glColorId);
-		if(glVertexId != GL_NONE)
-			glDeleteBuffers(glVertexId);
-		if(glTextureCoordId != GL_NONE)
-			glDeleteBuffers(glTextureCoordId);
-		if(glTextureId != GL_NONE)
-			glDeleteBuffers(glTextureId);
-	}
-	
 	public Point getPoint() {
 		return new Point(x, y);
+	}
+	
+	public WormsGame getWormsGame() {
+		return wormsGame;
+	}
+	
+	public boolean canDelete() {
+		return canDelete;
 	}
 
 }

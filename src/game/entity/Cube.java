@@ -43,7 +43,7 @@ public class Cube extends LivingEntity {
 		myTurn = false;
 		angle = 0F;
 		selectedWeapon = 0;
-		crosshair = new Crosshair(x, y);
+		crosshair = new Crosshair(this, x, y);
 		generateVertexData();
 		generateColorData();
 		generateTextureData();
@@ -153,10 +153,6 @@ public class Cube extends LivingEntity {
 	
 	public void setMyTurn(boolean b) {
 		myTurn = b;
-	}
-	
-	public WormsGame getWormsGame() {
-		return wormsGame;
 	}
 
 	public Team getTeam() {

@@ -1,13 +1,39 @@
 package game.data;
 
 public class WeaponType {
+
+	/**
+	 * Used for weapons with infinitive amounts of ammo
+	 */
+	public static final int INFINITIVE = 255;
 	
+	/**
+	 * The name of the weapon
+	 */
 	public static String[] weaponName;
+	/**
+	 * The width of the weapon texture
+	 */
 	public static int[] weaponWidth;
+	/**
+	 * The height of the weapon texture
+	 */
 	public static int[] weaponHeight;
-	public static int[] weaponStartingAmmo;
-	public static int[] projectileMinDamage;
-	public static int[] projectileMaxDamage;
+	/**
+	 * The base ammo of a weapon
+	 */
+	public static byte[] weaponStartingAmmo;
+	/**
+	 * The minimum amount of damage of a weapon
+	 */
+	public static byte[] projectileMinDamage;
+	/**
+	 * the maximum amount of damage for a weapon
+	 */
+	public static byte[] projectileMaxDamage;
+	/**
+	 * The range in which the weapon will apply damage
+	 */
 	public static float[] projectileDamageRange;
 	
 	
@@ -15,10 +41,10 @@ public class WeaponType {
 		weaponName = new String[size];
 		weaponWidth = new int[size];
 		weaponHeight = new int[size];
-		weaponStartingAmmo = new int[size];
-		weaponStartingAmmo = new int[size];
-		projectileMinDamage = new int[size];
-		projectileMaxDamage = new int[size];
+		weaponStartingAmmo = new byte[size];
+		weaponStartingAmmo = new byte[size];
+		projectileMinDamage = new byte[size];
+		projectileMaxDamage = new byte[size];
 		projectileDamageRange = new float[size];
 	}
 	
@@ -26,9 +52,9 @@ public class WeaponType {
 		weaponName[id] = name;
 		weaponWidth[id] = width;
 		weaponHeight[id] = height;
-		weaponStartingAmmo[id] = startingAmmo;
-		projectileMinDamage[id] = minDamage;
-		projectileMaxDamage[id] = maxDamage;
+		weaponStartingAmmo[id] = (byte)startingAmmo;
+		projectileMinDamage[id] = (byte)minDamage;
+		projectileMaxDamage[id] = (byte)maxDamage;
 		projectileDamageRange[id] = maxDamage;
 	}
 

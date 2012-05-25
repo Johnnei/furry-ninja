@@ -1,18 +1,15 @@
 package game.entity;
 
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
-import static org.lwjgl.opengl.GL13.glActiveTexture;
+import static org.lwjgl.opengl.GL13.*;
 import static org.lwjgl.opengl.GL15.*;
 
 import java.nio.FloatBuffer;
 
 import org.lwjgl.BufferUtils;
 
-import engine.math.Point;
 import engine.render.TextureLoader;
 
-import game.Team;
 import game.WormsGame;
 import game.data.Gamemode;
 import game.data.TurnPhase;
@@ -33,7 +30,6 @@ public class Projectile extends Entity {
 		minDamage = WeaponType.projectileMinDamage[id];
 		maxDamage = WeaponType.projectileMaxDamage[id];
 		damageRange = WeaponType.projectileDamageRange[id];
-		damageRange *= damageRange; //Squared because I used squared distances
 		
 		this.owner = owner;
 		
@@ -64,38 +60,13 @@ public class Projectile extends Entity {
 		fallDuration++;
 	}
 	
-	
-	/**
-	 * Gets the recieved damage based on distance
-	 * @param distance
-	 * @return
-	 */
-	private int getDamage(float distance) {
-		if(distance > damageRange)
-			return 0;
-		float dmgLossPerUnit = (maxDamage - minDamage) / damageRange;
-		return (int)(maxDamage - (dmgLossPerUnit * distance)); 
-	}
-	
 	/**
 	 * Explodes the projectile
 	 */
-	private void explode() {
+	public void explode() {
 		canDelete = true;
-		Point explosionPoint = getPoint(); 
-		for(int i = 0; i < owner.getWormsGame().getTeamCount(); i++) {
-			Team t = owner.getWormsGame().getTeam(i);
-			for(int j = 0; j < t.getCubeCount(); j++) {
-				Cube c = t.getCube(j);
-				Point cubePoint = c.getPoint();
-				float dSquared = explosionPoint.getSquaredDistanceTo(cubePoint);
-				int dmg = getDamage(dSquared);
-				if(dmg > 0) {
-					System.out.println("Taking Damage " + dmg + " from projectile at " + dSquared + " distance^2");
-					c.takeDamgage(dmg);
-				}
-			}
-		}
+		Explosion e = new Explosion(owner, getPoint(), damageRange, minDamage, maxDamage);
+		e.explode();
 	}
 
 	@Override
@@ -121,14 +92,6 @@ public class Projectile extends Entity {
 
 	@Override
 	public void generateColorData() {
-		FloatBuffer color = BufferUtils.createFloatBuffer(3 * 4);
-		float[] colors = owner.getTeam().getColor();
-		color.put(new float[] { colors[0], colors[1], colors[2], colors[0], colors[1], colors[2], colors[0], colors[1], colors[2], colors[0], colors[1], colors[2] });
-		color.flip();
-		
-		glBindBuffer(GL_ARRAY_BUFFER, glColorId);
-		glBufferData(GL_ARRAY_BUFFER, color, GL_STATIC_DRAW);
-		glBindBuffer(GL_ARRAY_BUFFER, GL_NONE);
 	}
 
 	@Override

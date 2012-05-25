@@ -1,5 +1,6 @@
 package engine.render;
 
+import static org.lwjgl.opengl.GL11.GL_NONE;
 import static org.lwjgl.opengl.GL15.*;
 
 public abstract class Renderable {
@@ -30,6 +31,20 @@ public abstract class Renderable {
 		glColorId = glGenBuffers();
 		glTextureCoordId = glGenBuffers();
 		needRenderUpdate = false;
+	}
+	
+	/**
+	 * Deletes the buffered data
+	 */
+	public void onDelete() {
+		if(glColorId != GL_NONE)
+			glDeleteBuffers(glColorId);
+		if(glVertexId != GL_NONE)
+			glDeleteBuffers(glVertexId);
+		if(glTextureCoordId != GL_NONE)
+			glDeleteBuffers(glTextureCoordId);
+		if(glTextureId != GL_NONE)
+			glDeleteBuffers(glTextureId);
 	}
 	
 	/**
@@ -66,6 +81,10 @@ public abstract class Renderable {
 	 */
 	public boolean needRenderUpdate() {
 		return needRenderUpdate;
+	}
+	
+	public int getGlColorId() {
+		return glColorId;
 	}
 
 }

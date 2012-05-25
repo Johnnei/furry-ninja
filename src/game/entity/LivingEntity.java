@@ -1,6 +1,5 @@
 package game.entity;
 
-import engine.render.TextRender;
 import game.WormsGame;
 import game.data.Gamemode;
 import game.data.TurnPhase;
@@ -21,17 +20,12 @@ public abstract class LivingEntity extends Entity {
 	 * Determines if the damage shoud be shown
 	 */
 	private boolean showDamage;
-	/**
-	 * The time that the damage has been shown
-	 */
-	private int showDamageTime;
 	
 	public LivingEntity(WormsGame wormsGame, int health, int x, int y, int width, int height) {
 		super(wormsGame, x, y, width, height);
 		this.health = health;
 		showDamage = false;
 		fullDamage = 0;
-		showDamageTime = 0;
 	}
 	
 	public void onTick(TurnPhase turn) {
@@ -43,6 +37,7 @@ public abstract class LivingEntity extends Entity {
 			if(takeDamage > 0) {
 				if(health <= 0) {
 					takeDamage = 0;
+					onDeath();
 				} else {
 					--health;
 					--takeDamage;
@@ -82,9 +77,18 @@ public abstract class LivingEntity extends Entity {
 	public void onTurnChange(TurnPhase turn) {
 		if(turn == DAMAGE) {
 			if(fullDamage > 0) {
+				getWormsGame().addText(x, y - 20, "" + fullDamage, glColorId);
 				showDamage = true;
 			}
 		}
+	}
+	
+	/**
+	 * Process the death of this cube
+	 */
+	public void onDeath() {
+		Explosion e = new Explosion(this, getPoint(), 50, 1, 25);
+		e.explode();
 	}
 	
 	/**
@@ -92,19 +96,16 @@ public abstract class LivingEntity extends Entity {
 	 * @return
 	 */
 	public boolean canAdvance() {
-		return !showDamage;
+		return takeDamage == 0;
 	}
 	
 	public void render() {
+		if(isDead())
+			return;
 		if(showDamage) {
-			if(y - 20 - showDamageTime >= 0)
-				TextRender.getTextRender().drawCentered(x + (width / 2), y - 20 - showDamageTime, "" + fullDamage, glColorId);
 			if(takeDamage == 0) {
 				fullDamage = 0;
-				showDamageTime = 0;
 				showDamage = false;
-			} else {
-				showDamageTime++;
 			}
 		}
 	}

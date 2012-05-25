@@ -17,10 +17,11 @@ public class Crosshair extends Renderable {
 	private float x, y;
 	private int angle;
 	
-	public Crosshair(float x, float y) {
+	public Crosshair(Cube owner, float x, float y) {
 		this.x = x;
 		this.y = y;
 		angle = 0;
+		glColorId = owner.getGlColorId();
 		generateTextureData();
 		onTick(x, y);
 	}
@@ -76,16 +77,20 @@ public class Crosshair extends Renderable {
 		glBindTexture(GL_TEXTURE_2D, glTextureId);
 		
 		glEnableClientState(GL_VERTEX_ARRAY);
+		glEnableClientState(GL_COLOR_ARRAY);
 		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 		
 		glBindBuffer(GL_ARRAY_BUFFER, glVertexId);
 		glVertexPointer(3, GL_FLOAT, 0, 0L);
 		glBindBuffer(GL_ARRAY_BUFFER, glTextureCoordId);
 		glTexCoordPointer(2, GL_FLOAT, 0, 0L);
+		glBindBuffer(GL_ARRAY_BUFFER, glColorId);
+		glColorPointer(3, GL_FLOAT, 0, 0L);
 		
 		glDrawArrays(GL_QUADS, 0, 4);
 		
 		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+		glDisableClientState(GL_COLOR_ARRAY);
 		glDisableClientState(GL_VERTEX_ARRAY);
 		glDisable(GL_TEXTURE_2D);
 	}

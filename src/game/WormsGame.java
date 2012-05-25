@@ -14,6 +14,7 @@ import game.data.TeamSpawn;
 import game.data.TurnPhase;
 import game.data.WeaponType;
 import game.entity.Entity;
+import game.entity.FloatingText;
 import game.entity.Projectile;
 
 public class WormsGame {
@@ -42,15 +43,20 @@ public class WormsGame {
 	 * All projectiles floating through the air
 	 */
 	private ArrayList<Projectile> projectiles;
+	/**
+	 * All generic entities
+	 */
+	private ArrayList<Entity> entities;
 	
 	public WormsGame() {
 		//Initialising
 		projectiles = new ArrayList<Projectile>();
+		entities = new ArrayList<Entity>();
 		
 		//Defining Weapons
-		WeaponType.setWeapons(1);
+		WeaponType.setWeapons(2);
 		//Id, Name, Width, Height, Ammo, minDamage, maxDamage, range
-		WeaponType.registerWeapon(0, "Bazooka", 16, 8, 255, 1, 50, 100);
+		WeaponType.registerWeapon(0, "Bazooka", 16, 8, WeaponType.INFINITIVE, 1, 50, 100);
 		
 		//Preparing Data
 		teams = new Team[2];
@@ -94,8 +100,18 @@ public class WormsGame {
 		for(int i = 0; i < projectiles.size(); i++) {
 			projectiles.get(i).onTick(turnPhase);
 			if(projectiles.get(i).canDelete()) {
-				Projectile p = projectiles.remove(i);
-				p.onDelete();
+				/*Projectile p = */projectiles.remove(i);
+				/* Temporary disabled because it is causing a bug
+				 * p.onDelete();
+				 */
+				--i;
+			}
+		}
+		
+		for(int i = 0; i < entities.size(); i++) {
+			entities.get(i).onTick(turnPhase);
+			if(entities.get(i).canDelete()) {
+				entities.remove(i);
 				--i;
 			}
 		}
@@ -176,6 +192,11 @@ public class WormsGame {
 		//Render World
 		world.render();
 		
+		//Render Entities
+		for(int i = 0; i < entities.size(); i++) {
+			entities.get(i).render();
+		}
+		
 		//Render Cubes
 		for(int i = 0; i < teams.length; i++) {
 			teams[i].render();
@@ -251,6 +272,10 @@ public class WormsGame {
 	
 	public Team getTeam(int i) {
 		return teams[i];
+	}
+
+	public void addText(float x, float y, String text, int glColorId) {
+		entities.add(new FloatingText(text, glColorId, this, x, y));
 	}
 
 }
