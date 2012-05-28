@@ -101,7 +101,7 @@ public class Projectile extends Entity {
 		vertex.flip();
 		
 		glBindBuffer(GL_ARRAY_BUFFER, glVertexId);
-		glBufferData(GL_ARRAY_BUFFER, vertex, GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, vertex, GL_DYNAMIC_DRAW);
 		glBindBuffer(GL_ARRAY_BUFFER, GL_NONE);
 	}
 
