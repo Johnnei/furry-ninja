@@ -58,9 +58,14 @@ public class Team {
 	}
 	
 	public void onAdvanceTurn() {
-		if(++turnIndex == cubes.length)
-			turnIndex = 0;
-		cubes[turnIndex].setMyTurn(true);
+		while(true) {
+			if(++turnIndex == cubes.length)
+				turnIndex = 0;
+			if(!cubes[turnIndex].isDead()) {
+				cubes[turnIndex].setMyTurn(true);
+				break;
+			}
+		}
 	}
 	
 	public Cube getCube(int index) {

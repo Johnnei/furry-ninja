@@ -129,6 +129,9 @@ public class Cube extends LivingEntity {
 
 	@Override
 	public void render() {
+		if(isDead())
+			return;
+		
 		glEnableClientState(GL_COLOR_ARRAY);
 		glEnableClientState(GL_VERTEX_ARRAY);
 		

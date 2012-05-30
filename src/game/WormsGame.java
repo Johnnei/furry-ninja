@@ -257,9 +257,11 @@ public class WormsGame {
 		
 		for(int i = 0; i < teams.length; i++) {
 			for(int j = 0; j < teams[i].getSize(); j++) {
-				if(!entity.equals(teams[i].getCube(j))) {
-					if(colBox.intersects(teams[i].getCube(j).getCollisionBox()))
-						return true;
+				if(!teams[i].getCube(j).isDead()) {
+					if(!entity.equals(teams[i].getCube(j))) {
+						if(colBox.intersects(teams[i].getCube(j).getCollisionBox()))
+							return true;
+					}
 				}
 			}
 		}

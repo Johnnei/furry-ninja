@@ -39,6 +39,8 @@ public class Explosion {
 			Team t = owner.getWormsGame().getTeam(i);
 			for(int j = 0; j < t.getCubeCount(); j++) {
 				Cube c = t.getCube(j);
+				if(c.isDead())
+					continue;
 				Point cubePoint = c.getPoint();
 				float dSquared = explosionPoint.getSquaredDistanceTo(cubePoint);
 				int dmg = getDamage(dSquared);
