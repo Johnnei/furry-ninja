@@ -69,9 +69,25 @@ public abstract class Entity extends Renderable {
 			}
 			
 			setRenderUpdate(true);
-			x += xMotion;
+			while(xMotion != 0) {
+				if(xMotion > 0) {
+					if(wormsGame.collides(this, 1, 0)) {
+						xMotion = 0;
+					} else {
+						xMotion--;
+						x++;
+					}
+				} else {
+					if(wormsGame.collides(this, -1, 0)) {
+						xMotion = 0;
+					} else {
+						xMotion++;
+						x--;
+					}
+				}
+			}
 			y -= yMotion;
-			while(wormsGame.collides(this, 0, 0)) {
+			while(wormsGame.collides(this)) {
 				--y;
 				if(yMotion < 0)
 					++yMotion;

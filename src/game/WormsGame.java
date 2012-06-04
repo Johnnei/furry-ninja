@@ -98,14 +98,12 @@ public class WormsGame {
 		
 		
 		for(int i = 0; i < projectiles.size(); i++) {
-			projectiles.get(i).onTick(turnPhase);
 			if(projectiles.get(i).canDelete()) {
-				/*Projectile p = */projectiles.remove(i);
-				/* Temporary disabled because it is causing a bug
-				 * p.onDelete();
-				 */
+				Projectile p = projectiles.remove(i);
+				p.onDelete(); 
 				--i;
-			}
+			} else
+				projectiles.get(i).onTick(turnPhase);
 		}
 		
 		for(int i = 0; i < entities.size(); i++) {
@@ -253,6 +251,9 @@ public class WormsGame {
 		colBox.y += yOffset;
 		
 		if(colBox.intersects(world.getCollisionBox()))
+			return true;
+		
+		if(colBox.x < 0 || colBox.x + colBox.width > 1280 || colBox.y < 0)
 			return true;
 		
 		for(int i = 0; i < teams.length; i++) {

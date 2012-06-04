@@ -36,11 +36,16 @@ public class Cube extends LivingEntity {
 	 * The cube aiming tool
 	 */
 	private Crosshair crosshair;
+	/**
+	 * if the cube "face" is looking to the left
+	 */
+	private boolean facingLeft;
 	
 	public Cube(int x, int y, int health, Team team, WormsGame wormsGame) {
 		super(wormsGame, health, x, y, 16, 16);
 		this.team = team;
 		myTurn = false;
+		facingLeft = (x > 640);
 		angle = 0F;
 		selectedWeapon = 0;
 		crosshair = new Crosshair(this, x, y);
@@ -89,10 +94,14 @@ public class Cube extends LivingEntity {
 		}
 		//Add Keyboard input
 		if(myTurn && turn == TurnPhase.PLAY) {
-			if(Keyboard.isKeyDown(Keyboard.KEY_LEFT))
+			if(Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
 				xMotion -= 5;
-			if(Keyboard.isKeyDown(Keyboard.KEY_RIGHT))
+				facingLeft = true;
+			}
+			if(Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
 				xMotion += 5;
+				facingLeft = false;
+			}
 			if((Keyboard.isKeyDown(Keyboard.KEY_RETURN) && isOnGround()))
 				setJumping(true);
 			if(Keyboard.isKeyDown(Keyboard.KEY_UP)) {
@@ -160,6 +169,10 @@ public class Cube extends LivingEntity {
 
 	public Team getTeam() {
 		return team;
+	}
+	
+	public boolean isFacingLeft() {
+		return facingLeft;
 	}
 
 	/**
