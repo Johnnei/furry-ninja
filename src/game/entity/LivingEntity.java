@@ -85,6 +85,7 @@ public abstract class LivingEntity extends Entity {
 	 * Process the death of this cube
 	 */
 	public void onDeath() {
+		takeDamage = 0;
 		Explosion e = new Explosion(this, getPoint(), 50, 1, 25);
 		e.explode();
 	}

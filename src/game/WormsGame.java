@@ -99,8 +99,8 @@ public class WormsGame {
 		
 		for(int i = 0; i < projectiles.size(); i++) {
 			if(projectiles.get(i).canDelete()) {
-				Projectile p = projectiles.remove(i);
-				p.onDelete(); 
+				/*Projectile p = */projectiles.remove(i);
+				//p.onDelete(); 
 				--i;
 			} else
 				projectiles.get(i).onTick(turnPhase);
