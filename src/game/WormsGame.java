@@ -255,10 +255,8 @@ public class WormsGame {
 			return true;
 		
 		//World
-		if(entity.getY() + entity.getHeight() >= 360) {
-			if(world.collides(colBox)) {
-				return true;
-			}
+		if(world.collides(colBox)) {
+			return true;
 		}
 		
 		for(int i = 0; i < teams.length; i++) {
