@@ -56,7 +56,7 @@ public class WormsGame {
 		//Defining Weapons
 		WeaponType.setWeapons(2);
 		//Id, Name, Width, Height, Ammo, minDamage, maxDamage, range
-		WeaponType.registerWeapon(0, "Bazooka", 16, 8, WeaponType.INFINITIVE, 1, 50, 100);
+		WeaponType.registerWeapon(0, "Bazooka", 16, 8, WeaponType.INFINITIVE, 1, 50, 100, 50);
 		
 		//Preparing Data
 		teams = new Team[2];
@@ -78,11 +78,13 @@ public class WormsGame {
 	 * Executes all onTick events
 	 */
 	public void onTick() {
+		System.out.println("WormsGame.onTick();");
 		boolean canAdvance = false;
 		boolean noAdvance = false;
 		boolean hasPlayingCube = false;
 		for(int i = 0; i < teams.length; i++) {
 			teams[i].onTick(turnPhase);
+			System.out.println("Cube.onTick();");
 			if(turnPhase == TurnPhase.DAMAGE) {
 				if(!teams[i].canAdvance()) {
 					noAdvance = true;
@@ -275,6 +277,10 @@ public class WormsGame {
 	
 	public Team getTeam(int i) {
 		return teams[i];
+	}
+	
+	public World getWorld() {
+		return world;
 	}
 
 	public void addText(float x, float y, String text, int glColorId) {

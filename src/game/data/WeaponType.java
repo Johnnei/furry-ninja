@@ -35,6 +35,10 @@ public class WeaponType {
 	 * The range in which the weapon will apply damage
 	 */
 	public static float[] projectileDamageRange;
+	/**
+	 * The radius in which it will destroy the world
+	 */
+	public static float[] projectileLandscapeCut;
 	
 	
 	public static void setWeapons(int size) {
@@ -46,9 +50,10 @@ public class WeaponType {
 		projectileMinDamage = new byte[size];
 		projectileMaxDamage = new byte[size];
 		projectileDamageRange = new float[size];
+		projectileLandscapeCut = new float[size];
 	}
 	
-	public static void registerWeapon(int id, String name, int width, int height, int startingAmmo, int minDamage, int maxDamage, float range) {
+	public static void registerWeapon(int id, String name, int width, int height, int startingAmmo, int minDamage, int maxDamage, float range, float landscapeCut) {
 		weaponName[id] = name;
 		weaponWidth[id] = width;
 		weaponHeight[id] = height;
@@ -56,6 +61,7 @@ public class WeaponType {
 		projectileMinDamage[id] = (byte)minDamage;
 		projectileMaxDamage[id] = (byte)maxDamage;
 		projectileDamageRange[id] = maxDamage;
+		projectileLandscapeCut[id] = landscapeCut;
 	}
 
 }

@@ -86,7 +86,7 @@ public abstract class LivingEntity extends Entity {
 	 */
 	public void onDeath() {
 		takeDamage = 0;
-		Explosion e = new Explosion(this, getPoint(), 50, 1, 25);
+		Explosion e = new Explosion(this, getPoint(), 50, 1, 25, 1);
 		e.explode();
 	}
 

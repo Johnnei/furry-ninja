@@ -1,53 +1,45 @@
 package game;
 
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL15.*;
+import static org.lwjgl.opengl.GL11.GL_COLOR_ARRAY;
+import static org.lwjgl.opengl.GL11.GL_VERTEX_ARRAY;
+import static org.lwjgl.opengl.GL11.glDisableClientState;
+import static org.lwjgl.opengl.GL11.glEnableClientState;
 
 import java.awt.Rectangle;
-import java.nio.FloatBuffer;
 
-import org.lwjgl.BufferUtils;
+import engine.math.Point;
 
 public class World {
 	
-	private int glVertexId;
-	private int glColorId;
+	public static final int WIDTH = 1280;
+	public static final int HEIGHT = 360;
+	public static final int CHUNK_WIDTH = 8;
+	public static final int CHUNK_HEIGHT = 8;
+	public static final int chunksPerRow = (WIDTH / CHUNK_WIDTH);
+	
+	private WorldChunk[] chunks;
 	
 	/**
 	 * Generates a new World and saves the data into the buffers
 	 */
 	public World() {
-		glVertexId = glGenBuffers();
-		glColorId = glGenBuffers();
-		
-		FloatBuffer vertexBuffer = BufferUtils.createFloatBuffer(3 * 4);
-		vertexBuffer.put(new float[] {0, 720, 0, 1280, 720, 0, 1280, 360, 0, 0, 360, 0});
-		vertexBuffer.flip();
-		
-		glBindBuffer(GL_ARRAY_BUFFER, glVertexId);
-		glBufferData(GL_ARRAY_BUFFER, vertexBuffer, GL_STATIC_DRAW);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		
-		FloatBuffer colorBuffer = BufferUtils.createFloatBuffer(3 * 4);
-		colorBuffer.put(new float[] {0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0});
-		colorBuffer.flip();
-		
-		glBindBuffer(GL_ARRAY_BUFFER, glColorId);
-		glBufferData(GL_ARRAY_BUFFER, colorBuffer, GL_STATIC_DRAW);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		
+		int totalChunks = (HEIGHT / CHUNK_HEIGHT) * chunksPerRow;
+		chunks = new WorldChunk[totalChunks];
+		for(int y = 0; y < (HEIGHT / CHUNK_HEIGHT); y++) {
+			for(int x = 0; x < (WIDTH / CHUNK_WIDTH); x++) {
+				int index = (y * chunksPerRow) + x;
+				chunks[index] = new WorldChunk(x * CHUNK_WIDTH, 360 + y * CHUNK_HEIGHT, CHUNK_WIDTH, CHUNK_HEIGHT);
+			}
+		}
 	}
 	
 	public void render() {
 		glEnableClientState(GL_COLOR_ARRAY);
 		glEnableClientState(GL_VERTEX_ARRAY);
 		
-		glBindBuffer(GL_ARRAY_BUFFER, glVertexId);
-		glVertexPointer(3, GL_FLOAT, 0, 0L);
-		glBindBuffer(GL_ARRAY_BUFFER, glColorId);
-		glColorPointer(3, GL_FLOAT, 0, 0L);
-		
-		glDrawArrays(GL_QUADS, 0, 4);
+		for(WorldChunk c : chunks) {
+			c.render();
+		}
 		
 		glDisableClientState(GL_VERTEX_ARRAY);
 		glDisableClientState(GL_COLOR_ARRAY);
@@ -55,6 +47,20 @@ public class World {
 	
 	public Rectangle getCollisionBox() {
 		return new Rectangle(0, 360, 1280, 360);
+	}
+
+	/**
+	 * Destroys a worldChunk at x, y
+	 * @param x
+	 * @param y
+	 */
+	public void destroy(int x, int y) {
+		chunks[(y * chunksPerRow) + x].destroyed();
+		System.out.println("Destroyed WorldChunk(" + x + ", " + y + ")");
+	}
+
+	public Point getPoint(int x, int y) {
+		return chunks[(y * chunksPerRow) + x].getPoint(); 
 	}
 
 }

@@ -171,6 +171,10 @@ public class Cube extends LivingEntity {
 		return team;
 	}
 	
+	public int getSelectedWeapon() {
+		return selectedWeapon;
+	}
+	
 	public boolean isFacingLeft() {
 		return facingLeft;
 	}

@@ -65,7 +65,7 @@ public class Projectile extends Entity {
 	 */
 	public void explode() {
 		canDelete = true;
-		Explosion e = new Explosion(owner, getPoint(), damageRange, minDamage, maxDamage);
+		Explosion e = new Explosion(owner, getPoint(), damageRange, minDamage, maxDamage, owner.getSelectedWeapon());
 		e.explode();
 	}
 

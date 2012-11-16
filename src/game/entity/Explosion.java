@@ -2,6 +2,8 @@ package game.entity;
 
 import engine.math.Point;
 import game.Team;
+import game.World;
+import game.data.WeaponType;
 
 public class Explosion {
 	
@@ -9,6 +11,7 @@ public class Explosion {
 	private Entity owner;
 	
 	private float damageRange;
+	private float landscapeRange; 
 	private int minDamage;
 	private int maxDamage;
 	
@@ -23,9 +26,10 @@ public class Explosion {
 	 * @param xDmg
 	 * The maximum amount of damage at point p
 	 */
-	public Explosion(Entity e, Point p, float range, int mDmg, int xDmg) {
+	public Explosion(Entity e, Point p, float range, int mDmg, int xDmg, int weaponId) {
 		owner = e;
 		damageRange = range * range;
+		landscapeRange = WeaponType.projectileLandscapeCut[weaponId];
 		maxDamage = xDmg;
 		minDamage = mDmg;
 		explosionPoint = p;
@@ -48,6 +52,14 @@ public class Explosion {
 					System.out.println("Taking Damage " + dmg + " from projectile at " + dSquared + " distance^2");
 					c.takeDamgage(dmg);
 				}
+			}
+		}
+		for(int chunkY = 0; chunkY < (World.HEIGHT / World.CHUNK_HEIGHT); chunkY++) {
+			for(int chunkX = 0; chunkX < (World.WIDTH / World.CHUNK_WIDTH); chunkX++) {
+				Point chunk = owner.getWormsGame().getWorld().getPoint(chunkX, chunkY);
+				float dSquared = explosionPoint.getSquaredDistanceTo(chunk);
+				if(dSquared < landscapeRange * landscapeRange)
+					owner.getWormsGame().getWorld().destroy(chunkX, chunkY);
 			}
 		}
 	}
