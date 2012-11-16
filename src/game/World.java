@@ -45,8 +45,8 @@ public class World {
 		glDisableClientState(GL_COLOR_ARRAY);
 	}
 	
-	public Rectangle getCollisionBox() {
-		return new Rectangle(0, 360, 1280, 360);
+	public Rectangle getCollisionBox(int x, int y) {
+		return chunks[(y * chunksPerRow) + x].getBoundingBox();
 	}
 
 	/**
@@ -61,6 +61,20 @@ public class World {
 
 	public Point getPoint(int x, int y) {
 		return chunks[(y * chunksPerRow) + x].getPoint(); 
+	}
+
+	public boolean isDestroyed(int x, int y) {
+		return chunks[(y * chunksPerRow) + x].isDestroyed();
+	}
+
+	public boolean collides(Rectangle colBox) {
+		for(WorldChunk c : chunks) {
+			if(c.isDestroyed())
+				continue;
+			if(c.getBoundingBox().intersects(colBox))
+				return true;
+		}
+		return false;
 	}
 
 }

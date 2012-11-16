@@ -109,5 +109,9 @@ public abstract class LivingEntity extends Entity {
 			}
 		}
 	}
+	
+	public boolean hasDamage() {
+		return takeDamage > 0;
+	}
 
 }

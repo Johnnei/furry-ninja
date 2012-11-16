@@ -154,4 +154,12 @@ public abstract class Entity extends Renderable {
 		return canDelete;
 	}
 
+	public float getHeight() {
+		return height;
+	}
+
+	public float getWidth() {
+		return width;
+	}
+
 }

@@ -78,13 +78,11 @@ public class WormsGame {
 	 * Executes all onTick events
 	 */
 	public void onTick() {
-		System.out.println("WormsGame.onTick();");
 		boolean canAdvance = false;
 		boolean noAdvance = false;
 		boolean hasPlayingCube = false;
 		for(int i = 0; i < teams.length; i++) {
 			teams[i].onTick(turnPhase);
-			System.out.println("Cube.onTick();");
 			if(turnPhase == TurnPhase.DAMAGE) {
 				if(!teams[i].canAdvance()) {
 					noAdvance = true;
@@ -252,11 +250,16 @@ public class WormsGame {
 		colBox.x += xOffset;
 		colBox.y += yOffset;
 		
-		if(colBox.intersects(world.getCollisionBox()))
-			return true;
-		
+		//Inside the game field
 		if(colBox.x < 0 || colBox.x + colBox.width > 1280 || colBox.y < 0)
 			return true;
+		
+		//World
+		if(entity.getY() + entity.getHeight() >= 360) {
+			if(world.collides(colBox)) {
+				return true;
+			}
+		}
 		
 		for(int i = 0; i < teams.length; i++) {
 			for(int j = 0; j < teams[i].getSize(); j++) {
