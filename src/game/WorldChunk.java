@@ -1,70 +1,72 @@
 package game;
 
-import static org.lwjgl.opengl.GL11.GL_FLOAT;
-import static org.lwjgl.opengl.GL11.GL_QUADS;
-import static org.lwjgl.opengl.GL11.glColorPointer;
-import static org.lwjgl.opengl.GL11.glDrawArrays;
-import static org.lwjgl.opengl.GL11.glVertexPointer;
-import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
-import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
-import static org.lwjgl.opengl.GL15.glBindBuffer;
-import static org.lwjgl.opengl.GL15.glBufferData;
-import static org.lwjgl.opengl.GL15.glGenBuffers;
-
 import java.awt.Rectangle;
 import java.nio.FloatBuffer;
-
-import org.lwjgl.BufferUtils;
 
 import engine.math.Point;
 
 public class WorldChunk {
 	
-	private int glVertexId;
-	private int glColorId;
-	private int x, y, width, height;
+	private World world;
 	
+	private int x, y, width, height;
 	private boolean destroyed;
 	
-	public WorldChunk(int x, int y, int width, int height) {
+	public WorldChunk(World world, int x, int y, int width, int height) {
 		this.x = x;
 		this.y = y;
 		this.width = width;
 		this.height = height;
-		glVertexId = glGenBuffers();
-		glColorId = glGenBuffers();
-		fillBuffers();
 		destroyed = false;
+		this.world = world;
 	}
 	
-	public void fillBuffers() {
+	public boolean fillBuffers(FloatBuffer vertexBuffer) {
+		if(destroyed)
+			return false;
 		
-		FloatBuffer vertexBuffer = BufferUtils.createFloatBuffer(3 * 4);
-		vertexBuffer.put(new float[] {x, y, 0, x + width, y, 0, x + width, y + height, 0, x, y + height, 0});
-		vertexBuffer.flip();
+		int chunkX = x / World.CHUNK_WIDTH;
+		int chunkY = (y - 360) / World.CHUNK_HEIGHT;
 		
-		glBindBuffer(GL_ARRAY_BUFFER, glVertexId);
-		glBufferData(GL_ARRAY_BUFFER, vertexBuffer, GL_STATIC_DRAW);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		boolean leftDestroyed = world.isDestroyed(chunkX - 1, chunkY);
+		boolean rightDestroyed = world.isDestroyed(chunkX + 1, chunkY);
+		boolean topDestroyed = world.isDestroyed(chunkX, chunkY - 1);
+		boolean bottomDestroyed = world.isDestroyed(chunkX, chunkY + 1);
 		
-		FloatBuffer colorBuffer = BufferUtils.createFloatBuffer(3 * 4);
-		colorBuffer.put(new float[] {0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0});
-		colorBuffer.flip();
+		float[] bottomLeft = {x, y};
+		float[] topLeft = {x, y + height};
+		float[] topRight = {x + width, y};
+		float[] bottomRight = {x + width, y + height};
 		
-		glBindBuffer(GL_ARRAY_BUFFER, glColorId);
-		glBufferData(GL_ARRAY_BUFFER, colorBuffer, GL_STATIC_DRAW);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-	}
-	
-	public void render() {
-		if(isDestroyed())
-			return;
-		glBindBuffer(GL_ARRAY_BUFFER, glVertexId);
-		glVertexPointer(3, GL_FLOAT, 0, 0L);
-		glBindBuffer(GL_ARRAY_BUFFER, glColorId);
-		glColorPointer(3, GL_FLOAT, 0, 0L);
+		if(!(leftDestroyed && topDestroyed && bottomDestroyed && rightDestroyed)) {
+			if(topDestroyed && bottomDestroyed) {
+				if(leftDestroyed) {
+					bottomLeft[0] += (width / 2);
+					topLeft[0] += (width / 2);
+				} else if (rightDestroyed) {
+					topRight[0] -= (width / 2);
+					bottomRight[0] -= (width / 2);
+				}
+			} else {
+				if(leftDestroyed) {
+					if(topDestroyed) {
+						bottomLeft[0] += width;
+					} else if(bottomDestroyed) {
+						topLeft[0] += width;
+					}
+				}
+				if(rightDestroyed) {
+					if(topDestroyed) {
+						topRight[0] -= width;
+					} else if(bottomDestroyed) {
+						bottomRight[0] -= width;
+					}
+				}
+			}
+		}
 		
-		glDrawArrays(GL_QUADS, 0, 4);
+		vertexBuffer.put(new float[] {bottomLeft[0], bottomLeft[1], 0, topRight[0], topRight[1], 0, bottomRight[0], bottomRight[1], 0, topLeft[0], topLeft[1], 0});
+		return true;
 	}
 	
 	public boolean isDestroyed() {
