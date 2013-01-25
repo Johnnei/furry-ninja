@@ -93,7 +93,6 @@ public abstract class FrameRenderable extends Renderable {
 	 */
 	public void render() {
 		long bufferOffset = getFrameId() * 8 * SIZE_GL_FLOAT;
-		System.out.println("Current Frame Offset: " + bufferOffset);
 		glBindBuffer(GL_ARRAY_BUFFER, glTextureCoordId);
 		glTexCoordPointer(2, GL_FLOAT, 0, bufferOffset);
 	}
