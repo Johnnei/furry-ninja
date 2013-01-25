@@ -53,7 +53,7 @@ public class Explosion extends FrameRenderable {
 	 * The maximum amount of damage at point p
 	 */
 	public Explosion(Entity e, Point p, float range, int mDmg, int xDmg, int weaponId) {
-		super(5, 10, true);
+		super(5, 6, true);
 		owner = e;
 		damageRange = range * range;
 		landscapeRange = WeaponType.projectileLandscapeCut[weaponId];
@@ -120,12 +120,12 @@ public class Explosion extends FrameRenderable {
 
 	@Override
 	public void generateVertexData() {
-		float x = explosionPoint.getX();
-		float y = explosionPoint.getY();
-		float height = 16F;
-		float width = 16F;
-		FloatBuffer vertex = BufferUtils.createFloatBuffer(3 * 4);
-		vertex.put(new float[] { x, y + height, 0, x + width, y + height, 0, x + width, y, 0, x, y, 0 });
+		float height = 64F;
+		float width = 64F;
+		float x = explosionPoint.getX() - (width / 2F);
+		float y = explosionPoint.getY() - (height / 2F);
+		FloatBuffer vertex = BufferUtils.createFloatBuffer(2 * 4);
+		vertex.put(new float[] { x, y + height, x + width, y + height, x + width, y, x, y });
 		vertex.flip();
 		
 		glBindBuffer(GL_ARRAY_BUFFER, glVertexId);
@@ -143,7 +143,7 @@ public class Explosion extends FrameRenderable {
 		glBindTexture(GL_TEXTURE_2D, glTextureId);
 		
 		glBindBuffer(GL_ARRAY_BUFFER, glVertexId);
-		glVertexPointer(3, GL_FLOAT, 0, 0L);
+		glVertexPointer(2, GL_FLOAT, 0, 0L);
 		super.render();
 		
 		glDrawArrays(GL_QUADS, 0, 4);

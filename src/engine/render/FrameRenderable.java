@@ -14,6 +14,8 @@ import org.lwjgl.BufferUtils;
 
 public abstract class FrameRenderable extends Renderable {
 	
+	private static long SIZE_GL_FLOAT = 4L;
+	
 	/**
 	 * The amount of frames to render
 	 */
@@ -90,7 +92,7 @@ public abstract class FrameRenderable extends Renderable {
 	 * This should be called before glDrawArrays
 	 */
 	public void render() {
-		int bufferOffset = getFrameId() * 8;
+		long bufferOffset = getFrameId() * 8 * SIZE_GL_FLOAT;
 		System.out.println("Current Frame Offset: " + bufferOffset);
 		glBindBuffer(GL_ARRAY_BUFFER, glTextureCoordId);
 		glTexCoordPointer(2, GL_FLOAT, 0, bufferOffset);
