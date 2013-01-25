@@ -99,6 +99,10 @@ public class Crosshair extends Renderable {
 		glDisableClientState(GL_VERTEX_ARRAY);
 		glDisable(GL_TEXTURE_2D);
 	}
+	
+	public boolean canDelete() {
+		return false;
+	}
 
 	public int getAngle() {
 		return angle;

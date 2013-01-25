@@ -1,13 +1,16 @@
 package game;
 
-import static org.lwjgl.opengl.GL11.*;
-
-import java.awt.Rectangle;
-import java.util.ArrayList;
-
+import static org.lwjgl.opengl.GL11.GL_BLEND;
+import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_NONE;
+import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
+import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
+import static org.lwjgl.opengl.GL11.glBlendFunc;
+import static org.lwjgl.opengl.GL11.glClear;
+import static org.lwjgl.opengl.GL11.glEnable;
 import engine.WMath;
+import engine.render.Renderable;
 import engine.render.TextRender;
-
 import game.data.Gamemode;
 import game.data.TeamColor;
 import game.data.TeamSpawn;
@@ -16,6 +19,9 @@ import game.data.WeaponType;
 import game.entity.Entity;
 import game.entity.FloatingText;
 import game.entity.Projectile;
+
+import java.awt.Rectangle;
+import java.util.ArrayList;
 
 public class WormsGame {
 	
@@ -47,11 +53,13 @@ public class WormsGame {
 	 * All generic entities
 	 */
 	private ArrayList<Entity> entities;
+	private ArrayList<Renderable> renderables;
 	
 	public WormsGame() {
 		//Initialising
 		projectiles = new ArrayList<Projectile>();
 		entities = new ArrayList<Entity>();
+		renderables = new ArrayList<Renderable>();
 		
 		//Defining Weapons
 		WeaponType.setWeapons(2);
@@ -112,6 +120,11 @@ public class WormsGame {
 				entities.remove(i);
 				--i;
 			}
+		}
+		
+		for(int i = 0; i < renderables.size(); i++) {
+			if(renderables.get(i).canDelete())
+				renderables.remove(i--);
 		}
 		
 		if(turnTime > 0)
@@ -205,6 +218,11 @@ public class WormsGame {
 			projectiles.get(i).render();
 		}
 		
+		//Render generic renderables
+		for(int i = 0; i < renderables.size(); i++) {
+			renderables.get(i).render();
+		}
+		
 		//Render GUI
 		int time = WMath.ceil_i(turnTime / 20D);
 		TextRender.getTextRender().draw(40, 40, "" + time, GL_NONE);
@@ -286,6 +304,10 @@ public class WormsGame {
 
 	public void addText(float x, float y, String text, int glColorId) {
 		entities.add(new FloatingText(text, glColorId, this, x, y));
+	}
+	
+	public void addRenderable(Renderable renderable) {
+		renderables.add(renderable);
 	}
 
 }

@@ -30,8 +30,11 @@ public abstract class Renderable {
 		glVertexId = glGenBuffers();
 		glColorId = glGenBuffers();
 		glTextureCoordId = glGenBuffers();
+		glTextureId = GL_NONE;
 		needRenderUpdate = false;
 	}
+	
+	public abstract boolean canDelete();
 	
 	/**
 	 * Deletes the buffered data

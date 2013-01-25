@@ -66,6 +66,7 @@ public class Projectile extends Entity {
 	public void explode() {
 		canDelete = true;
 		Explosion e = new Explosion(owner, getPoint(), damageRange, minDamage, maxDamage, owner.getSelectedWeapon());
+		owner.getWormsGame().addRenderable(e);
 		e.explode();
 	}
 
@@ -126,7 +127,7 @@ public class Projectile extends Entity {
 		glBindBuffer(GL_ARRAY_BUFFER, glVertexId);
 		glVertexPointer(3, GL_FLOAT, 0, 0L);
 		glBindBuffer(GL_ARRAY_BUFFER, glTextureCoordId);
-		glTexCoordPointer(3, GL_FLOAT, 0, 0L);
+		glTexCoordPointer(2, GL_FLOAT, 0, 0L);
 		
 		glDrawArrays(GL_QUADS, 0, 4);
 		
@@ -147,6 +148,7 @@ public class Projectile extends Entity {
 		glBindBuffer(GL_ARRAY_BUFFER, GL_NONE);
 	}
 	
+	@Override
 	public boolean canDelete() {
 		return canDelete;
 	}
