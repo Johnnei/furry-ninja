@@ -51,7 +51,6 @@ public abstract class FrameRenderable extends Renderable {
 				float frameWidth = (1F / frameCount);
 				float minX = i * frameWidth;
 				float maxX = (i + 1) * frameWidth;
-				System.out.println("frameWidth: " + frameWidth + ", minX: " + minX + ", maxX: " + maxX);
 				textureCoordBuffer.put(new float[] { minX, 1 }); //Left Bottom
 				textureCoordBuffer.put(new float[] { maxX, 1 }); //Right Bottom
 				textureCoordBuffer.put(new float[] { maxX, 0 }); //Right Top

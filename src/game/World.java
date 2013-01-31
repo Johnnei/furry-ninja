@@ -20,6 +20,7 @@ import java.nio.FloatBuffer;
 
 import org.lwjgl.BufferUtils;
 
+import engine.WMath;
 import engine.math.Point;
 
 public class World {
@@ -132,12 +133,26 @@ public class World {
 		return chunks[index].isDestroyed();
 	}
 
+	/**
+	 * Test if the given box is colliding with the world
+	 * @param colBox The box which has to be tested
+	 * @return true if the box is colliding, false if not
+	 */
 	public boolean collides(Rectangle colBox) {
-		for(WorldChunk c : chunks) {
-			if(c.isDestroyed())
-				continue;
-			if(c.getBoundingBox().intersects(colBox))
-				return true;
+		int chunkWidth = WMath.ceil_i(colBox.width / (double)CHUNK_WIDTH);
+		int chunkHeight = WMath.ceil_i(colBox.height / (double)CHUNK_HEIGHT);
+		int chunkX = colBox.x / CHUNK_WIDTH;
+		int chunkY = (colBox.y - 360) / CHUNK_HEIGHT;
+		for(int xOffset = 0; xOffset < chunkWidth; xOffset++) {
+			for(int yOffset = 0; yOffset < chunkHeight; yOffset++) {
+				int x = chunkX + xOffset;
+				int y = chunkY + yOffset;
+				if(!isDestroyed(x, y)) {
+					if(getCollisionBox(x, y).intersects(colBox)) {
+						return true;
+					}
+				}
+			}
 		}
 		return false;
 	}
