@@ -53,7 +53,7 @@ public class Explosion extends FrameRenderable {
 	 * The maximum amount of damage at point p
 	 */
 	public Explosion(Entity e, Point p, float range, int mDmg, int xDmg, int weaponId) {
-		super(5, 6, true);
+		super(5, 5, true);
 		owner = e;
 		damageRange = range * range;
 		landscapeRange = WeaponType.projectileLandscapeCut[weaponId];
