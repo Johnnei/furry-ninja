@@ -269,7 +269,7 @@ public class WormsGame {
 		colBox.y += yOffset;
 		
 		//Inside the game field
-		if(colBox.x < 0 || colBox.x + colBox.width > 1280 || colBox.y < 0 || colBox.y < 720 - colBox.height)
+		if(colBox.x < 0 || colBox.x + colBox.width > 1280 || colBox.y < 0 || colBox.y >= 720 - colBox.height)
 			return true;
 		
 		//World

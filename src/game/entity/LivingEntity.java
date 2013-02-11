@@ -60,6 +60,8 @@ public abstract class LivingEntity extends Entity {
 	}
 
 	public void takeDamgage(int dmg) {
+		if(isDead())
+			return;
 		takeDamage += dmg;
 		fullDamage = takeDamage;
 	}
