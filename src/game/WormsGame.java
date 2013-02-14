@@ -54,6 +54,10 @@ public class WormsGame {
 	 */
 	private ArrayList<Entity> entities;
 	private ArrayList<Renderable> renderables;
+	/**
+	 * The recorded FPS by the engine
+	 */
+	private int fps;
 	
 	public WormsGame() {
 		//Initialising
@@ -74,7 +78,10 @@ public class WormsGame {
 		world = new World();
 		
 		//Loading Text Engine
-		TextRender.getTextRender().load(48, 57);
+		TextRender.getTextRender().load(32, 32); //Space
+		TextRender.getTextRender().load(48, 58); //Numbers and :
+		TextRender.getTextRender().load(65, 90); //Uppercase a-z
+		TextRender.getTextRender().load(97, 122); //Lowercase a-z
 		//Initialising First Turn
 		turnIndex = 0;
 		teams[turnIndex].onAdvanceTurn();
@@ -225,7 +232,8 @@ public class WormsGame {
 		
 		//Render GUI
 		int time = WMath.ceil_i(turnTime / 20D);
-		TextRender.getTextRender().draw(40, 40, "" + time, GL_NONE);
+		TextRender.getTextRender().draw(40, 40, "Time left: " + time, GL_NONE);
+		TextRender.getTextRender().draw(1000, 40, "FPS: " + fps, GL_NONE);
 	}
 	
 	/**
@@ -308,6 +316,10 @@ public class WormsGame {
 	
 	public void addRenderable(Renderable renderable) {
 		renderables.add(renderable);
+	}
+	
+	public void setFps(int fps) {
+		this.fps = fps;
 	}
 
 }

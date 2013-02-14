@@ -45,7 +45,7 @@ public class Game {
 			
 			++fps;
 			if(getCurrentMillis() - lastFps >= 1000) {
-				System.out.println(fps);
+				game.setFps(fps);
 				fps = 0;
 				lastFps += 1000;
 			}
