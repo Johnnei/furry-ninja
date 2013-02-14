@@ -8,7 +8,6 @@ import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
 import static org.lwjgl.opengl.GL11.glBlendFunc;
 import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glEnable;
-import engine.WMath;
 import engine.render.Renderable;
 import engine.render.TextRender;
 import game.data.Gamemode;
@@ -18,6 +17,7 @@ import game.data.TurnPhase;
 import game.data.WeaponType;
 import game.entity.Entity;
 import game.entity.FloatingText;
+import game.entity.HUD;
 import game.entity.Projectile;
 
 import java.awt.Rectangle;
@@ -58,6 +58,10 @@ public class WormsGame {
 	 * The recorded FPS by the engine
 	 */
 	private int fps;
+	/**
+	 * The Heads-up display informations
+	 */
+	private HUD hud;
 	
 	public WormsGame() {
 		//Initialising
@@ -76,6 +80,7 @@ public class WormsGame {
 			teams[i] = new Team(4, TeamColor.values()[i].getColor(), this, TeamSpawn.values()[i].getSpawnsX(), TeamSpawn.values()[i].getSpawnsY());
 		}
 		world = new World();
+		hud = new HUD(this);
 		
 		//Loading Text Engine
 		TextRender.getTextRender().load(32, 32); //Space
@@ -158,6 +163,9 @@ public class WormsGame {
 				teams[i].onTurnPhaseChange(turnPhase);
 			}
 		}
+		
+		//Update the HUD as the last thing so all changes can be displayed instantly
+		hud.onTick();
 	}
 	
 	/**
@@ -231,9 +239,8 @@ public class WormsGame {
 		}
 		
 		//Render GUI
-		int time = WMath.ceil_i(turnTime / 20D);
-		TextRender.getTextRender().draw(40, 40, "Time left: " + time, GL_NONE);
-		TextRender.getTextRender().draw(1000, 40, "FPS: " + fps, GL_NONE);
+		hud.render();
+		TextRender.getTextRender().draw(1100, 40, "FPS: " + fps, GL_NONE);
 	}
 	
 	/**
@@ -296,6 +303,10 @@ public class WormsGame {
 			}
 		}
 		return false;
+	}
+	
+	public int getTurnTime() {
+		return turnTime;
 	}
 	
 	public int getTeamCount() {
