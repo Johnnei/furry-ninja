@@ -58,7 +58,7 @@ public class World {
 	
 	private void fillVertexBuffer() {
 		vertexCount = 0;
-		FloatBuffer vertexBuffer = BufferUtils.createFloatBuffer(3 * 4 * chunks.length);
+		FloatBuffer vertexBuffer = BufferUtils.createFloatBuffer(2 * 4 * chunks.length);
 		for(int i = 0; i < chunks.length; i++) {
 			if(chunks[i].fillBuffers(vertexBuffer))
 				vertexCount++;
@@ -94,7 +94,7 @@ public class World {
 		glBindBuffer(GL_ARRAY_BUFFER, glColorId);
 		glColorPointer(3, GL_FLOAT, 0, 0L);
 		glBindBuffer(GL_ARRAY_BUFFER, glVertexId);
-		glVertexPointer(3, GL_FLOAT, 0, 0L);
+		glVertexPointer(2, GL_FLOAT, 0, 0L);
 		
 		glDrawArrays(GL_QUADS, 0, 4 * vertexCount);
 		

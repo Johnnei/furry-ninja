@@ -97,7 +97,7 @@ public class Projectile extends Entity {
 
 	@Override
 	public void generateVertexData() {
-		FloatBuffer vertex = BufferUtils.createFloatBuffer(3 * 4);
+		FloatBuffer vertex = BufferUtils.createFloatBuffer(2 * 4);
 		
 		float yMotion = this.yMotion;
 		if(xMotion < 0)
@@ -107,7 +107,7 @@ public class Projectile extends Entity {
 		else if(yMotion < -10)
 			yMotion = -10;
 		
-		vertex.put(new float[] { x, y + height + yMotion, 0, x + width, y + height - yMotion, 0, x + width, y - yMotion, 0, x, y + yMotion, 0 });
+		vertex.put(new float[] { x, y + height + yMotion, x + width, y + height - yMotion, x + width, y - yMotion, x, y + yMotion });
 		vertex.flip();
 		
 		glBindBuffer(GL_ARRAY_BUFFER, glVertexId);
@@ -125,7 +125,7 @@ public class Projectile extends Entity {
 		glBindTexture(GL_TEXTURE_2D, glTextureId);
 		
 		glBindBuffer(GL_ARRAY_BUFFER, glVertexId);
-		glVertexPointer(3, GL_FLOAT, 0, 0L);
+		glVertexPointer(2, GL_FLOAT, 0, 0L);
 		glBindBuffer(GL_ARRAY_BUFFER, glTextureCoordId);
 		glTexCoordPointer(2, GL_FLOAT, 0, 0L);
 		

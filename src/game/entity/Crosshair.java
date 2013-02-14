@@ -53,8 +53,8 @@ public class Crosshair extends Renderable {
 
 	@Override
 	public void generateVertexData() {
-		FloatBuffer vertexBuffer = BufferUtils.createFloatBuffer(12);
-		vertexBuffer.put(new float[] { x, y + 16, 0, x + 16, y + 16, 0, x + 16, y, 0, x, y, 0 });
+		FloatBuffer vertexBuffer = BufferUtils.createFloatBuffer(2 * 4);
+		vertexBuffer.put(new float[] { x, y + 16, x + 16, y + 16, x + 16, y, x, y });
 		vertexBuffer.flip();
 
 		glBindBuffer(GL_ARRAY_BUFFER, glVertexId);
@@ -86,7 +86,7 @@ public class Crosshair extends Renderable {
 		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
 		glBindBuffer(GL_ARRAY_BUFFER, glVertexId);
-		glVertexPointer(3, GL_FLOAT, 0, 0L);
+		glVertexPointer(2, GL_FLOAT, 0, 0L);
 		glBindBuffer(GL_ARRAY_BUFFER, glTextureCoordId);
 		glTexCoordPointer(2, GL_FLOAT, 0, 0L);
 		glBindBuffer(GL_ARRAY_BUFFER, glColorId);

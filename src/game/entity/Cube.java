@@ -68,8 +68,8 @@ public class Cube extends LivingEntity {
 
 	@Override
 	public void generateVertexData() {
-		FloatBuffer vertex = BufferUtils.createFloatBuffer(3 * 4);
-		vertex.put(new float[] { x, y + height, 0, x + width, y + height, 0, x + width, y, 0, x, y, 0 });
+		FloatBuffer vertex = BufferUtils.createFloatBuffer(2 * 4);
+		vertex.put(new float[] { x, y + height, x + width, y + height, x + width, y, x, y });
 		vertex.flip();
 		
 		glBindBuffer(GL_ARRAY_BUFFER, glVertexId);
@@ -145,7 +145,7 @@ public class Cube extends LivingEntity {
 		glEnableClientState(GL_VERTEX_ARRAY);
 		
 		glBindBuffer(GL_ARRAY_BUFFER, glVertexId);
-		glVertexPointer(3, GL_FLOAT, 0, 0L);
+		glVertexPointer(2, GL_FLOAT, 0, 0L);
 		glBindBuffer(GL_ARRAY_BUFFER, glColorId);
 		glColorPointer(3, GL_FLOAT, 0, 0L);
 		

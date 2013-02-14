@@ -65,7 +65,7 @@ public class WorldChunk {
 			}
 		}
 		
-		vertexBuffer.put(new float[] {bottomLeft[0], bottomLeft[1], 0, topRight[0], topRight[1], 0, bottomRight[0], bottomRight[1], 0, topLeft[0], topLeft[1], 0});
+		vertexBuffer.put(new float[] {bottomLeft[0], bottomLeft[1], topRight[0], topRight[1], bottomRight[0], bottomRight[1], topLeft[0], topLeft[1]});
 		return true;
 	}
 	
