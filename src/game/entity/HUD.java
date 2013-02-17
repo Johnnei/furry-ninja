@@ -21,9 +21,6 @@ import static org.lwjgl.opengl.GL15.glBufferData;
 public class HUD extends Renderable {
 
 	private WormsGame wormsGame;
-	private int headerTexture;
-	private int healthBarTexture;
-	private int healthBarEndTexture;
 
 	public HUD(WormsGame wormsGame) {
 		super();
@@ -49,12 +46,12 @@ public class HUD extends Renderable {
 	public void generateVertexData() {
 		FloatBuffer vertexBuffer = BufferUtils.createFloatBuffer(2 * 4 * 5);
 
-		int headerX = 576; // (1280 / 2) - (128 / 2)
-		int barY = 28;
-		int width = 128;
-		int height = 64;
-		int barHeight = 16;
-		int barWidth = 8;
+		final int headerX = 576; // (1280 / 2) - (128 / 2)
+		final int barY = 28;
+		final int width = 128;
+		final int height = 64;
+		final int barHeight = 16;
+		final int barWidth = 8;
 		
 		int[] teamHealth = new int[2];
 		for(int i = 0; i < teamHealth.length; i++) {
@@ -62,25 +59,18 @@ public class HUD extends Renderable {
 			for(int j = 0; j < team.getCubeCount(); j++) {
 				teamHealth[i] += team.getCube(j).getHealth();
 			}
-			teamHealth[i] = (teamHealth[i] - 8) / team.getCubeCount(); 
+			teamHealth[i] = (teamHealth[i] - 8) / (team.getCubeCount() / 2); 
 		}
-		System.out.println("Health[0]: " + teamHealth[0] + ", Health[1]: " + teamHealth[1]);
-
+		//Healthbar
+		int barX = headerX - teamHealth[0] + 18;
+		int barX2 = headerX + width - 18;
+		vertexBuffer.put(new float[] { barX, barY + barHeight, barX + teamHealth[0], barY + barHeight, barX + teamHealth[0], barY, barX, barY});
+		vertexBuffer.put(new float[] { barX2, barY + barHeight, barX2 + teamHealth[1], barY + barHeight, barX2 + teamHealth[1], barY, barX2, barY});
+		//Healthbar ends
+		vertexBuffer.put(new float[] { barX - barWidth, barY + barHeight, barX, barY + barHeight, barX, barY, barX - barWidth, barY});
+		vertexBuffer.put(new float[] { barX2 + teamHealth[1], barY + barHeight, barX2 + teamHealth[1] + barWidth, barY + barHeight, barX2 + teamHealth[1] + barWidth, barY, barX2 + teamHealth[1], barY});
 		//Header
 		vertexBuffer.put(new float[] { headerX, height, headerX + width, height, headerX + width, 0, headerX, 0 });
-		//Healthbar
-		int barX = headerX - teamHealth[0];
-		int barX2 = headerX + width;
-		barX = 0;
-		barX2 = 0;
-		vertexBuffer.put(new float[] { barX, barY + barHeight, barX + teamHealth[0], barY + barHeight, barX + teamHealth[0], barY, barX, barY});
-		barY += barHeight;
-		vertexBuffer.put(new float[] { barX2, barY + barHeight, barX2 + teamHealth[1], barY + barHeight, barX2 + teamHealth[1], barY, barX2, barY});
-		barY += barHeight;
-		//Healthbar ends
-		vertexBuffer.put(new float[] { 0, barY + barHeight, 0 + barWidth, barY + barHeight, 0 + barWidth, 0, 0, 0});
-		barY += barHeight;
-		vertexBuffer.put(new float[] { 0, barY + barHeight, 0 + barWidth, barY + barHeight, 0 + barWidth, 0, 0, 0});
 		vertexBuffer.flip();
 
 		glBindBuffer(GL_ARRAY_BUFFER, glVertexId);
@@ -90,20 +80,26 @@ public class HUD extends Renderable {
 
 	@Override
 	public void generateTextureData() {
-		headerTexture = TextureLoader.loadTexture("/res/header.png");
-		healthBarTexture = TextureLoader.loadTexture("/res/healthbar.png");
-		healthBarEndTexture = TextureLoader.loadTexture("/res/healthbar_end.png");
-		/*
-		 * Floats 0-8: Header
-		 * Floats 8 - 24: Healthbar A + B
-		 * Floats 24 - 40: Healthbarend A + B
-		 */
+		glTextureId = TextureLoader.loadTexture("/res/header.png");
+		final float headerWidth = 128 / 256F;
+		final float pixelWidth = 1 / 256F;
+		final float headerBarAX = headerWidth + pixelWidth;
+		final float headerBarBX = headerWidth + (2 * pixelWidth);
+		final float headerBarCX = headerWidth + (3 * pixelWidth);
+		final float endsWidth = 8 / 256F;
+		final float headerEndA = headerBarCX + endsWidth;
+		final float headerEndB = headerBarCX + (2 * endsWidth);
+		final float height = 16 / 64F;
+		
 		FloatBuffer textureBuffer = BufferUtils.createFloatBuffer(5 * 8);
-		textureBuffer.put(new float[] { 0   , 1,    1, 1,    1, 0,    0, 0 });
-		textureBuffer.put(new float[] { 0   , 1, 0.5F, 1, 0.5F, 0,    0, 0 });
-		textureBuffer.put(new float[] { 0.5F, 1,    1, 1,    1, 0, 0.5F, 0 });
-		textureBuffer.put(new float[] { 0   , 1, 0.5F, 1, 0.5F, 0,    0, 0 });
-		textureBuffer.put(new float[] { 0.5F, 1,    1, 1,    1, 0, 0.5F, 0 });
+		//Headerbar
+		textureBuffer.put(new float[] { headerBarAX, height, headerBarBX, height, headerBarBX, 0, headerBarAX, 0 });
+		textureBuffer.put(new float[] { headerBarBX, height, headerBarCX, height, headerBarCX, 0, headerBarBX, 0 });
+		//Headerbar Ends
+		textureBuffer.put(new float[] { headerBarCX, height, headerEndA , height, headerBarCX, 0, 0          , 0 });
+		textureBuffer.put(new float[] { headerEndA , height, headerEndB , height, headerEndB,  0, headerEndA , 0 });
+		//Header
+		textureBuffer.put(new float[] { 0   	   , 1	   , headerWidth, 1	    , headerWidth, 0, 0		     , 0 });
 		textureBuffer.flip();
 
 		glBindBuffer(GL_ARRAY_BUFFER, glTextureCoordId);
@@ -119,38 +115,20 @@ public class HUD extends Renderable {
 
 		glActiveTexture(GL_TEXTURE0);
 
-		renderHealthbars();
-		renderHealthbarsEnds();
-		renderHeader();
-
-		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-		glDisableClientState(GL_VERTEX_ARRAY);
-		glDisable(GL_TEXTURE_2D);
-
-		renderText();
-	}
-
-	private void renderHeader() {
-		glBindTexture(GL_TEXTURE_2D, headerTexture);
+		glBindTexture(GL_TEXTURE_2D, glTextureId);
 
 		glBindBuffer(GL_ARRAY_BUFFER, glVertexId);
 		glVertexPointer(2, GL_FLOAT, 0, 0L);
 		glBindBuffer(GL_ARRAY_BUFFER, glTextureCoordId);
 		glTexCoordPointer(2, GL_FLOAT, 0, 0L);
 
-		glDrawArrays(GL_QUADS, 0, 4);
-	}
-	
-	private void renderHealthbars() {
-		glBindTexture(GL_TEXTURE_2D, healthBarTexture);
-		
-		glDrawArrays(GL_QUADS, 0, 8);
-	}
-	
-	private void renderHealthbarsEnds() {
-		glBindTexture(GL_TEXTURE_2D, healthBarEndTexture);
-		
-		glDrawArrays(GL_QUADS, 0, 8);
+		glDrawArrays(GL_QUADS, 0, 20);
+
+		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+		glDisableClientState(GL_VERTEX_ARRAY);
+		glDisable(GL_TEXTURE_2D);
+
+		renderText();
 	}
 
 	private void renderText() {
