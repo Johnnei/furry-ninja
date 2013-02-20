@@ -1,36 +1,42 @@
 package engine.render;
 
-import static org.lwjgl.opengl.GL11.GL_NONE;
-import static org.lwjgl.opengl.GL15.*;
-
 public abstract class Renderable {
 	
 	/**
-	 * VBO Vertex data id
+	 * The VBO RenderObject
 	 */
-	protected int glVertexId;
-	/**
-	 * VBO Color data id
-	 */
-	protected int glColorId;
-	/**
-	 * Texture id
-	 */
-	protected int glTextureId;
-	/**
-	 * VBO Texture Coord Id
-	 */
-	protected int glTextureCoordId;
+	protected RenderObject renderObject;
 	/**
 	 * Registers if the VBO data needs to be updated
 	 */
 	private boolean needRenderUpdate;
 	
-	public Renderable() {
-		glVertexId = glGenBuffers();
-		glColorId = glGenBuffers();
-		glTextureCoordId = glGenBuffers();
-		glTextureId = GL_NONE;
+	public Renderable(int flags, boolean is3D, int vertexCount, Texture texture) {
+		this();
+		renderObject = new RenderObject(flags, is3D, vertexCount, texture);
+	}
+	
+	public Renderable(int flags, boolean is3D, int vertexCount) {
+		this();
+		renderObject = new RenderObject(flags, is3D, vertexCount);
+	}
+	
+	public Renderable(int flags, boolean is3D, Texture texture) {
+		this();
+		renderObject = new RenderObject(flags, is3D, texture);
+	}
+	
+	public Renderable(int flags, boolean is3D) {
+		this();
+		renderObject = new RenderObject(flags, is3D);
+	}
+	
+	public Renderable(int flags) {
+		this();
+		renderObject = new RenderObject(flags);
+	}
+	
+	private Renderable() {
 		needRenderUpdate = false;
 	}
 	
@@ -40,35 +46,36 @@ public abstract class Renderable {
 	 * Deletes the buffered data
 	 */
 	public void onDelete() {
-		if(glColorId != GL_NONE)
-			glDeleteBuffers(glColorId);
-		if(glVertexId != GL_NONE)
-			glDeleteBuffers(glVertexId);
-		if(glTextureCoordId != GL_NONE)
-			glDeleteBuffers(glTextureCoordId);
-		if(glTextureId != GL_NONE)
-			glDeleteBuffers(glTextureId);
+		renderObject.delete();
 	}
 	
 	/**
 	 * Generates the VBO Color data to render
 	 */
-	public abstract void generateColorData();
+	public void generateColorData() {
+		
+	}
 	
 	/**
 	 * Generates the VBO Vertex data to render
 	 */
-	public abstract void generateVertexData();
+	public void generateVertexData() {
+		
+	}
 	
 	/**
 	 * Generates the VBO Texture Data to render
 	 */
-	public abstract void generateTextureData();
+	public void generateTextureData() {
+		
+	}
 	
 	/**
 	 * Renders the VBO to the screen
 	 */
-	public abstract void render();
+	public void render() {
+		renderObject.render();
+	}
 	
 	/**
 	 * Sets the render update flag
@@ -84,10 +91,6 @@ public abstract class Renderable {
 	 */
 	public boolean needRenderUpdate() {
 		return needRenderUpdate;
-	}
-	
-	public int getGlColorId() {
-		return glColorId;
 	}
 
 }

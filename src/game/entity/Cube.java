@@ -1,8 +1,5 @@
 package game.entity;
 
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL15.*;
-
 import engine.render.TextRender;
 import game.Team;
 import game.WormsGame;
@@ -13,6 +10,8 @@ import java.nio.FloatBuffer;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.input.Keyboard;
+
+import static engine.render.RenderObject.VERTEX_COLOR;
 
 public class Cube extends LivingEntity {
 
@@ -42,7 +41,7 @@ public class Cube extends LivingEntity {
 	private boolean facingLeft;
 	
 	public Cube(int x, int y, int health, Team team, WormsGame wormsGame) {
-		super(wormsGame, health, x, y, 16, 16);
+		super(VERTEX_COLOR, wormsGame, health, x, y, 16, 16);
 		this.team = team;
 		myTurn = false;
 		facingLeft = (x > 640);
@@ -61,9 +60,7 @@ public class Cube extends LivingEntity {
 		color.put(new float[] { colors[0], colors[1], colors[2], colors[0], colors[1], colors[2], colors[0], colors[1], colors[2], colors[0], colors[1], colors[2] });
 		color.flip();
 		
-		glBindBuffer(GL_ARRAY_BUFFER, glColorId);
-		glBufferData(GL_ARRAY_BUFFER, color, GL_STATIC_DRAW);
-		glBindBuffer(GL_ARRAY_BUFFER, GL_NONE);
+		renderObject.updateColor(color);
 	}
 
 	@Override
@@ -72,13 +69,7 @@ public class Cube extends LivingEntity {
 		vertex.put(new float[] { x, y + height, x + width, y + height, x + width, y, x, y });
 		vertex.flip();
 		
-		glBindBuffer(GL_ARRAY_BUFFER, glVertexId);
-		glBufferData(GL_ARRAY_BUFFER, vertex, GL_DYNAMIC_DRAW);
-		glBindBuffer(GL_ARRAY_BUFFER, GL_NONE);
-	}
-	
-	@Override
-	public void generateTextureData() {
+		renderObject.updateVertex(vertex);
 	}
 	
 	@Override
@@ -141,20 +132,7 @@ public class Cube extends LivingEntity {
 		if(isDead())
 			return;
 		
-		glEnableClientState(GL_COLOR_ARRAY);
-		glEnableClientState(GL_VERTEX_ARRAY);
-		
-		glBindBuffer(GL_ARRAY_BUFFER, glVertexId);
-		glVertexPointer(2, GL_FLOAT, 0, 0L);
-		glBindBuffer(GL_ARRAY_BUFFER, glColorId);
-		glColorPointer(3, GL_FLOAT, 0, 0L);
-		
-		glDrawArrays(GL_QUADS, 0, 4);
-		
-		glDisableClientState(GL_VERTEX_ARRAY);
-		glDisableClientState(GL_COLOR_ARRAY);
-		
-		TextRender.getTextRender().drawCentered(x + (width / 2), y - 20, "" + getHealth(), glColorId);
+		TextRender.getTextRender().drawCentered(x + (width / 2), y - 20, "" + getHealth(), renderObject);
 		
 		if(myTurn) {
 			crosshair.render();

@@ -21,8 +21,8 @@ public abstract class LivingEntity extends Entity {
 	 */
 	private boolean showDamage;
 
-	public LivingEntity(WormsGame wormsGame, int health, int x, int y, int width, int height) {
-		super(wormsGame, x, y, width, height);
+	public LivingEntity(int flags, WormsGame wormsGame, int health, int x, int y, int width, int height) {
+		super(flags, wormsGame, x, y, width, height);
 		this.health = health;
 		showDamage = false;
 		fullDamage = 0;
@@ -40,6 +40,12 @@ public abstract class LivingEntity extends Entity {
 					--health;
 					--takeDamage;
 				}
+			}
+		}
+		if (showDamage) {
+			if (takeDamage == 0) {
+				fullDamage = 0;
+				showDamage = false;
 			}
 		}
 	}
@@ -77,7 +83,7 @@ public abstract class LivingEntity extends Entity {
 	public void onTurnChange(TurnPhase turn) {
 		if (turn == DAMAGE) {
 			if (fullDamage > 0) {
-				getWormsGame().addText(x, y - 20, "" + fullDamage, glColorId);
+				getWormsGame().addText(x, y - 20, "" + fullDamage, renderObject);
 				showDamage = true;
 			}
 		}
@@ -105,12 +111,7 @@ public abstract class LivingEntity extends Entity {
 	public void render() {
 		if (isDead())
 			return;
-		if (showDamage) {
-			if (takeDamage == 0) {
-				fullDamage = 0;
-				showDamage = false;
-			}
-		}
+		renderObject.render();
 	}
 	
 	public boolean hasDamage() {

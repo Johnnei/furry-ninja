@@ -2,12 +2,12 @@ package game;
 
 import static org.lwjgl.opengl.GL11.GL_BLEND;
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.GL_NONE;
 import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
 import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
 import static org.lwjgl.opengl.GL11.glBlendFunc;
 import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glEnable;
+import engine.render.RenderObject;
 import engine.render.Renderable;
 import engine.render.TextRender;
 import game.data.Gamemode;
@@ -83,10 +83,7 @@ public class WormsGame {
 		hud = new HUD(this);
 		
 		//Loading Text Engine
-		TextRender.getTextRender().load(32, 32); //Space
-		TextRender.getTextRender().load(48, 58); //Numbers and :
-		TextRender.getTextRender().load(65, 90); //Uppercase a-z
-		TextRender.getTextRender().load(97, 122); //Lowercase a-z
+		TextRender.getTextRender();
 		//Initialising First Turn
 		turnIndex = 0;
 		teams[turnIndex].onAdvanceTurn();
@@ -240,7 +237,7 @@ public class WormsGame {
 		
 		//Render GUI
 		hud.render();
-		TextRender.getTextRender().draw(1100, 40, "FPS: " + fps, GL_NONE);
+		TextRender.getTextRender().draw(1100, 40, "FPS: " + fps, null);
 	}
 	
 	/**
@@ -321,8 +318,8 @@ public class WormsGame {
 		return world;
 	}
 
-	public void addText(float x, float y, String text, int glColorId) {
-		entities.add(new FloatingText(text, glColorId, this, x, y));
+	public void addText(float x, float y, String text, RenderObject renderObject) {
+		entities.add(new FloatingText(text, renderObject, this, x, y));
 	}
 	
 	public void addRenderable(Renderable renderable) {

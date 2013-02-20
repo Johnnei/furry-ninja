@@ -1,19 +1,20 @@
 package game.entity;
 
+import engine.render.RenderObject;
 import engine.render.TextRender;
 import game.WormsGame;
 import game.data.TurnPhase;
 
 public class FloatingText extends Entity {
 	
+	private RenderObject renderObject;
 	private String text;
 	private float floatingTime;
 
-	public FloatingText(String text, int color, WormsGame wormsGame, float x, float y) {
-		super(wormsGame, x, y, 0, 0);
+	public FloatingText(String text, RenderObject renderObject, WormsGame wormsGame, float x, float y) {
+		super(0, wormsGame, x, y, 0, 0);
 		this.text = text;
 		floatingTime = 10;
-		glColorId = color;
 	}
 
 	@Override
@@ -31,20 +32,8 @@ public class FloatingText extends Entity {
 	}
 
 	@Override
-	public void generateColorData() {
-	}
-
-	@Override
-	public void generateVertexData() {
-	}
-
-	@Override
-	public void generateTextureData() {
-	}
-
-	@Override
 	public void render() {
-		TextRender.getTextRender().drawCentered(x, y - floatingTime, text, glColorId);
+		TextRender.getTextRender().drawCentered(x, y - floatingTime, text, renderObject);
 	}
 
 }

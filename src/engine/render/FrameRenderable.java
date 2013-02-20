@@ -1,16 +1,6 @@
 package engine.render;
 
-import static org.lwjgl.opengl.GL11.GL_FLOAT;
-import static org.lwjgl.opengl.GL11.GL_NONE;
-import static org.lwjgl.opengl.GL11.glTexCoordPointer;
-import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
-import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
-import static org.lwjgl.opengl.GL15.glBindBuffer;
-import static org.lwjgl.opengl.GL15.glBufferData;
-
-import java.nio.FloatBuffer;
-
-import org.lwjgl.BufferUtils;
+import static engine.render.RenderObject.VERTEX_TEXTURE;
 
 public abstract class FrameRenderable extends Renderable {
 	
@@ -31,7 +21,7 @@ public abstract class FrameRenderable extends Renderable {
 	}
 	
 	public FrameRenderable(int frameCount, int frameDuration, boolean destroyOnEnd) {
-		super();
+		super(VERTEX_TEXTURE);
 		this.frameCount = frameCount;
 		this.destroyOnAnimationEnd = destroyOnEnd;
 		this.canDestroy = false;
@@ -43,23 +33,16 @@ public abstract class FrameRenderable extends Renderable {
 	 * This function generates the textureCoordId and packs them into a single buffer
 	 */
 	public void generateTextureData() {
-		if(glTextureId == GL_NONE) {
-			throw new RuntimeException("[FrameRenderable.generateTextureData()] No Texture ID");
+		if(renderObject.getTexture() == null) {
+			throw new RuntimeException("[FrameRenderable.generateTextureData()] No Texture");
 		} else {
-			FloatBuffer textureCoordBuffer = BufferUtils.createFloatBuffer(8 * frameCount);
+			Texture texture = renderObject.getTexture();
+			int frameWidth = texture.getWidth() / frameCount;
 			for(int i = 0; i < frameCount; i++) {
-				float frameWidth = (1F / frameCount);
-				float minX = i * frameWidth;
-				float maxX = (i + 1) * frameWidth;
-				textureCoordBuffer.put(new float[] { minX, 1 }); //Left Bottom
-				textureCoordBuffer.put(new float[] { maxX, 1 }); //Right Bottom
-				textureCoordBuffer.put(new float[] { maxX, 0 }); //Right Top
-				textureCoordBuffer.put(new float[] { minX, 0 }); //Left Top
+				int x = i * frameWidth;
+				texture.addSubTexture(x, 0, frameWidth, texture.getHeight());
 			}
-			textureCoordBuffer.flip();
-			glBindBuffer(GL_ARRAY_BUFFER, glTextureCoordId);
-			glBufferData(GL_ARRAY_BUFFER, textureCoordBuffer, GL_STATIC_DRAW);
-			glBindBuffer(GL_ARRAY_BUFFER, GL_NONE);
+			renderObject.updateTexture();
 		}
 	}
 	
@@ -92,8 +75,7 @@ public abstract class FrameRenderable extends Renderable {
 	 */
 	public void render() {
 		long bufferOffset = getFrameId() * 8 * SIZE_GL_FLOAT;
-		glBindBuffer(GL_ARRAY_BUFFER, glTextureCoordId);
-		glTexCoordPointer(2, GL_FLOAT, 0, bufferOffset);
+		renderObject.render(bufferOffset);
 	}
 	
 	@Override

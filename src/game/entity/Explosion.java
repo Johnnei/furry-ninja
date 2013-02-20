@@ -1,32 +1,11 @@
 package game.entity;
 
-import static org.lwjgl.opengl.GL11.GL_FLOAT;
-import static org.lwjgl.opengl.GL11.GL_NONE;
-import static org.lwjgl.opengl.GL11.GL_QUADS;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_COORD_ARRAY;
-import static org.lwjgl.opengl.GL11.GL_VERTEX_ARRAY;
-import static org.lwjgl.opengl.GL11.glBindTexture;
-import static org.lwjgl.opengl.GL11.glDisableClientState;
-import static org.lwjgl.opengl.GL11.glDisable;
-import static org.lwjgl.opengl.GL11.glDrawArrays;
-import static org.lwjgl.opengl.GL11.glEnable;
-import static org.lwjgl.opengl.GL11.glEnableClientState;
-import static org.lwjgl.opengl.GL11.glVertexPointer;
-import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
-import static org.lwjgl.opengl.GL13.glActiveTexture;
-import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
-import static org.lwjgl.opengl.GL15.GL_DYNAMIC_DRAW;
-import static org.lwjgl.opengl.GL15.glBindBuffer;
-import static org.lwjgl.opengl.GL15.glBufferData;
-
 import java.nio.FloatBuffer;
 
 import org.lwjgl.BufferUtils;
 
 import engine.math.Point;
 import engine.render.FrameRenderable;
-import engine.render.TextureLoader;
 import game.Team;
 import game.World;
 import game.data.WeaponType;
@@ -109,13 +88,8 @@ public class Explosion extends FrameRenderable {
 	
 	@Override
 	public void generateTextureData() {
-		System.out.println("Loading Texture Data");
-		glTextureId = TextureLoader.loadTexture("/res/weapon/explosion.png");
+		renderObject.setTexture("res/weapon/explosion.png");
 		super.generateTextureData();
-	}
-
-	@Override
-	public void generateColorData() {
 	}
 
 	@Override
@@ -128,29 +102,7 @@ public class Explosion extends FrameRenderable {
 		vertex.put(new float[] { x, y + height, x + width, y + height, x + width, y, x, y });
 		vertex.flip();
 		
-		glBindBuffer(GL_ARRAY_BUFFER, glVertexId);
-		glBufferData(GL_ARRAY_BUFFER, vertex, GL_DYNAMIC_DRAW);
-		glBindBuffer(GL_ARRAY_BUFFER, GL_NONE);
-	}
-	
-	@Override
-	public void render() {
-		glEnable(GL_TEXTURE_2D);
-		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-		glEnableClientState(GL_VERTEX_ARRAY);
-		
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, glTextureId);
-		
-		glBindBuffer(GL_ARRAY_BUFFER, glVertexId);
-		glVertexPointer(2, GL_FLOAT, 0, 0L);
-		super.render();
-		
-		glDrawArrays(GL_QUADS, 0, 4);
-		
-		glDisableClientState(GL_VERTEX_ARRAY);
-		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-		glDisable(GL_TEXTURE_2D);
+		renderObject.updateVertex(vertex);
 	}
 
 }

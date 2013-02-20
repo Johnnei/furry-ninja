@@ -29,14 +29,14 @@ public abstract class Entity extends Renderable {
 	//Game Reference
 	protected WormsGame wormsGame;
 	
-	public Entity(WormsGame wormsGame, float x, float y, int width, int height) {
-		this(wormsGame, (int)x, (int)y, width, height);
+	public Entity(int flags, WormsGame wormsGame, float x, float y, int width, int height) {
+		this(flags, wormsGame, (int)x, (int)y, width, height);
 		this.x = x;
 		this.y = y;
 	}
 	
-	public Entity(WormsGame wormsGame, int x, int y, int width, int height) {
-		super();
+	public Entity(int flags, WormsGame wormsGame, int x, int y, int width, int height) {
+		super(flags);
 		this.x = x;
 		this.y = y;
 		this.width = width;

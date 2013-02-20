@@ -1,11 +1,17 @@
 package engine.render;
 
+import static engine.render.RenderObject.COLOR;
+import static engine.render.RenderObject.VERTEX_TEXTURE;
+import static org.lwjgl.opengl.GL11.GL_COLOR_ARRAY;
+import static org.lwjgl.opengl.GL11.glDisableClientState;
+import static org.lwjgl.opengl.GL11.glEnableClientState;
+import static org.lwjgl.opengl.GL11.glPopMatrix;
+import static org.lwjgl.opengl.GL11.glPushMatrix;
+import static org.lwjgl.opengl.GL11.glTranslatef;
+
 import java.nio.FloatBuffer;
 
 import org.lwjgl.BufferUtils;
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL13.*;
-import static org.lwjgl.opengl.GL15.*;
 
 public class TextRender {
 
@@ -14,92 +20,53 @@ public class TextRender {
 	 */
 	private static TextRender textRender = new TextRender();
 
-	/**
-	 * Array to keep the vertexStuff in
-	 */
-	private int[] glTextureCoordId;
-
-	/**
-	 * Texture id for the font map
-	 */
-	private int glTextureId;
-
-	/**
-	 * Vertex id for the box
-	 */
-	private int glVertexId;
+	private RenderObject textRenderer;
 
 	private TextRender() {
-		glTextureCoordId = new int[128];
-		init();
+		System.out.print("[TextRenderer] ");
+		textRenderer = new RenderObject(VERTEX_TEXTURE);
+		generateTextureMapping();
+		System.out.print("[TextRenderer] ");
+		textRenderer.resetBuffers();
+		textRenderer.updateTexture();
+		generateVertex();
 	}
 
 	/**
 	 * Loads the font.png file and prepares it for useage and registers a basic
 	 * box for the images
 	 */
-	private void init() {
-		glTextureId = TextureLoader.loadTexture("/res/font.png");
-
-		// Register Basic Box
-		glVertexId = glGenBuffers();
-
-		FloatBuffer vertexBuffer = BufferUtils.createFloatBuffer(12);
+	private void generateVertex() {
+		FloatBuffer vertexBuffer = BufferUtils.createFloatBuffer(8);
 
 		final float width = 9F;
 		final float height = 13F;
 
-		vertexBuffer.put(new float[] { 0, height, 0, width, height, 0, width, 0, 0, 0, 0, 0 });
+		vertexBuffer.put(new float[] { 0, height, width, height, width, 0, 0, 0 });
 		vertexBuffer.flip();
 
-		glBindBuffer(GL_ARRAY_BUFFER, glVertexId);
-		glBufferData(GL_ARRAY_BUFFER, vertexBuffer, GL_STATIC_DRAW);
-		glBindBuffer(GL_ARRAY_BUFFER, GL_NONE);
+		textRenderer.updateVertex(vertexBuffer);
 	}
 
 	/**
 	 * Calculates the texture coords and saves those.
-	 * 
-	 * @param charStart
-	 *            first character to load
-	 * @param charEnd
-	 *            last character to load
 	 */
-	public void load(int charStart, int charEnd) {
-		for (int i = charStart; i <= charEnd; i++) {
-			if (glTextureCoordId[i] != GL_NONE) {
-				System.out.println("Skipping: " + i + ", Already Loaded");
-			}
-			glTextureCoordId[i] = glGenBuffers();
+	private void generateTextureMapping() {
+		Texture texture = new Texture("/res/font.png");
+		for (int i = 0; i <= 128; i++) {
 
 			int xOffset = i % 13;
 			int yOffset = i / 13;
 
-			float xSpacing = 0.078F;
-			float ySpacing = 1F / 16F;
+			int width = 10;
+			int height = 16;
 
-			float x = xOffset * xSpacing;
-			float y = yOffset * ySpacing;
-
-			float xMax = x + xSpacing;
-			if (xMax > 1F)
-				xMax = 1F;
-			float yMax = y + ySpacing;
-			if (yMax > 1F)
-				yMax = 1F;
-
-			// System.out.println(i + " " + (char)i + " " + xOffset + " " +
-			// yOffset + " (" + x + ", " + y + ") (" + xMax + ", " + yMax +
-			// ")");
-
-			FloatBuffer textureBuffer = BufferUtils.createFloatBuffer(8);
-			textureBuffer.put(new float[] { x, yMax, xMax, yMax, xMax, y, x, y });
-			textureBuffer.flip();
-
-			glBindBuffer(GL_ARRAY_BUFFER, glTextureCoordId[i]);
-			glBufferData(GL_ARRAY_BUFFER, textureBuffer, GL_STATIC_DRAW);
-			glBindBuffer(GL_ARRAY_BUFFER, GL_NONE);
+			int x = xOffset * width;
+			int y = yOffset * height;
+			
+			texture.addSubTexture(x, y, width, height);
 		}
+		textRenderer.setTexture(texture);
 	}
 
 	/**
@@ -112,9 +79,9 @@ public class TextRender {
 	 * @param text
 	 * @param glColorId
 	 */
-	public void drawCentered(float x, float y, String text, int glColorId) {
+	public void drawCentered(float x, float y, String text, RenderObject renderObject) {
 		x -= (text.length() * 4.5F);
-		draw(x, y, text, glColorId);
+		draw(x, y, text, renderObject);
 	}
 
 	/**
@@ -126,45 +93,26 @@ public class TextRender {
 	 * @param text
 	 * @param glColorId
 	 */
-	public void draw(float x, float y, String text, int glColorId) {
-		glEnable(GL_TEXTURE_2D);
-		if (glColorId != GL_NONE)
+	public void draw(float x, float y, String text, RenderObject renderObject) {
+		if (renderObject != null && renderObject.hasFlag(COLOR))
 			glEnableClientState(GL_COLOR_ARRAY);
-		glEnableClientState(GL_VERTEX_ARRAY);
-		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, glTextureId);
 		// Draw
 		for (int i = 0; i < text.length(); i++) {
 			glPushMatrix();
 			glTranslatef(x + (i * 9F), y, 0F);
 			char c = text.charAt(i);
 
-			if (glTextureCoordId[c] == GL_NONE) {
-				System.out.println(c + " is unloaded!");
-				System.exit(1);
+			long textureOffset = 4 * (8 + (c * 8));
+			
+			if (renderObject != null && renderObject.hasFlag(COLOR)) {
+				renderObject.bindColor();
 			}
-
-			glBindBuffer(GL_ARRAY_BUFFER, glVertexId);
-			glVertexPointer(3, GL_FLOAT, 0, 0L);
-			if (glColorId != GL_NONE) {
-				glBindBuffer(GL_ARRAY_BUFFER, glColorId);
-				glColorPointer(3, GL_FLOAT, 0, 0L);
-			}
-			glBindBuffer(GL_ARRAY_BUFFER, glTextureCoordId[c]);
-			glTexCoordPointer(2, GL_FLOAT, 0, 0L);
-
-			glDrawArrays(GL_QUADS, 0, 4);
+			
+			textRenderer.render(textureOffset);
 			glPopMatrix();
 		}
-
-		glBindTexture(GL_TEXTURE_2D, GL_NONE);
-		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-		glDisableClientState(GL_VERTEX_ARRAY);
-		if (glColorId != GL_NONE)
+		if (renderObject != null && renderObject.hasFlag(COLOR))
 			glDisableClientState(GL_COLOR_ARRAY);
-
-		glDisable(GL_TEXTURE_2D);
 	}
 
 	/**

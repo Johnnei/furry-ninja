@@ -1,5 +1,7 @@
 package game.entity;
 
+import static engine.render.RenderObject.VERTEX_TEXTURE;
+
 import java.nio.FloatBuffer;
 
 import org.lwjgl.BufferUtils;
@@ -7,23 +9,16 @@ import org.lwjgl.BufferUtils;
 import engine.WMath;
 import engine.render.Renderable;
 import engine.render.TextRender;
-import engine.render.TextureLoader;
+import engine.render.Texture;
 import game.Team;
 import game.WormsGame;
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
-import static org.lwjgl.opengl.GL13.glActiveTexture;
-import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
-import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
-import static org.lwjgl.opengl.GL15.glBindBuffer;
-import static org.lwjgl.opengl.GL15.glBufferData;
 
 public class HUD extends Renderable {
 
 	private WormsGame wormsGame;
 
 	public HUD(WormsGame wormsGame) {
-		super();
+		super(VERTEX_TEXTURE, false, 5);
 		this.wormsGame = wormsGame;
 		generateVertexData();
 		generateTextureData();
@@ -36,10 +31,6 @@ public class HUD extends Renderable {
 	@Override
 	public boolean canDelete() {
 		return false;
-	}
-
-	@Override
-	public void generateColorData() {
 	}
 
 	@Override
@@ -59,7 +50,7 @@ public class HUD extends Renderable {
 			for(int j = 0; j < team.getCubeCount(); j++) {
 				teamHealth[i] += team.getCube(j).getHealth();
 			}
-			teamHealth[i] = (teamHealth[i] - 8) / (team.getCubeCount() / 2); 
+			teamHealth[i] = (teamHealth[i] - 8) / (team.getCubeCount() / 2);
 		}
 		//Healthbar
 		int barX = headerX - teamHealth[0] + 18;
@@ -73,68 +64,31 @@ public class HUD extends Renderable {
 		vertexBuffer.put(new float[] { headerX, height, headerX + width, height, headerX + width, 0, headerX, 0 });
 		vertexBuffer.flip();
 
-		glBindBuffer(GL_ARRAY_BUFFER, glVertexId);
-		glBufferData(GL_ARRAY_BUFFER, vertexBuffer, GL_STATIC_DRAW);
-		glBindBuffer(GL_ARRAY_BUFFER, GL_NONE);
+		renderObject.updateVertex(vertexBuffer);
 	}
 
 	@Override
 	public void generateTextureData() {
-		glTextureId = TextureLoader.loadTexture("/res/header.png");
-		final float headerWidth = 128 / 256F;
-		final float pixelWidth = 1 / 256F;
-		final float headerBarAX = headerWidth + pixelWidth;
-		final float headerBarBX = headerWidth + (2 * pixelWidth);
-		final float headerBarCX = headerWidth + (3 * pixelWidth);
-		final float endsWidth = 8 / 256F;
-		final float headerEndA = headerBarCX + endsWidth;
-		final float headerEndB = headerBarCX + (2 * endsWidth);
-		final float height = 16 / 64F;
-		
-		FloatBuffer textureBuffer = BufferUtils.createFloatBuffer(5 * 8);
-		//Headerbar
-		textureBuffer.put(new float[] { headerBarAX, height, headerBarBX, height, headerBarBX, 0, headerBarAX, 0 });
-		textureBuffer.put(new float[] { headerBarBX, height, headerBarCX, height, headerBarCX, 0, headerBarBX, 0 });
-		//Headerbar Ends
-		textureBuffer.put(new float[] { headerBarCX, height, headerEndA , height, headerBarCX, 0, 0          , 0 });
-		textureBuffer.put(new float[] { headerEndA , height, headerEndB , height, headerEndB,  0, headerEndA , 0 });
-		//Header
-		textureBuffer.put(new float[] { 0   	   , 1	   , headerWidth, 1	    , headerWidth, 0, 0		     , 0 });
-		textureBuffer.flip();
-
-		glBindBuffer(GL_ARRAY_BUFFER, glTextureCoordId);
-		glBufferData(GL_ARRAY_BUFFER, textureBuffer, GL_STATIC_DRAW);
-		glBindBuffer(GL_ARRAY_BUFFER, GL_NONE);
+		Texture texture = new Texture("/res/header.png");
+		texture.addSubTexture(0, 0, 128, 64);
+		texture.addSubTexture(128, 0, 1, 16);
+		texture.addSubTexture(129, 0, 1, 16);
+		texture.addSubTexture(145, 0, 8, 16);
+		texture.addSubTexture(153, 0, 8, 16);
+		renderObject.setTexture(texture);
+		renderObject.updateTexture();
 	}
-
+	
 	@Override
 	public void render() {
-		glEnable(GL_TEXTURE_2D);
-		glEnableClientState(GL_VERTEX_ARRAY);
-		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-
-		glActiveTexture(GL_TEXTURE0);
-
-		glBindTexture(GL_TEXTURE_2D, glTextureId);
-
-		glBindBuffer(GL_ARRAY_BUFFER, glVertexId);
-		glVertexPointer(2, GL_FLOAT, 0, 0L);
-		glBindBuffer(GL_ARRAY_BUFFER, glTextureCoordId);
-		glTexCoordPointer(2, GL_FLOAT, 0, 0L);
-
-		glDrawArrays(GL_QUADS, 0, 20);
-
-		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-		glDisableClientState(GL_VERTEX_ARRAY);
-		glDisable(GL_TEXTURE_2D);
-
+		super.render();
 		renderText();
 	}
 
 	private void renderText() {
 		int time = WMath.ceil_i(wormsGame.getTurnTime() / 20D);
-		TextRender.getTextRender().drawCentered(640, 10, "Time left", GL_NONE);
-		TextRender.getTextRender().drawCentered(640, 30, "" + time, GL_NONE);
+		TextRender.getTextRender().drawCentered(640, 10, "Time left", null);
+		TextRender.getTextRender().drawCentered(640, 30, "" + time, null);
 	}
 
 }
