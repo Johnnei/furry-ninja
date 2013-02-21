@@ -1,19 +1,6 @@
 package game;
 
-import static org.lwjgl.opengl.GL11.GL_COLOR_ARRAY;
-import static org.lwjgl.opengl.GL11.GL_FLOAT;
-import static org.lwjgl.opengl.GL11.GL_QUADS;
-import static org.lwjgl.opengl.GL11.GL_VERTEX_ARRAY;
-import static org.lwjgl.opengl.GL11.glColorPointer;
-import static org.lwjgl.opengl.GL11.glDisableClientState;
-import static org.lwjgl.opengl.GL11.glDrawArrays;
-import static org.lwjgl.opengl.GL11.glEnableClientState;
-import static org.lwjgl.opengl.GL11.glVertexPointer;
-import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
-import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
-import static org.lwjgl.opengl.GL15.glBindBuffer;
-import static org.lwjgl.opengl.GL15.glBufferData;
-import static org.lwjgl.opengl.GL15.glGenBuffers;
+import static engine.render.RenderObject.VERTEX_COLOR;
 
 import java.awt.Rectangle;
 import java.nio.FloatBuffer;
@@ -22,6 +9,7 @@ import org.lwjgl.BufferUtils;
 
 import engine.WMath;
 import engine.math.Point;
+import engine.render.RenderObject;
 
 public class World {
 	
@@ -32,9 +20,8 @@ public class World {
 	public static final int chunksPerRow = (WIDTH / CHUNK_WIDTH);
 	
 	private WorldChunk[] chunks;
-	private int glVertexId;
-	private int glColorId;
-	private boolean needVertexUpdate;
+	private RenderObject renderObject;
+	private boolean needUpdate;
 	private int vertexCount;
 	
 	/**
@@ -49,11 +36,11 @@ public class World {
 				chunks[index] = new WorldChunk(this, x * CHUNK_WIDTH, 360 + y * CHUNK_HEIGHT, CHUNK_WIDTH, CHUNK_HEIGHT);
 			}
 		}
-		needVertexUpdate = false;
+		needUpdate = false;
 		vertexCount = 0;
-		glVertexId = glGenBuffers();
-		fillColor();
+		renderObject = new RenderObject(VERTEX_COLOR, false, totalChunks);
 		fillVertexBuffer();
+		fillColorBuffer();
 	}
 	
 	private void fillVertexBuffer() {
@@ -64,42 +51,28 @@ public class World {
 				vertexCount++;
 		}
 		vertexBuffer.flip();
-		glBindBuffer(GL_ARRAY_BUFFER, glVertexId);
-		glBufferData(GL_ARRAY_BUFFER, vertexBuffer, GL_STATIC_DRAW);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		renderObject.resetBuffers(vertexCount);
+		renderObject.updateColor(vertexBuffer);
 	}
 	
-	private void fillColor() {
-		glColorId = glGenBuffers();
-		FloatBuffer colorBuffer = BufferUtils.createFloatBuffer(3 * 4 * chunks.length);
-		for(int i = 0; i < chunks.length; i++) {
+	private void fillColorBuffer() {
+		FloatBuffer colorBuffer = BufferUtils.createFloatBuffer(3 * 4 * vertexCount);
+		for(int i = 0; i < vertexCount; i++) {
 			colorBuffer.put(new float[] {0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0});
 		}
 		colorBuffer.flip();
 		
-		glBindBuffer(GL_ARRAY_BUFFER, glColorId);
-		glBufferData(GL_ARRAY_BUFFER, colorBuffer, GL_STATIC_DRAW);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		renderObject.updateColor(colorBuffer);
 	}
 	
 	public void render() {
-		if(needVertexUpdate) {
+		if(needUpdate) {
 			fillVertexBuffer();
-			needVertexUpdate = false;
+			fillColorBuffer();
+			needUpdate = false;
 		}
 		
-		glEnableClientState(GL_COLOR_ARRAY);
-		glEnableClientState(GL_VERTEX_ARRAY);
-		
-		glBindBuffer(GL_ARRAY_BUFFER, glColorId);
-		glColorPointer(3, GL_FLOAT, 0, 0L);
-		glBindBuffer(GL_ARRAY_BUFFER, glVertexId);
-		glVertexPointer(2, GL_FLOAT, 0, 0L);
-		
-		glDrawArrays(GL_QUADS, 0, 4 * vertexCount);
-		
-		glDisableClientState(GL_VERTEX_ARRAY);
-		glDisableClientState(GL_COLOR_ARRAY);
+		renderObject.render();
 	}
 	
 	public Rectangle getCollisionBox(int x, int y) {
@@ -113,7 +86,7 @@ public class World {
 	 */
 	public void destroy(int x, int y) {
 		chunks[(y * chunksPerRow) + x].destroyed();
-		needVertexUpdate = true;
+		needUpdate = true;
 	}
 
 	public Point getPoint(int x, int y) {

@@ -23,10 +23,8 @@ public class TextRender {
 	private RenderObject textRenderer;
 
 	private TextRender() {
-		System.out.print("[TextRenderer] ");
 		textRenderer = new RenderObject(VERTEX_TEXTURE);
 		generateTextureMapping();
-		System.out.print("[TextRenderer] ");
 		textRenderer.resetBuffers();
 		textRenderer.updateTexture();
 		generateVertex();

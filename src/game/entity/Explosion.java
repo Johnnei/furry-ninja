@@ -88,7 +88,7 @@ public class Explosion extends FrameRenderable {
 	
 	@Override
 	public void generateTextureData() {
-		renderObject.setTexture("res/weapon/explosion.png");
+		renderObject.setTexture("/res/weapon/explosion.png");
 		super.generateTextureData();
 	}
 

@@ -50,7 +50,6 @@ public class Cube extends LivingEntity {
 		crosshair = new Crosshair(this, x, y);
 		generateVertexData();
 		generateColorData();
-		generateTextureData();
 	}
 	
 	@Override
@@ -137,7 +136,6 @@ public class Cube extends LivingEntity {
 		if(myTurn) {
 			crosshair.render();
 		}
-		
 		super.render();
 	}
 	

@@ -80,6 +80,15 @@ public class RenderObject {
 	}
 	
 	/**
+	 * Redefines the buffers with a new buffer and also recalculates the bufferSize<br/>
+	 * This also allows to resize the vertexCount
+	 */
+	public void resetBuffers(int vertexCount) {
+		this.vertexCount = vertexCount;
+		resetBuffers();
+	}
+	
+	/**
 	 * Redefines the buffers with a new buffer and also recalculates the bufferSize
 	 */
 	public void resetBuffers() {
@@ -98,7 +107,6 @@ public class RenderObject {
 				offset += BYTES_PER_FLOAT * texture.getBufferSize();
 			}
 		}
-		System.out.println("textureOffset: " + bufferOffset[OFFSET_TEXTURE] + ", ColorOffset: " + offset);
 		bufferOffset[OFFSET_COLOR] = offset;
 		offset += BYTES_PER_FLOAT * COLOR_PER_VERTEX * VERTEX_POINTS_PER_SQUARE * vertexCount;
 		
@@ -187,33 +195,47 @@ public class RenderObject {
 	 * @param colorOffset The offset in the entire buffer on which the color data is expected
 	 */
 	public void render(long textureOffset, long colorOffset) {
+		bind();
 		glBindBuffer(GL_ARRAY_BUFFER, glId);
+		if(hasFlag(VERTEX))
+			glVertexPointer(verticesPoints, GL_FLOAT, 0, 0L);
+		if(hasFlag(TEXTURE)) {
+			texture.bind();
+			glTexCoordPointer(TEXTURE_PER_VERTEX, GL_FLOAT, 0, textureOffset);
+		}
+		if(hasFlag(COLOR))
+			glColorPointer(COLOR_PER_VERTEX, GL_FLOAT, 0, colorOffset);
+		
+		glDrawArrays(GL_QUADS, 0, VERTEX_POINTS_PER_SQUARE * vertexCount);
+		
+		unbind();
+	}
+	
+	private void bind() {
 		if(hasFlag(VERTEX)) {
 			glEnableClientState(GL_VERTEX_ARRAY);
-			glVertexPointer(2, GL_FLOAT, 0, 0L);
 		}
 		if(hasFlag(TEXTURE)) {
 			glEnable(GL_TEXTURE_2D);
 			glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 			glActiveTexture(GL_TEXTURE0);
-			if(texture != null) {
-				texture.bind();
-			} else {
-				new Exception("Unbound Texture").printStackTrace();
-			}
-			glTexCoordPointer(TEXTURE_PER_VERTEX, GL_FLOAT, 0, textureOffset);
 		}
 		if(hasFlag(COLOR)) {
 			glEnableClientState(GL_COLOR_ARRAY);
-			glColorPointer(COLOR_PER_VERTEX, GL_FLOAT, 0, colorOffset);
 		}
-		
-		glDrawArrays(GL_QUADS, 0, VERTEX_POINTS_PER_SQUARE * vertexCount);
-		
-		glDisableClientState(GL_COLOR_ARRAY);
-		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-		glDisable(GL_TEXTURE_2D);
-		glDisableClientState(GL_VERTEX_ARRAY);
+	}
+	
+	private void unbind() {
+		if(hasFlag(COLOR)) {
+			glDisableClientState(GL_COLOR_ARRAY);
+		}
+		if(hasFlag(TEXTURE)) {
+			glDisable(GL_TEXTURE_2D);
+			glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+		}
+		if(hasFlag(VERTEX)) {
+			glDisableClientState(GL_VERTEX_ARRAY);
+		}
 	}
 	
 	/**

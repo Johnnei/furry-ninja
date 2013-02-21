@@ -27,6 +27,7 @@ public class Projectile extends Entity {
 		damageRange = WeaponType.projectileDamageRange[id];
 		
 		this.owner = owner;
+		generateTextureData();
 		
 		canDelete = false;
 	}
