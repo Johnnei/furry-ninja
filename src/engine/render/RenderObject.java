@@ -50,33 +50,30 @@ public class RenderObject {
 	private long[] bufferOffset;
 	
 	public RenderObject(int flags, boolean is3D, int vertexCount, Texture texture) {
-		this(flags, is3D, texture);
-		this.vertexCount = vertexCount;
-		calculateOffsets();
-	}
-	
-	public RenderObject(int flags, boolean is3D, int vertexCount) {
-		this(flags, is3D);
-		this.vertexCount = vertexCount;
-		calculateOffsets();
-	}
-	
-	public RenderObject(int flags, boolean is3D, Texture texture) {
-		this(flags, is3D);
-		this.texture = texture;
-	}
-	
-	public RenderObject(int flags, boolean is3D) {
 		this.flags = flags;
+		this.vertexCount = vertexCount;
+		if(texture != null)
+			this.texture = texture;
 		verticesPoints = (is3D) ? 3 : 2;
-		vertexCount = 1;
 		glId = glGenBuffers();
 		bufferOffset = new long[2];
 		calculateOffsets();
 	}
 	
+	public RenderObject(int flags, boolean is3D, int vertexCount) {
+		this(flags, is3D, vertexCount, null);
+	}
+	
+	public RenderObject(int flags, boolean is3D, Texture texture) {
+		this(flags, is3D, 1, texture);
+	}
+	
+	public RenderObject(int flags, boolean is3D) {
+		this(flags, is3D, 1, null);
+	}
+	
 	public RenderObject(int flags) {
-		this(flags, false);
+		this(flags, false, 1, null);
 	}
 	
 	/**
@@ -110,7 +107,7 @@ public class RenderObject {
 		bufferOffset[OFFSET_COLOR] = offset;
 		offset += BYTES_PER_FLOAT * COLOR_PER_VERTEX * VERTEX_POINTS_PER_SQUARE * vertexCount;
 		
-		glBindBuffer(glId, GL_ARRAY_BUFFER);
+		glBindBuffer(GL_ARRAY_BUFFER, glId);
 		glBufferData(GL_ARRAY_BUFFER, offset, GL_DYNAMIC_DRAW);
 	}
 	
@@ -133,6 +130,31 @@ public class RenderObject {
 	 */
 	public boolean hasFlag(int flag) {
 		return (flags & flag) == flag;
+	}
+	
+	private void errorCheck() {
+		Exception e = new Exception();
+		System.out.print(e.getStackTrace()[4]+" , " + e.getStackTrace()[1] + " :");
+		switch(glGetError()) {
+		case GL_NO_ERROR:
+			System.out.println("No Error");
+			break;
+			
+		case GL_INVALID_ENUM:
+			System.out.println("Invalid Target");
+			break;
+			
+		case GL_INVALID_VALUE:
+			System.out.println("Invalid Value");
+			break;
+			
+		case GL_INVALID_OPERATION:
+			System.out.println("Invalid Operation");
+			break;
+			
+			default:
+				System.out.println("Unparsed");
+		}
 	}
 	
 	public void updateVertex(FloatBuffer buffer) {
