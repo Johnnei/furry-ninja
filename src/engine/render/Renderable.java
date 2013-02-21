@@ -92,5 +92,9 @@ public abstract class Renderable {
 	public boolean needRenderUpdate() {
 		return needRenderUpdate;
 	}
+	
+	public void bindColor() {
+		renderObject.bindColor();
+	}
 
 }

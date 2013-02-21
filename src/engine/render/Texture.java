@@ -113,6 +113,12 @@ public class Texture {
 		}
 	}
 	
+	public void setParameter(int parameter, int value) {
+		glActiveTexture(GL_TEXTURE0);
+		bind();
+		glTexParameteri(GL_TEXTURE_2D, parameter, value);
+	}
+	
 	/**
 	 * Releases the ID for this texture
 	 */

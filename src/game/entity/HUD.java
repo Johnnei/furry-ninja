@@ -1,6 +1,8 @@
 package game.entity;
 
 import static engine.render.RenderObject.VERTEX_TEXTURE;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_MAG_FILTER;
+import static org.lwjgl.opengl.GL11.GL_NEAREST;
 
 import java.nio.FloatBuffer;
 
@@ -70,11 +72,12 @@ public class HUD extends Renderable {
 	@Override
 	public void generateTextureData() {
 		Texture texture = new Texture("/res/header.png");
-		texture.addSubTexture(0, 0, 128, 64);
 		texture.addSubTexture(128, 0, 1, 16);
 		texture.addSubTexture(129, 0, 1, 16);
-		texture.addSubTexture(145, 0, 8, 16);
-		texture.addSubTexture(153, 0, 8, 16);
+		texture.addSubTexture(130, 0, 8, 16);
+		texture.addSubTexture(139, 0, 8, 16);
+		texture.addSubTexture(0, 0, 128, 64);
+		texture.setParameter(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		renderObject.setTexture(texture);
 		renderObject.updateTexture();
 	}

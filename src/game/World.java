@@ -52,7 +52,7 @@ public class World {
 		}
 		vertexBuffer.flip();
 		renderObject.resetBuffers(vertexCount);
-		renderObject.updateColor(vertexBuffer);
+		renderObject.updateVertex(vertexBuffer);
 	}
 	
 	private void fillColorBuffer() {

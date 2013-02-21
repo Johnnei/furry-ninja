@@ -1,6 +1,8 @@
 package game.entity;
 
-import static engine.render.RenderObject.COLOR;
+import static org.lwjgl.opengl.GL11.glEnableClientState;
+import static org.lwjgl.opengl.GL11.glDisableClientState;
+import static org.lwjgl.opengl.GL11.GL_COLOR_ARRAY;
 import static engine.render.RenderObject.TEXTURE;
 import static engine.render.RenderObject.VERTEX;
 
@@ -19,7 +21,7 @@ public class Crosshair extends Renderable {
 	private Cube owner;
 
 	public Crosshair(Cube owner, float x, float y) {
-		super(TEXTURE | VERTEX | COLOR);
+		super(TEXTURE | VERTEX);
 		this.x = x;
 		this.y = y;
 		this.owner = owner;
@@ -67,6 +69,14 @@ public class Crosshair extends Renderable {
 
 	public int getAngle() {
 		return angle;
+	}
+	
+	@Override
+	public void render() {
+		glEnableClientState(GL_COLOR_ARRAY);
+		owner.bindColor();
+		super.render();
+		glDisableClientState(GL_COLOR_ARRAY);
 	}
 
 }

@@ -1,8 +1,28 @@
 package engine.render;
 
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL13.*;
-import static org.lwjgl.opengl.GL15.*;
+import static org.lwjgl.opengl.GL11.GL_COLOR_ARRAY;
+import static org.lwjgl.opengl.GL11.GL_FLOAT;
+import static org.lwjgl.opengl.GL11.GL_QUADS;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_COORD_ARRAY;
+import static org.lwjgl.opengl.GL11.GL_VERTEX_ARRAY;
+import static org.lwjgl.opengl.GL11.glColorPointer;
+import static org.lwjgl.opengl.GL11.glDisable;
+import static org.lwjgl.opengl.GL11.glDisableClientState;
+import static org.lwjgl.opengl.GL11.glDrawArrays;
+import static org.lwjgl.opengl.GL11.glEnable;
+import static org.lwjgl.opengl.GL11.glEnableClientState;
+import static org.lwjgl.opengl.GL11.glTexCoordPointer;
+import static org.lwjgl.opengl.GL11.glVertexPointer;
+import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
+import static org.lwjgl.opengl.GL13.glActiveTexture;
+import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
+import static org.lwjgl.opengl.GL15.GL_DYNAMIC_DRAW;
+import static org.lwjgl.opengl.GL15.glBindBuffer;
+import static org.lwjgl.opengl.GL15.glBufferData;
+import static org.lwjgl.opengl.GL15.glBufferSubData;
+import static org.lwjgl.opengl.GL15.glDeleteBuffers;
+import static org.lwjgl.opengl.GL15.glGenBuffers;
 
 import java.nio.FloatBuffer;
 
@@ -130,31 +150,6 @@ public class RenderObject {
 	 */
 	public boolean hasFlag(int flag) {
 		return (flags & flag) == flag;
-	}
-	
-	private void errorCheck() {
-		Exception e = new Exception();
-		System.out.print(e.getStackTrace()[4]+" , " + e.getStackTrace()[1] + " :");
-		switch(glGetError()) {
-		case GL_NO_ERROR:
-			System.out.println("No Error");
-			break;
-			
-		case GL_INVALID_ENUM:
-			System.out.println("Invalid Target");
-			break;
-			
-		case GL_INVALID_VALUE:
-			System.out.println("Invalid Value");
-			break;
-			
-		case GL_INVALID_OPERATION:
-			System.out.println("Invalid Operation");
-			break;
-			
-			default:
-				System.out.println("Unparsed");
-		}
 	}
 	
 	public void updateVertex(FloatBuffer buffer) {
