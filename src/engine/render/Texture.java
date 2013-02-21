@@ -26,8 +26,7 @@ import de.matthiasmann.twl.utils.PNGDecoder;
 import de.matthiasmann.twl.utils.PNGDecoder.Format;
 
 /**
- * Texture class to handle textures and allow to change the render settings in
- * the future (TODO)
+ * Texture class to handle textures and allow to change the render settings
  * 
  * @author Johnnei
  * 

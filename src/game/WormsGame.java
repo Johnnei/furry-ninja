@@ -132,6 +132,7 @@ public class WormsGame {
 		}
 		
 		for(int i = 0; i < renderables.size(); i++) {
+			renderables.get(i).onTick();
 			if(renderables.get(i).canDelete())
 				renderables.remove(i--);
 		}

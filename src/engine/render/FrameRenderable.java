@@ -4,7 +4,7 @@ import static engine.render.RenderObject.VERTEX_TEXTURE;
 
 public abstract class FrameRenderable extends Renderable {
 	
-	private static long SIZE_GL_FLOAT = 4L;
+	private static final long SIZE_GL_FLOAT = 4L;
 	
 	/**
 	 * The amount of frames to render
@@ -42,30 +42,22 @@ public abstract class FrameRenderable extends Renderable {
 				int x = i * frameWidth;
 				texture.addSubTexture(x, 0, frameWidth, texture.getHeight());
 			}
+			renderObject.resetBuffers();
 			renderObject.updateTexture();
 		}
 	}
 	
 	/**
-	 * Gets the frame number and increments it for the next frame
-	 * @return
-	 * The current frame number
+	 * Updates the animation frame
 	 */
-	private int getFrameId() {
-		int id = 0;
-		if(currentFrameTicks++ >= frameDuration) {
-			id = currentFrame++;
-			currentFrameTicks = 0;
-		} else {
-			id = currentFrame;
+	public void onTick() {
+		if(++currentFrameTicks % frameDuration == 0) {
+			if(++currentFrame == frameCount) {
+				currentFrame = 0;
+				if(destroyOnAnimationEnd)
+					canDestroy = true;
+			}
 		}
-		if(currentFrame >= frameCount) {
-			currentFrame = 0;
-			if(destroyOnAnimationEnd)
-				canDestroy = true;
-			return 0;
-		}
-		return id;
 	}
 	
 	@Override
@@ -74,8 +66,8 @@ public abstract class FrameRenderable extends Renderable {
 	 * This should be called before glDrawArrays
 	 */
 	public void render() {
-		long bufferOffset = getFrameId() * 8 * SIZE_GL_FLOAT;
-		renderObject.render(bufferOffset);
+		long textureOffset = (currentFrame + 1) * 8 * SIZE_GL_FLOAT;
+		renderObject.render(textureOffset);
 	}
 	
 	@Override

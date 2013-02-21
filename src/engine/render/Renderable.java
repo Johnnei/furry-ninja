@@ -71,6 +71,12 @@ public abstract class Renderable {
 	}
 	
 	/**
+	 * Used for animations
+	 */
+	public void onTick() {
+	}
+	
+	/**
 	 * Renders the VBO to the screen
 	 */
 	public void render() {
