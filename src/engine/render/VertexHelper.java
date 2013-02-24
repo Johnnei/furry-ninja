@@ -40,15 +40,25 @@ public class VertexHelper {
 	 * Applies a rotation to the vertex data
 	 * @param angle The amount of degrees to rotate
 	 */
-	public void rotate(int angle) {
-		float xOffset = (float)Math.sin(angle * (Math.PI / 180D));
-		float yOffset = (float)Math.cos(angle * (Math.PI / 180D));
-		for(int i = 0; i < points.length; i++) {
-			if(i % 2 == 0) {
-				points[i] += xOffset;
-			} else {
-				points[i] += yOffset;
-			}
+	public void rotate(int angle, int width, int height) {
+		angle %= 360;
+		float xOffset = (float)(width * Math.sin(angle * (Math.PI / 360D)));
+		float yOffset = (float)(height * Math.cos(-angle * (Math.PI / 180D)));
+		//float yOffset = (float)(height * Math.cos(angle * (Math.PI / 360D)));
+		System.out.println("rotate(" + angle + ", " + width + ", " + height + "); " + xOffset + ", " + yOffset);
+		for(int i = 0; i < points.length; i += 8) {
+			//Left Bottom
+			points[i    ] += xOffset;
+			points[i + 1] -= yOffset;
+			//Right Bottom
+			points[i + 2] -= xOffset;
+			points[i + 3] += yOffset;
+			//Right Top
+			points[i + 4] -= xOffset;
+			points[i + 5] += yOffset;
+			//Left Top
+			points[i + 6] += xOffset;
+			points[i + 7] -= yOffset;
 		}
 	}
 	

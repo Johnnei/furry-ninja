@@ -1,14 +1,11 @@
 package game.entity;
 
 import static engine.render.RenderObject.VERTEX_TEXTURE;
+import engine.render.VertexHelper;
 import game.WormsGame;
 import game.data.Gamemode;
 import game.data.TurnPhase;
 import game.weapon.IWeapon;
-
-import java.nio.FloatBuffer;
-
-import org.lwjgl.BufferUtils;
 
 public class Projectile extends Entity {
 	
@@ -79,18 +76,21 @@ public class Projectile extends Entity {
 
 	@Override
 	public void generateVertexData() {
-		FloatBuffer vertex = BufferUtils.createFloatBuffer(2 * 4);
+		VertexHelper vertex = new VertexHelper(2 * 4);
 		
-		float yMotion = this.yMotion;
+		/*float yMotion = this.yMotion;
 		if(xMotion < 0)
 			yMotion = -yMotion;
 		if(yMotion > 10)
 			yMotion = 10;
 		else if(yMotion < -10)
-			yMotion = -10;
+			yMotion = -10;*/
 		
-		vertex.put(new float[] { x, y + height + yMotion, x + width, y + height - yMotion, x + width, y - yMotion, x, y + yMotion });
-		vertex.flip();
+		vertex.put(new float[] { x, y + height, x + width, y + height, x + width, y, x, y });
+		int mult = 10;
+		if(xMotion < 0)
+			mult = -mult;
+		vertex.rotate((int)(yMotion * mult), weapon.getTextureWidth(), weapon.getTextureHeight());
 		
 		renderObject.updateVertex(vertex);
 	}
