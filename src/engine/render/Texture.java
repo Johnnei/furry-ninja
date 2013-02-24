@@ -36,10 +36,12 @@ public class Texture {
 	private int glTextureId;
 	private int width;
 	private int height;
+	private boolean limitSize;
 	private ArrayList<Rectangle> textures;
 
 	public Texture(String filename) {
 		textures = new ArrayList<>();
+		limitSize = false;
 		loadTexture(filename);
 	}
 	
@@ -62,6 +64,14 @@ public class Texture {
 				float tWidth = (float)texture.getWidth() * (1F / width);
 				float tHeight = (float)texture.getHeight() * (1F / height);
 				float y = (float)texture.getY() * (1F / height);
+				if(limitSize) {
+					if(x + tWidth > 1F) {
+						tWidth = 1F - x;
+					}
+					if(y + tHeight > 1F) {
+						tHeight = 1F - y;
+					}
+				}
 				buffer.put(new float[] { x, y + tHeight, x + tWidth, y + tHeight, x + tWidth, y, x, y });
 			}
 		}
@@ -110,6 +120,15 @@ public class Texture {
 			e.printStackTrace();
 			System.exit(0);
 		}
+	}
+	
+	/**
+	 * Enables or disabled <tt>limitSize</tt>.<br/>
+	 * When enabled the newly added subtextures added with <tt>addSubTexture(int, int, int, int)</tt> can not wrap outside the texture
+	 * @param enabled
+	 */
+	public void setSizeLimit(boolean enabled) {
+		limitSize = enabled;
 	}
 	
 	public void setParameter(int parameter, int value) {

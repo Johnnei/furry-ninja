@@ -51,6 +51,7 @@ public class TextRender {
 	 */
 	private void generateTextureMapping() {
 		Texture texture = new Texture("/res/font.png");
+		texture.setSizeLimit(true);
 		for (int i = 0; i <= 128; i++) {
 
 			int xOffset = i % 13;
