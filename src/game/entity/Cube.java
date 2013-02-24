@@ -1,6 +1,10 @@
 package game.entity;
 
+import static engine.render.RenderObject.COLOR;
+import static engine.render.RenderObject.TEXTURE;
+import static engine.render.RenderObject.VERTEX;
 import engine.render.TextRender;
+import engine.render.VertexHelper;
 import game.Team;
 import game.WormsGame;
 import game.data.Gamemode;
@@ -10,8 +14,6 @@ import java.nio.FloatBuffer;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.input.Keyboard;
-
-import static engine.render.RenderObject.VERTEX_COLOR;
 
 public class Cube extends LivingEntity {
 
@@ -41,7 +43,7 @@ public class Cube extends LivingEntity {
 	private boolean facingLeft;
 	
 	public Cube(int x, int y, int health, Team team, WormsGame wormsGame) {
-		super(VERTEX_COLOR, wormsGame, health, x, y, 16, 16);
+		super(VERTEX | TEXTURE | COLOR, wormsGame, health, x, y, 16, 32);
 		this.team = team;
 		myTurn = false;
 		facingLeft = (x > 640);
@@ -49,6 +51,7 @@ public class Cube extends LivingEntity {
 		selectedWeapon = 0;
 		crosshair = new Crosshair(this, x, y);
 		generateVertexData();
+		generateTextureData();
 		generateColorData();
 	}
 	
@@ -61,12 +64,19 @@ public class Cube extends LivingEntity {
 		
 		renderObject.updateColor(color);
 	}
+	
+	@Override
+	public void generateTextureData() {
+		renderObject.setTexture("/res/ninja_stand.png");
+		renderObject.updateTexture();
+	}
 
 	@Override
 	public void generateVertexData() {
-		FloatBuffer vertex = BufferUtils.createFloatBuffer(2 * 4);
+		VertexHelper vertex = new VertexHelper(2 * 4);
 		vertex.put(new float[] { x, y + height, x + width, y + height, x + width, y, x, y });
-		vertex.flip();
+		if(isFacingLeft())
+			vertex.mirror();
 		
 		renderObject.updateVertex(vertex);
 	}

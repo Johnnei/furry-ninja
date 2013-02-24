@@ -152,6 +152,10 @@ public class RenderObject {
 		return (flags & flag) == flag;
 	}
 	
+	public void updateVertex(VertexHelper helper) {
+		updateVertex(helper.toBuffer());
+	}
+	
 	public void updateVertex(FloatBuffer buffer) {
 		if(hasFlag(VERTEX)) {
 			glBindBuffer(GL_ARRAY_BUFFER, glId);

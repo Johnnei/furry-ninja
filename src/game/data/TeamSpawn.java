@@ -2,8 +2,8 @@ package game.data;
 
 public enum TeamSpawn {
 	
-	TeamA(new int[] { 10, 110, 210, 310}, new int[] {344, 344, 344, 344}),
-	TeamB(new int[] { 1254, 1154, 1054, 954}, new int[] {344, 344, 344, 344 });
+	TeamA(new int[] { 10, 110, 210, 310}, new int[] {328, 328, 328, 328}),
+	TeamB(new int[] { 1254, 1154, 1054, 954}, new int[] {328, 328, 328, 328 });
 	
 	private int[] spawnsX;
 	private int[] spawnsY;
