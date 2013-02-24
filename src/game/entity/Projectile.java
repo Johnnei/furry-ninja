@@ -1,31 +1,24 @@
 package game.entity;
 
+import static engine.render.RenderObject.VERTEX_TEXTURE;
 import game.WormsGame;
 import game.data.Gamemode;
 import game.data.TurnPhase;
-import game.data.WeaponType;
+import game.weapon.IWeapon;
 
 import java.nio.FloatBuffer;
 
 import org.lwjgl.BufferUtils;
-import static engine.render.RenderObject.VERTEX_TEXTURE;
 
 public class Projectile extends Entity {
 	
-	private int weaponId;
-	private int minDamage;
-	private int maxDamage;
-	private float damageRange;
+	private IWeapon weapon;
 	private Cube owner;
 	private boolean canDelete;
 	
-	public Projectile(WormsGame wormsGame, Cube owner, int x, int y, int id) {
-		super(VERTEX_TEXTURE, wormsGame, x, y, WeaponType.weaponWidth[id], WeaponType.weaponHeight[id]);
-		weaponId = id;
-		minDamage = WeaponType.projectileMinDamage[id];
-		maxDamage = WeaponType.projectileMaxDamage[id];
-		damageRange = WeaponType.projectileDamageRange[id];
-		
+	public Projectile(WormsGame wormsGame, Cube owner, int x, int y, IWeapon weapon) {
+		super(VERTEX_TEXTURE, wormsGame, x, y, weapon.getTextureWidth(), weapon.getTextureHeight());
+		this.weapon = weapon;
 		this.owner = owner;
 		generateTextureData();
 		
@@ -58,7 +51,7 @@ public class Projectile extends Entity {
 	 */
 	public void explode() {
 		canDelete = true;
-		Explosion e = new Explosion(owner, getPoint(), damageRange, minDamage, maxDamage, owner.getSelectedWeapon());
+		Explosion e = new Explosion(owner, getPoint(), weapon);
 		owner.getWormsGame().addRenderable(e);
 		e.explode();
 	}
@@ -104,7 +97,7 @@ public class Projectile extends Entity {
 
 	@Override
 	public void generateTextureData() {
-		renderObject.setTexture("/res/weapon/" + WeaponType.weaponName[weaponId] + "_shell.png");
+		renderObject.setTexture("/res/weapon/" + weapon.getName() + "_shell.png");
 		renderObject.updateTexture();
 	}
 	

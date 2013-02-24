@@ -8,17 +8,13 @@ import engine.math.Point;
 import engine.render.FrameRenderable;
 import game.Team;
 import game.World;
-import game.data.WeaponType;
+import game.weapon.IWeapon;
 
 public class Explosion extends FrameRenderable {
 
 	private Point explosionPoint;
 	private Entity owner;
-
-	private float damageRange;
-	private float landscapeRange;
-	private int minDamage;
-	private int maxDamage;
+	private IWeapon weapon;
 
 	/**
 	 * Creates a new explosion
@@ -32,13 +28,10 @@ public class Explosion extends FrameRenderable {
 	 * @param xDmg
 	 *            The maximum amount of damage at point p
 	 */
-	public Explosion(Entity e, Point p, float range, int mDmg, int xDmg, int weaponId) {
+	public Explosion(Entity e, Point p, IWeapon weapon) {
 		super(6, 3, true);
+		this.weapon = weapon;
 		owner = e;
-		damageRange = range * range;
-		landscapeRange = WeaponType.projectileLandscapeCut[weaponId];
-		maxDamage = xDmg;
-		minDamage = mDmg;
 		explosionPoint = p;
 		generateTextureData();
 		generateVertexData();
@@ -67,7 +60,7 @@ public class Explosion extends FrameRenderable {
 			for (int chunkX = 0; chunkX < (World.WIDTH / World.CHUNK_WIDTH); chunkX++) {
 				Point chunk = owner.getWormsGame().getWorld().getPoint(chunkX, chunkY);
 				float dSquared = explosionPoint.getSquaredDistanceTo(chunk);
-				if (dSquared < landscapeRange * landscapeRange)
+				if (dSquared < weapon.getLandscapeCut() * weapon.getLandscapeCut())
 					owner.getWormsGame().getWorld().destroy(chunkX, chunkY);
 			}
 		}
@@ -81,10 +74,10 @@ public class Explosion extends FrameRenderable {
 	 * @return The floored amount of damage the object has to recieve
 	 */
 	private int getDamage(float distance) {
-		if (distance > damageRange)
+		if (distance > weapon.getDamageRange() * weapon.getDamageRange())
 			return 0;
-		float dmgLossPerUnit = (float) (maxDamage - minDamage) / damageRange;
-		return (int) (maxDamage - (dmgLossPerUnit * distance));
+		float dmgLossPerUnit = (float) (weapon.getInnerDamage() - weapon.getOuterDamage()) / weapon.getDamageRange();
+		return (int) (weapon.getInnerDamage() - (dmgLossPerUnit * distance));
 	}
 
 	@Override

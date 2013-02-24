@@ -3,6 +3,7 @@ package game.entity;
 import game.WormsGame;
 import game.data.Gamemode;
 import game.data.TurnPhase;
+import game.weapon.EntityExplode;
 import static game.data.TurnPhase.*;
 
 public abstract class LivingEntity extends Entity {
@@ -94,7 +95,7 @@ public abstract class LivingEntity extends Entity {
 	 */
 	public void onDeath() {
 		takeDamage = 0;
-		Explosion e = new Explosion(this, getPoint(), 50, 1, 25, 1);
+		Explosion e = new Explosion(this, getPoint(), new EntityExplode());
 		getWormsGame().addRenderable(e);
 		e.explode();
 	}

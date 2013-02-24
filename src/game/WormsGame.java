@@ -14,7 +14,6 @@ import game.data.Gamemode;
 import game.data.TeamColor;
 import game.data.TeamSpawn;
 import game.data.TurnPhase;
-import game.data.WeaponType;
 import game.entity.Entity;
 import game.entity.FloatingText;
 import game.entity.HUD;
@@ -68,11 +67,6 @@ public class WormsGame {
 		projectiles = new ArrayList<Projectile>();
 		entities = new ArrayList<Entity>();
 		renderables = new ArrayList<Renderable>();
-		
-		//Defining Weapons
-		WeaponType.setWeapons(2);
-		//Id, Name, Width, Height, Ammo, minDamage, maxDamage, range
-		WeaponType.registerWeapon(0, "Bazooka", 16, 8, WeaponType.INFINITIVE, 1, 50, 100, 50);
 		
 		//Preparing Data
 		teams = new Team[2];

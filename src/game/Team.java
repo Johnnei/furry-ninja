@@ -1,9 +1,10 @@
 package game;
 
+import game.data.Gamemode;
 import game.data.TurnPhase;
-import game.data.WeaponType;
 import game.entity.Cube;
 import game.weapon.Weapon;
+import game.weapon.set.WeaponFactory;
 
 public class Team {
 	
@@ -31,10 +32,7 @@ public class Team {
 			cubes[i] = new Cube(spawnsX[i], spawnsY[i], 100, this, wormsGame);
 		}
 		turnIndex = -1;
-		weapons = new Weapon[WeaponType.weaponName.length];
-		for(int i = 0; i < weapons.length; i++) {
-			weapons[i] = new Weapon(i, WeaponType.weaponStartingAmmo[i]);
-		}
+		weapons = new WeaponFactory(Gamemode.weaponSet).createWeapons();
 	}
 	
 	public void render() {

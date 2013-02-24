@@ -1,5 +1,8 @@
 package game.data;
 
+import game.weapon.set.IWeaponSet;
+import game.weapon.set.NormalSet;
+
 public class Gamemode {
 	
 	//GameMode
@@ -12,5 +15,6 @@ public class Gamemode {
 	
 	//Game Data - final
 	public static final float GRAVITY = 0.20F;
+	public static IWeaponSet weaponSet = new NormalSet();
 
 }
