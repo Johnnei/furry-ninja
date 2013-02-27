@@ -72,12 +72,12 @@ public class HUD extends Renderable {
 	@Override
 	public void generateTextureData() {
 		Texture texture = new Texture("/res/header.png");
-		texture.addSubTexture(128, 0, 1, 16);
-		texture.addSubTexture(129, 0, 1, 16);
-		texture.addSubTexture(130, 0, 8, 16);
-		texture.addSubTexture(139, 0, 8, 16);
-		texture.addSubTexture(0, 0, 128, 64);
-		texture.setParameter(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		texture.addSubTexture(128, 0, 1, 16); //Healthbar
+		texture.addSubTexture(129, 0, 1, 16); //Healthbar
+		texture.addSubTexture(130, 0, 8, 16); //Healthbar end
+		texture.addSubTexture(139, 0, 8, 16); //healthbar end
+		texture.addSubTexture(0, 0, 128, 64); //Main texture
+		texture.setParameter(GL_TEXTURE_MAG_FILTER, GL_NEAREST); //Repeat texture instead of scaling
 		renderObject.setTexture(texture);
 		renderObject.updateTexture();
 	}

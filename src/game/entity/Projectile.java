@@ -77,20 +77,10 @@ public class Projectile extends Entity {
 	@Override
 	public void generateVertexData() {
 		VertexHelper vertex = new VertexHelper(2 * 4);
-		
-		/*float yMotion = this.yMotion;
-		if(xMotion < 0)
-			yMotion = -yMotion;
-		if(yMotion > 10)
-			yMotion = 10;
-		else if(yMotion < -10)
-			yMotion = -10;*/
-		
-		vertex.put(new float[] { x, y + height, x + width, y + height, x + width, y, x, y });
-		int mult = 10;
-		if(xMotion < 0)
-			mult = -mult;
-		vertex.rotate((int)(yMotion * mult), weapon.getTextureWidth(), weapon.getTextureHeight());
+		vertex.put(x, y, width, height);
+		if(yMotion != 0) {
+			vertex.rotate((int)(360 / (yMotion)));
+		}
 		
 		renderObject.updateVertex(vertex);
 	}
