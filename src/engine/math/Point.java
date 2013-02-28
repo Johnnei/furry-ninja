@@ -37,18 +37,22 @@ public class Point {
 	 * @return The angle in degrees	
 	 */
 	public float getAngleBetween(Point dest) {
+		//Calculate Triangle Points and side-lengths
 		Point adjacentSide = new Point(dest.getX(), getY());
 		float opositeSideLength = adjacentSide.getY() - dest.getY();
 		opositeSideLength *= opositeSideLength;
 		float tiltedSideLength = getSquaredDistanceTo(dest);
+		//Use Math to calculate the angle.
 		double ratio = WMath.divide(opositeSideLength, tiltedSideLength);
 		float f = (float)(180 / Math.PI * Math.acos(ratio)) - 90;
+		//Apply some corrections dealing with negative rotation errors and right to left motion rotation
 		if(dest.getX() - getX() < 0) {
 			f -= 180;
-		} else {
-			if(f < 0 && (dest.getY() < getY())) {
+			if(dest.getY() > getY()) {
 				f = -f;
 			}
+		} else if(f < 0 && dest.getY() < getY()) {
+			f = -f;
 		}
 		System.out.println("xMotion: " + (dest.getX() - getX()));
 		System.out.println("yMotion: " + (dest.getY() - getY()));
