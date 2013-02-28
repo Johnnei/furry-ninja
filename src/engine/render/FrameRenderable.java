@@ -65,7 +65,7 @@ public abstract class FrameRenderable extends Renderable {
 	 * Attaches the correct frame to the buffer
 	 * This should be called before glDrawArrays
 	 */
-	public void render() {
+	public void render(TextRender textRenderer) {
 		long textureOffset = (currentFrame + 1) * 8 * SIZE_GL_FLOAT;
 		renderObject.render(textureOffset);
 	}

@@ -1,5 +1,6 @@
 package engine;
 
+import engine.render.TextRender;
 import game.WormsGame;
 
 import org.lwjgl.LWJGLException;
@@ -11,6 +12,7 @@ import static org.lwjgl.opengl.GL11.*;
 public class Game {
 
 	private WormsGame game;
+	private TextRender textRenderer;
 	
 	/**
 	 * Creates a new instance of the Game Engine
@@ -24,6 +26,7 @@ public class Game {
 	public void run() {
 		initOpenGL();
 		game = new WormsGame();
+		textRenderer = new TextRender();
 		long lastTick = getCurrentMillis();
 		long lastFps = getCurrentMillis();
 		int fps = 0;
@@ -37,7 +40,7 @@ public class Game {
 			}
 			
 			//Game Render Section
-			game.render();
+			game.render(textRenderer);
 			
 			//LWJGL Updating
 			Display.update();

@@ -15,14 +15,9 @@ import org.lwjgl.BufferUtils;
 
 public class TextRender {
 
-	/**
-	 * Singleton instance to render text on VBO Level
-	 */
-	private static TextRender textRender = new TextRender();
-
 	private RenderObject textRenderer;
 
-	private TextRender() {
+	public TextRender() {
 		textRenderer = new RenderObject(VERTEX_TEXTURE);
 		generateTextureMapping();
 		textRenderer.resetBuffers();
@@ -112,15 +107,6 @@ public class TextRender {
 		}
 		if (renderObject != null && renderObject.hasFlag(COLOR))
 			glDisableClientState(GL_COLOR_ARRAY);
-	}
-
-	/**
-	 * Gets the singleton instance of TextRender
-	 * 
-	 * @return
-	 */
-	public static TextRender getTextRender() {
-		return textRender;
 	}
 
 }

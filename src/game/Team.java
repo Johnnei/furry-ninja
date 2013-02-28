@@ -1,5 +1,6 @@
 package game;
 
+import engine.render.TextRender;
 import game.data.Gamemode;
 import game.data.TurnPhase;
 import game.entity.Cube;
@@ -35,9 +36,9 @@ public class Team {
 		weapons = new WeaponFactory(Gamemode.weaponSet).createWeapons();
 	}
 	
-	public void render() {
+	public void render(TextRender textRenderer) {
 		for(int i = 0; i < cubes.length; i++) {
-			cubes[i].render();
+			cubes[i].render(textRenderer);
 		}
 	}
 	

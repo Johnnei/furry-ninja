@@ -76,8 +76,6 @@ public class WormsGame {
 		world = new World();
 		hud = new HUD(this);
 		
-		//Loading Text Engine
-		TextRender.getTextRender();
 		//Initialising First Turn
 		turnIndex = 0;
 		teams[turnIndex].onAdvanceTurn();
@@ -202,7 +200,7 @@ public class WormsGame {
 	/**
 	 * Renders everything to the screen
 	 */
-	public void render() {
+	public void render(TextRender textRenderer) {
 		glClear(GL_COLOR_BUFFER_BIT);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -212,27 +210,27 @@ public class WormsGame {
 		
 		//Render Entities
 		for(int i = 0; i < entities.size(); i++) {
-			entities.get(i).render();
+			entities.get(i).render(textRenderer);
 		}
 		
 		//Render Cubes
 		for(int i = 0; i < teams.length; i++) {
-			teams[i].render();
+			teams[i].render(textRenderer);
 		}
 		
 		//Render Projectiles
 		for(int i = 0; i < projectiles.size(); i++) {
-			projectiles.get(i).render();
+			projectiles.get(i).render(textRenderer);
 		}
 		
 		//Render generic renderables
 		for(int i = 0; i < renderables.size(); i++) {
-			renderables.get(i).render();
+			renderables.get(i).render(textRenderer);
 		}
 		
 		//Render GUI
-		hud.render();
-		TextRender.getTextRender().draw(1100, 40, "FPS: " + fps, null);
+		hud.render(textRenderer);
+		textRenderer.draw(1100, 40, "FPS: " + fps, null);
 	}
 	
 	/**

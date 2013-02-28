@@ -138,16 +138,16 @@ public class Cube extends LivingEntity {
 	}
 
 	@Override
-	public void render() {
+	public void render(TextRender textRenderer) {
 		if(isDead())
 			return;
 		
-		TextRender.getTextRender().drawCentered(x + (width / 2), y - 20, "" + getHealth(), renderObject);
+		textRenderer.drawCentered(x + (width / 2), y - 20, "" + getHealth(), renderObject);
 		
 		if(myTurn) {
-			crosshair.render();
+			crosshair.render(textRenderer);
 		}
-		super.render();
+		super.render(textRenderer);
 	}
 	
 	public void setMyTurn(boolean b) {

@@ -1,5 +1,6 @@
 package game.entity;
 
+import engine.render.TextRender;
 import game.WormsGame;
 import game.data.Gamemode;
 import game.data.TurnPhase;
@@ -109,7 +110,8 @@ public abstract class LivingEntity extends Entity {
 		return takeDamage == 0;
 	}
 
-	public void render() {
+	@Override
+	public void render(TextRender textRenderer) {
 		if (isDead())
 			return;
 		renderObject.render();

@@ -78,15 +78,15 @@ public class HUD extends Renderable {
 	}
 	
 	@Override
-	public void render() {
-		super.render();
-		renderText();
+	public void render(TextRender textRenderer) {
+		super.render(textRenderer);
+		renderText(textRenderer);
 	}
 
-	private void renderText() {
+	private void renderText(TextRender textRenderer) {
 		int time = WMath.ceil_i(wormsGame.getTurnTime() / 20D);
-		TextRender.getTextRender().drawCentered(640, 10, "Time left", null);
-		TextRender.getTextRender().drawCentered(640, 30, "" + time, null);
+		textRenderer.drawCentered(640, 10, "Time left", null);
+		textRenderer.drawCentered(640, 30, "" + time, null);
 	}
 
 }

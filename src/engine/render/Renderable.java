@@ -79,7 +79,7 @@ public abstract class Renderable {
 	/**
 	 * Renders the VBO to the screen
 	 */
-	public void render() {
+	public void render(TextRender textRenderer) {
 		renderObject.render();
 	}
 	

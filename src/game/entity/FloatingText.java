@@ -32,8 +32,8 @@ public class FloatingText extends Entity {
 	}
 
 	@Override
-	public void render() {
-		TextRender.getTextRender().drawCentered(x, y - floatingTime, text, renderObject);
+	public void render(TextRender textRenderer) {
+		textRenderer.drawCentered(x, y - floatingTime, text, renderObject);
 	}
 
 }

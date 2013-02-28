@@ -9,6 +9,7 @@ import static org.lwjgl.opengl.GL11.glEnableClientState;
 import org.lwjgl.input.Keyboard;
 
 import engine.render.Renderable;
+import engine.render.TextRender;
 import engine.render.VertexHelper;
 import game.data.Gamemode;
 
@@ -75,10 +76,10 @@ public class Crosshair extends Renderable {
 	}
 	
 	@Override
-	public void render() {
+	public void render(TextRender textRenderer) {
 		glEnableClientState(GL_COLOR_ARRAY);
 		owner.bindColor();
-		super.render();
+		super.render(textRenderer);
 		glDisableClientState(GL_COLOR_ARRAY);
 	}
 
