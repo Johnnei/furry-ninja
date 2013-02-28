@@ -39,7 +39,7 @@ public class Bazooka implements IWeapon {
 
 	@Override
 	public int getDamageRange() {
-		return 32;
+		return 48;
 	}
 
 	@Override
@@ -74,6 +74,16 @@ public class Bazooka implements IWeapon {
 
 	@Override
 	public void fire(Cube owner, Crosshair crosshair) {
+	}
+
+	@Override
+	public int getMaxAngle() {
+		return 180;
+	}
+
+	@Override
+	public int getMinAngle() {
+		return 0;
 	}
 
 }

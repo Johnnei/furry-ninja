@@ -30,10 +30,16 @@ public class Crosshair extends Renderable {
 
 	public void onTick(float baseX, float baseY) {
 		if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
-			angle = (angle + Gamemode.CROSSHAIR_SPEED) % 180;
+			angle += Gamemode.CROSSHAIR_SPEED;
+			if(angle > owner.getWeapon().getMaxAngle()) {
+				angle = owner.getWeapon().getMaxAngle();
+			}
 		}
 		if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
 			angle = (angle - Gamemode.CROSSHAIR_SPEED) % 180;
+			if(angle < owner.getWeapon().getMinAngle()) {
+				angle = owner.getWeapon().getMinAngle();
+			}
 		}
 		float dSin = (float) Math.sin(angle * (Math.PI / 180D));
 		float dCos = (float) Math.cos(angle * (Math.PI / 180D));

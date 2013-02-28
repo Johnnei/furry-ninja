@@ -55,5 +55,9 @@ public class Weapon {
 	public int getAmmo() {
 		return ammo;
 	}
+	
+	public IWeapon getStats() {
+		return weapon;
+	}
 
 }

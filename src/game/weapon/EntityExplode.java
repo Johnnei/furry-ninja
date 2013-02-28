@@ -75,4 +75,14 @@ public class EntityExplode implements IWeapon {
 		//Don't fire any projectiles
 	}
 
+	@Override
+	public int getMaxAngle() {
+		return 0;
+	}
+
+	@Override
+	public int getMinAngle() {
+		return 0;
+	}
+
 }

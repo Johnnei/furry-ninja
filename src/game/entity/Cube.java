@@ -9,6 +9,7 @@ import game.Team;
 import game.WormsGame;
 import game.data.Gamemode;
 import game.data.TurnPhase;
+import game.weapon.IWeapon;
 
 import java.nio.FloatBuffer;
 
@@ -155,6 +156,10 @@ public class Cube extends LivingEntity {
 
 	public Team getTeam() {
 		return team;
+	}
+	
+	public IWeapon getWeapon() {
+		return team.getWeapon(selectedWeapon).getStats();
 	}
 	
 	public int getSelectedWeapon() {

@@ -3,6 +3,12 @@ package game.weapon;
 import game.entity.Crosshair;
 import game.entity.Cube;
 
+/**
+ * An Interface to implement the Strategy Pattern.<br/>
+ * This class got all functions to define the weapon stats and how the game should handle it
+ * @author Johnnei
+ *
+ */
 public interface IWeapon {
 	
 	//Information
@@ -68,6 +74,18 @@ public interface IWeapon {
 	 * @return The minimum damage value
 	 */
 	public int getOuterDamage();
+	
+	/**
+	 * The maximum angle this weapon can have
+	 * @return The maximum angle
+	 */
+	public int getMaxAngle();
+	
+	/**
+	 * The minimum angle this weapon can have
+	 * @return The minimum angle
+	 */
+	public int getMinAngle();
 	
 	//Texture Information
 	
