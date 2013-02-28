@@ -74,7 +74,7 @@ public class VertexHelper {
 		FRectangle rectangle = rectangles.get(squareIndex);
 		if(rectangle == null)
 			throw new IndexOutOfBoundsException("Rectangle " + squareIndex + " is not defined");
-		final float radians = (float)Math.PI / 360F;
+		final float radians = (float)Math.PI / 180F;
 		float sin = (float)Math.sin(angle * radians);
 		float cos = (float)Math.cos(angle * radians);
 		points[rectangle.getOffset() + TOP_LEFT_X] = rectangle.getX() + getRotationX(rectangle.getOriginX(), rectangle.getOriginY(), sin, cos);

@@ -34,7 +34,7 @@ public class Projectile extends Entity {
 	}
 	
 	/**
-	 * Execute Diffrent movement then the Entity
+	 * Execute Different movement then the Entity
 	 */
 	public void doMovement() {
 		x += xMotion;
@@ -80,13 +80,8 @@ public class Projectile extends Entity {
 		VertexHelper vertex = new VertexHelper(2 * 4);
 		vertex.put(x, y, width, height);
 		
-		float xAim = x + xMotion;
-		float yAim = y + yMotion;
-		
-		Point xAxis = new Point(xAim, y);
-		Point dest = new Point(xAim, yAim);
-		
-		vertex.rotate(getPoint().getAngleBetween(xAxis, dest));
+		Point dest = new Point(x + xMotion, y + yMotion);		
+		vertex.rotate(getPoint().getAngleBetween(dest));
 		
 		renderObject.updateVertex(vertex);
 	}

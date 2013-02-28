@@ -30,18 +30,28 @@ public class Point {
 	}
 	
 	/**
-	 * Uses cosinus to calculate the angle between three points
+	 * Uses cosinus to calculate the angle between three points<br/>
+	 * WARNING: I assume that all textures are rotated 90 degrees by default
 	 * Note to self: COS: Cos = Overliggende / Schuine
-	 * @param adjacentSide The adjacent side
-	 * @param oposite The opposite side
+	 * @param dest The point the entity is heading to
 	 * @return The angle in degrees	
 	 */
-	public float getAngleBetween(Point adjacentSide, Point oposite) {
-		float opositeSideLength = adjacentSide.getY() - oposite.getY(); //Non-Squared!
-		opositeSideLength *= opositeSideLength; //Squared
-		float tiltedSideLength = (float)Math.sqrt(getSquaredDistanceTo(oposite));
-		double ratio = WMath.divide(opositeSideLength, tiltedSideLength) % 1;
-		float f = (float)Math.toDegrees(Math.acos(ratio));
+	public float getAngleBetween(Point dest) {
+		Point adjacentSide = new Point(dest.getX(), getY());
+		float opositeSideLength = adjacentSide.getY() - dest.getY();
+		opositeSideLength *= opositeSideLength;
+		float tiltedSideLength = getSquaredDistanceTo(dest);
+		double ratio = WMath.divide(opositeSideLength, tiltedSideLength);
+		float f = (float)(180 / Math.PI * Math.acos(ratio)) - 90;
+		if(dest.getX() - getX() < 0) {
+			f -= 180;
+		} else {
+			if(f < 0 && (dest.getY() < getY())) {
+				f = -f;
+			}
+		}
+		System.out.println("xMotion: " + (dest.getX() - getX()));
+		System.out.println("yMotion: " + (dest.getY() - getY()));
 		System.out.println("cos-1(" + opositeSideLength + "/" + tiltedSideLength + ") = cos-1(" + ratio + ") = " + f);
 		return f;
 	}
