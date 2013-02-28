@@ -1,17 +1,13 @@
 package game.entity;
 
 import static engine.render.RenderObject.VERTEX_TEXTURE;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_MAG_FILTER;
 import static org.lwjgl.opengl.GL11.GL_NEAREST;
-
-import java.nio.FloatBuffer;
-
-import org.lwjgl.BufferUtils;
-
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_MAG_FILTER;
 import engine.WMath;
 import engine.render.Renderable;
 import engine.render.TextRender;
 import engine.render.Texture;
+import engine.render.VertexHelper;
 import game.Team;
 import game.WormsGame;
 
@@ -37,7 +33,7 @@ public class HUD extends Renderable {
 
 	@Override
 	public void generateVertexData() {
-		FloatBuffer vertexBuffer = BufferUtils.createFloatBuffer(2 * 4 * 5);
+		VertexHelper vertexBuffer = new VertexHelper(2 * 4 * 5);
 
 		final int headerX = 576; // (1280 / 2) - (128 / 2)
 		final int barY = 28;
@@ -57,14 +53,13 @@ public class HUD extends Renderable {
 		//Healthbar
 		int barX = headerX - teamHealth[0] + 18;
 		int barX2 = headerX + width - 18;
-		vertexBuffer.put(new float[] { barX, barY + barHeight, barX + teamHealth[0], barY + barHeight, barX + teamHealth[0], barY, barX, barY});
-		vertexBuffer.put(new float[] { barX2, barY + barHeight, barX2 + teamHealth[1], barY + barHeight, barX2 + teamHealth[1], barY, barX2, barY});
+		vertexBuffer.put(barX, barY, teamHealth[0], barHeight);
+		vertexBuffer.put(barX2, barY, teamHealth[1], barHeight);
 		//Healthbar ends
-		vertexBuffer.put(new float[] { barX - barWidth, barY + barHeight, barX, barY + barHeight, barX, barY, barX - barWidth, barY});
-		vertexBuffer.put(new float[] { barX2 + teamHealth[1], barY + barHeight, barX2 + teamHealth[1] + barWidth, barY + barHeight, barX2 + teamHealth[1] + barWidth, barY, barX2 + teamHealth[1], barY});
+		vertexBuffer.put(barX - barWidth, barY, barWidth, barHeight);
+		vertexBuffer.put(barX2 + teamHealth[1], barY, barWidth, barHeight);
 		//Header
-		vertexBuffer.put(new float[] { headerX, height, headerX + width, height, headerX + width, 0, headerX, 0 });
-		vertexBuffer.flip();
+		vertexBuffer.put(headerX, 0, width, height);
 
 		renderObject.updateVertex(vertexBuffer);
 	}

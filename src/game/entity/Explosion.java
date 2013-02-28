@@ -1,11 +1,8 @@
 package game.entity;
 
-import java.nio.FloatBuffer;
-
-import org.lwjgl.BufferUtils;
-
 import engine.math.Point;
 import engine.render.FrameRenderable;
+import engine.render.VertexHelper;
 import game.Team;
 import game.World;
 import game.weapon.IWeapon;
@@ -92,9 +89,8 @@ public class Explosion extends FrameRenderable {
 		float width = 64F;
 		float x = explosionPoint.getX() - (width / 2F);
 		float y = explosionPoint.getY() - (height / 2F);
-		FloatBuffer vertex = BufferUtils.createFloatBuffer(2 * 4);
-		vertex.put(new float[] { x, y + height, x + width, y + height, x + width, y, x, y });
-		vertex.flip();
+		VertexHelper vertex = new VertexHelper(2 * 4);
+		vertex.put(x, y, width, height);
 
 		renderObject.updateVertex(vertex);
 	}

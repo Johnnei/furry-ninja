@@ -1,17 +1,15 @@
 package game.entity;
 
-import static org.lwjgl.opengl.GL11.glEnableClientState;
-import static org.lwjgl.opengl.GL11.glDisableClientState;
-import static org.lwjgl.opengl.GL11.GL_COLOR_ARRAY;
 import static engine.render.RenderObject.TEXTURE;
 import static engine.render.RenderObject.VERTEX;
+import static org.lwjgl.opengl.GL11.GL_COLOR_ARRAY;
+import static org.lwjgl.opengl.GL11.glDisableClientState;
+import static org.lwjgl.opengl.GL11.glEnableClientState;
 
-import java.nio.FloatBuffer;
-
-import org.lwjgl.BufferUtils;
 import org.lwjgl.input.Keyboard;
 
 import engine.render.Renderable;
+import engine.render.VertexHelper;
 import game.data.Gamemode;
 
 public class Crosshair extends Renderable {
@@ -51,9 +49,8 @@ public class Crosshair extends Renderable {
 
 	@Override
 	public void generateVertexData() {
-		FloatBuffer vertexBuffer = BufferUtils.createFloatBuffer(2 * 4);
-		vertexBuffer.put(new float[] { x, y + 16, x + 16, y + 16, x + 16, y, x, y });
-		vertexBuffer.flip();
+		VertexHelper vertexBuffer = new VertexHelper(2 * 4);
+		vertexBuffer.put(x, y, 16, 16);
 		renderObject.updateVertex(vertexBuffer);
 	}
 

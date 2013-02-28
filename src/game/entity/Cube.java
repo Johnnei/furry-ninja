@@ -74,7 +74,7 @@ public class Cube extends LivingEntity {
 	@Override
 	public void generateVertexData() {
 		VertexHelper vertex = new VertexHelper(2 * 4);
-		vertex.put(new float[] { x, y + height, x + width, y + height, x + width, y, x, y });
+		vertex.put(x, y, width, height);
 		if(isFacingLeft())
 			vertex.mirror();
 		
