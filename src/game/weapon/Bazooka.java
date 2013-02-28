@@ -39,7 +39,7 @@ public class Bazooka implements IWeapon {
 
 	@Override
 	public int getDamageRange() {
-		return 90;
+		return 32;
 	}
 
 	@Override

@@ -54,9 +54,6 @@ public class Point {
 		} else if(f < 0 && dest.getY() < getY()) {
 			f = -f;
 		}
-		System.out.println("xMotion: " + (dest.getX() - getX()));
-		System.out.println("yMotion: " + (dest.getY() - getY()));
-		System.out.println("cos-1(" + opositeSideLength + "/" + tiltedSideLength + ") = cos-1(" + ratio + ") = " + f);
 		return f;
 	}
 	
