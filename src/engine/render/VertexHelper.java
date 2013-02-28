@@ -60,7 +60,7 @@ public class VertexHelper {
 	 * Only the last rotation will be applied per <tt>put(x, y, width, height)</tt>
 	 * @param angle The amount of degrees to rotate
 	 */
-	public void rotate(int angle) {
+	public void rotate(float angle) {
 		rotate(angle, 0);
 	}
 	
@@ -70,7 +70,7 @@ public class VertexHelper {
 	 * @param angle The amount of degrees to rotate
 	 * @param squareIndex The zero-based number of the insertion (1st put = 0)
 	 */
-	public void rotate(int angle, int squareIndex) {
+	public void rotate(float angle, int squareIndex) {
 		FRectangle rectangle = rectangles.get(squareIndex);
 		if(rectangle == null)
 			throw new IndexOutOfBoundsException("Rectangle " + squareIndex + " is not defined");

@@ -1,6 +1,7 @@
 package game.entity;
 
 import static engine.render.RenderObject.VERTEX_TEXTURE;
+import engine.math.Point;
 import engine.render.VertexHelper;
 import game.WormsGame;
 import game.data.Gamemode;
@@ -48,7 +49,7 @@ public class Projectile extends Entity {
 	 */
 	public void explode() {
 		canDelete = true;
-		Explosion e = new Explosion(owner, getPoint(), weapon);
+		Explosion e = new Explosion(owner, getExplosionPoint(), weapon);
 		owner.getWormsGame().addRenderable(e);
 		e.explode();
 	}
@@ -78,9 +79,14 @@ public class Projectile extends Entity {
 	public void generateVertexData() {
 		VertexHelper vertex = new VertexHelper(2 * 4);
 		vertex.put(x, y, width, height);
-		if(yMotion != 0) {
-			vertex.rotate((int)(360 / (yMotion)));
-		}
+		
+		float xAim = x + xMotion;
+		float yAim = y + yMotion;
+		
+		Point xAxis = new Point(xAim, y);
+		Point dest = new Point(xAim, yAim);
+		
+		vertex.rotate(getPoint().getAngleBetween(xAxis, dest));
 		
 		renderObject.updateVertex(vertex);
 	}
@@ -94,6 +100,10 @@ public class Projectile extends Entity {
 	@Override
 	public boolean canDelete() {
 		return canDelete;
+	}
+	
+	private Point getExplosionPoint() {
+		return new Point(x + (width / 2), y - (height / 2));
 	}
 
 }

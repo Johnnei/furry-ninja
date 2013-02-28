@@ -1,6 +1,6 @@
 package engine;
 
-public class WMath {
+public class WMath { 
 	
 	/**
 	 * Gives the positive value of f
@@ -54,6 +54,19 @@ public class WMath {
 	public static int ceil_i(double d) {
 		int i = (int)d;
 		return (i < d) ? i + 1 : i;
+	}
+	
+	/**
+	 * Divides <tt>f/f2</tt><br/>
+	 * If <tt>f2</tt> is 0 it will return 0 instead of DivideByZeroException
+	 * @param f
+	 * @param f2
+	 * @return <tt>f/f2</tt> or 0 if <tt>f2</tt> is 0
+	 */
+	public static double divide(double f, double f2) {
+		if(f2 == 0)
+			return 0f;
+		return f / f2;
 	}
 
 }

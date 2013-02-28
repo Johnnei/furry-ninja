@@ -29,6 +29,23 @@ public class Point {
 		return (a * a) + (b * b);
 	}
 	
+	/**
+	 * Uses cosinus to calculate the angle between three points
+	 * Note to self: COS: Cos = Overliggende / Schuine
+	 * @param adjacentSide The adjacent side
+	 * @param oposite The opposite side
+	 * @return The angle in degrees	
+	 */
+	public float getAngleBetween(Point adjacentSide, Point oposite) {
+		float opositeSideLength = adjacentSide.getY() - oposite.getY(); //Non-Squared!
+		opositeSideLength *= opositeSideLength; //Squared
+		float tiltedSideLength = (float)Math.sqrt(getSquaredDistanceTo(oposite));
+		double ratio = WMath.divide(opositeSideLength, tiltedSideLength) % 1;
+		float f = (float)Math.toDegrees(Math.acos(ratio));
+		System.out.println("cos-1(" + opositeSideLength + "/" + tiltedSideLength + ") = cos-1(" + ratio + ") = " + f);
+		return f;
+	}
+	
 	public float getX() {
 		return x;
 	}
