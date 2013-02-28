@@ -26,6 +26,7 @@ public class FRectangle {
 		this.width = width;
 		this.height = height;
 		this.offset = offset;
+		written = false;
 	}
 	
 	public float getX() {

@@ -114,6 +114,7 @@ public class VertexHelper {
 			points[rectangle.getOffset() + TOP_RIGHT_Y] = rectangle.getY();
 			points[rectangle.getOffset() + TOP_LEFT_X] = rectangle.getX();
 			points[rectangle.getOffset() + TOP_LEFT_Y] = rectangle.getY();
+			rectangle.setWritten(true);
 		}
 	}
 	
