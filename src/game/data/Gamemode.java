@@ -14,7 +14,7 @@ public class Gamemode {
 	public static int CROSSHAIR_SPEED = 5;
 	
 	//Game Data - final
-	public static final float GRAVITY = 0.20F;
+	public static final float GRAVITY = 9.87F / 20F;
 	public static IWeaponSet weaponSet = new NormalSet();
 
 }

@@ -4,7 +4,6 @@ import static engine.render.RenderObject.VERTEX_TEXTURE;
 import engine.math.Point;
 import engine.render.VertexHelper;
 import game.WormsGame;
-import game.data.Gamemode;
 import game.data.TurnPhase;
 import game.weapon.IWeapon;
 
@@ -24,27 +23,6 @@ public class Projectile extends Entity {
 	}
 	
 	/**
-	 * Set the motions on x and y axis
-	 * @param x
-	 * @param y
-	 */
-	public void setMotion(float x, float y) {
-		xMotion = x;
-		yMotion = y;
-	}
-	
-	/**
-	 * Execute Different movement then the Entity
-	 */
-	public void doMovement() {
-		x += xMotion;
-		y -= yMotion;
-		
-		yMotion -= Gamemode.GRAVITY * fallDuration;
-		fallDuration++;
-	}
-	
-	/**
 	 * Explodes the projectile
 	 */
 	public void explode() {
@@ -59,10 +37,8 @@ public class Projectile extends Entity {
 		doMovement();
 		
 		//Test if it should explode
-		if(!owner.getCollisionBox().intersects(getCollisionBox())) { //Don't Selfkill
-			if(wormsGame.collides(this)) { //Should do boom?
-				explode();
-			}
+		if(isOnGround()) {
+			explode();
 		}
 		
 		if(x < 0 || x > 1280 || y < 0 || y > 720)

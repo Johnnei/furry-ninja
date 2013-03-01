@@ -25,15 +25,14 @@ public class Weapon {
 	 * @param crosshair 
 	 */
 	public void fire(Cube owner, Crosshair crosshair) {
-		Projectile p = new Projectile(owner.getWormsGame(), owner, (int)owner.getX(), (int)owner.getY(), weapon);
+		Projectile p = new Projectile(owner.getWormsGame(), owner, (int)crosshair.getX(), (int)crosshair.getY(), weapon);
 		float dCos = (float)Math.cos(crosshair.getAngle() * (Math.PI / 180));
 		float dSin = (float)Math.sin(crosshair.getAngle() * (Math.PI / 180));
 		
 		int power = 10; //TODO Add Crosshair power
 		if(owner.isFacingLeft())
-			p.setMotion(-power * dSin, 15 * -dCos);
-		else
-			p.setMotion(power * dSin, 15 * -dCos);
+			power = -power;
+		p.addMotionVector(power * dSin, 15 * -dCos, 0, 100);
 		owner.getWormsGame().addProjectile(p);
 		addAmmo(-1);
 	}

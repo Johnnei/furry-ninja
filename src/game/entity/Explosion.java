@@ -71,11 +71,9 @@ public class Explosion extends FrameRenderable {
 	 * @return The floored amount of damage the object has to recieve
 	 */
 	private int getDamage(float distance) {
-		System.out.println(distance + " > " + (weapon.getDamageRange() * weapon.getDamageRange()));
 		if (distance > weapon.getDamageRange() * weapon.getDamageRange())
 			return 0;
 		float dmgLossPerUnit = (float) (weapon.getInnerDamage() - weapon.getOuterDamage()) / (weapon.getDamageRange() * weapon.getDamageRange());
-		System.out.println("dmgLossPerUnit: " + dmgLossPerUnit);
 		return (int) (weapon.getInnerDamage() - (dmgLossPerUnit * distance));
 	}
 

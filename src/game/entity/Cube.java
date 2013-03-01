@@ -7,7 +7,6 @@ import engine.render.TextRender;
 import engine.render.VertexHelper;
 import game.Team;
 import game.WormsGame;
-import game.data.Gamemode;
 import game.data.TurnPhase;
 import game.weapon.IWeapon;
 
@@ -27,10 +26,6 @@ public class Cube extends LivingEntity {
 	 */
 	private boolean myTurn;
 	/**
-	 * Aiming Angle
-	 */
-	private float angle;
-	/**
 	 * The currently selected weapon
 	 */
 	private int selectedWeapon;
@@ -48,7 +43,6 @@ public class Cube extends LivingEntity {
 		this.team = team;
 		myTurn = false;
 		facingLeft = (x > 640);
-		angle = 0F;
 		selectedWeapon = 0;
 		crosshair = new Crosshair(this, x, y);
 		generateVertexData();
@@ -96,34 +90,22 @@ public class Cube extends LivingEntity {
 		//Add Keyboard input
 		if(myTurn && turn == TurnPhase.PLAY) {
 			if(Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
-				xMotion -= 5;
+				//xMotion -= 5;
+				addMotionVector(-1.2F, 0, 10, 0);
 				facingLeft = true;
 			}
 			if(Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
-				xMotion += 5;
+				addMotionVector(1.2F, 0, 10, 0);
 				facingLeft = false;
 			}
-			if((Keyboard.isKeyDown(Keyboard.KEY_RETURN) && isOnGround()))
+			if((Keyboard.isKeyDown(Keyboard.KEY_RETURN) && isOnGround())) {
 				setJumping(true);
-			if(Keyboard.isKeyDown(Keyboard.KEY_UP)) {
-				angle += 0.5F;
-				if(angle > 90F)
-					angle = 90F;
-			}
-			if(Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
-				angle -= 0.5F;
-				if(angle < 0F)
-					angle = 0F;
+				addMotionVector(0, -25, 0, 20);
 			}
 			if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
 				team.getWeapon(selectedWeapon).fire(this, crosshair);
 				myTurn = false;
 			}
-		}
-		
-		//Calculate Jumping
-		if(isJumping() && fallDuration < 10) {
-			yMotion += Gamemode.JUMP_SPEED / (fallDuration * 0.1D);
 		}
 		
 		//Do movement

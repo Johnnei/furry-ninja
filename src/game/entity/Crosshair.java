@@ -82,5 +82,13 @@ public class Crosshair extends Renderable {
 		super.render(textRenderer);
 		glDisableClientState(GL_COLOR_ARRAY);
 	}
+	
+	public float getX() {
+		return x;
+	}
+	
+	public float getY() {
+		return y;
+	}
 
 }
