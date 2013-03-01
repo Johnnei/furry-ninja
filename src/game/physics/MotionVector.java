@@ -1,4 +1,4 @@
-package game.entity;
+package game.physics;
 
 public class MotionVector {
 	

@@ -1,4 +1,4 @@
-package game.entity;
+package game.display;
 
 import static engine.render.RenderObject.TEXTURE;
 import static engine.render.RenderObject.VERTEX;
@@ -12,6 +12,7 @@ import engine.render.Renderable;
 import engine.render.TextRender;
 import engine.render.VertexHelper;
 import game.data.Gamemode;
+import game.entity.Cube;
 
 public class Crosshair extends Renderable {
 

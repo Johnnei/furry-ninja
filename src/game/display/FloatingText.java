@@ -1,9 +1,10 @@
-package game.entity;
+package game.display;
 
 import engine.render.RenderObject;
 import engine.render.TextRender;
 import game.WormsGame;
 import game.data.TurnPhase;
+import game.entity.Entity;
 
 public class FloatingText extends Entity {
 	

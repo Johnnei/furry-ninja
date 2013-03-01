@@ -14,9 +14,9 @@ import game.data.Gamemode;
 import game.data.TeamColor;
 import game.data.TeamSpawn;
 import game.data.TurnPhase;
+import game.display.FloatingText;
+import game.display.HUD;
 import game.entity.Entity;
-import game.entity.FloatingText;
-import game.entity.HUD;
 import game.entity.Projectile;
 
 import java.awt.Rectangle;

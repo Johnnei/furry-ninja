@@ -8,6 +8,7 @@ import engine.render.VertexHelper;
 import game.Team;
 import game.WormsGame;
 import game.data.TurnPhase;
+import game.display.Crosshair;
 import game.weapon.IWeapon;
 
 import java.nio.FloatBuffer;

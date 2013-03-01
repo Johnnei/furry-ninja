@@ -1,10 +1,12 @@
-package game.entity;
+package game.display;
 
 import engine.math.Point;
 import engine.render.FrameRenderable;
 import engine.render.VertexHelper;
 import game.Team;
 import game.World;
+import game.entity.Cube;
+import game.entity.Entity;
 import game.weapon.IWeapon;
 
 public class Explosion extends FrameRenderable {

@@ -9,6 +9,7 @@ import engine.render.Renderable;
 import game.WormsGame;
 import game.data.Gamemode;
 import game.data.TurnPhase;
+import game.physics.MotionVector;
 
 public abstract class Entity extends Renderable {
 	

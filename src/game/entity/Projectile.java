@@ -5,6 +5,7 @@ import engine.math.Point;
 import engine.render.VertexHelper;
 import game.WormsGame;
 import game.data.TurnPhase;
+import game.display.Explosion;
 import game.weapon.IWeapon;
 
 public class Projectile extends Entity {

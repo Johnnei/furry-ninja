@@ -1,6 +1,6 @@
 package game.weapon;
 
-import game.entity.Crosshair;
+import game.display.Crosshair;
 import game.entity.Cube;
 
 public class Bazooka implements IWeapon {

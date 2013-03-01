@@ -1,4 +1,4 @@
-package game.entity;
+package game.display;
 
 import static engine.render.RenderObject.VERTEX_TEXTURE;
 import static org.lwjgl.opengl.GL11.GL_NEAREST;

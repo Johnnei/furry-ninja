@@ -4,6 +4,7 @@ import engine.render.TextRender;
 import game.WormsGame;
 import game.data.Gamemode;
 import game.data.TurnPhase;
+import game.display.Explosion;
 import game.weapon.EntityExplode;
 import static game.data.TurnPhase.*;
 
