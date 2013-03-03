@@ -84,9 +84,25 @@ public class HUD extends Renderable {
 	}
 
 	private void renderText(TextRender textRenderer) {
-		int time = WMath.ceil_i(wormsGame.getTurnTime() / 20D);
-		textRenderer.drawCentered(640, 10, "Time left", null);
-		textRenderer.drawCentered(640, 30, "" + time, null);
+		switch(wormsGame.getTurnPhase()) {
+		case PLAY:
+			int time = WMath.ceil_i(wormsGame.getTurnTime() / 20D);
+			textRenderer.drawCentered(640, 10, "Time left", null);
+			textRenderer.drawCentered(640, 30, "" + time, null);
+			break;
+		case CUBE_CHANGE:
+			textRenderer.drawCentered(640, 10, "Switching", null);
+			textRenderer.drawCentered(640, 30, "Turn", null);
+			break;
+		case DAMAGE:
+			textRenderer.drawCentered(640, 20, "Ouch!", null);
+			break;
+		case PROJECTILE_WAIT:
+			textRenderer.drawCentered(640, 20, "Swoosh!", null);
+			break;
+		default:
+			break;
+		}
 	}
 
 }

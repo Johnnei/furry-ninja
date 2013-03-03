@@ -323,4 +323,8 @@ public class WormsGame {
 		this.fps = fps;
 	}
 
+	public TurnPhase getTurnPhase() {
+		return turnPhase;
+	}
+
 }
