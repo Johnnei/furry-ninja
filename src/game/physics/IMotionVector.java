@@ -12,7 +12,7 @@ public interface IMotionVector {
 
 	/**
 	 * A function which will be called each game update
-	 * @param entity TODO
+	 * @param entity The entity on who the motion has to be applied
 	 */
 	public void onTick(Entity entity);
 

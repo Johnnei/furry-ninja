@@ -93,16 +93,16 @@ public class Cube extends LivingEntity {
 		if(myTurn && turn == TurnPhase.PLAY) {
 			if(Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
 				//xMotion -= 5;
-				addMotionVector(new MotionVector(-1.2F, 0, 10, 0));
+				addMotionVector(new MotionVector(-0.75F, 0, 10, 0));
 				facingLeft = true;
 			}
 			if(Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
-				addMotionVector(new MotionVector(1.2F, 0, 10, 0));
+				addMotionVector(new MotionVector(0.75F, 0, 10, 0));
 				facingLeft = false;
 			}
 			if((Keyboard.isKeyDown(Keyboard.KEY_RETURN) && isOnGround())) {
 				setJumping(true);
-				addMotionVector(new MotionVector(0, -25, 0, 20));
+				addMotionVector(new MotionVector(0, -7.5F, 0, 20));
 			}
 			if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
 				team.getWeapon(selectedWeapon).fire(this, crosshair);

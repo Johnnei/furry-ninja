@@ -4,7 +4,6 @@ import game.display.Crosshair;
 import game.entity.Cube;
 import game.entity.Projectile;
 import game.physics.MotionVector;
-import game.physics.StaticMotion;
 
 public class Weapon {
 	
@@ -32,10 +31,10 @@ public class Weapon {
 		float dSin = (float)Math.sin(crosshair.getAngle() * (Math.PI / 180));
 		
 		int power = 10; //TODO Add Crosshair power
+		int yPower = power;
 		if(owner.isFacingLeft())
 			power = -power;
-		p.addMotionVector(new StaticMotion(power * dSin, 0));
-		p.addMotionVector(new MotionVector(0, 15 * dCos, 0, 100));
+		p.addMotionVector(new MotionVector(power * dSin, yPower * dCos, 150, 150));
 		owner.getWormsGame().addProjectile(p);
 		addAmmo(-1);
 	}

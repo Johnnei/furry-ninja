@@ -45,7 +45,6 @@ public class Point {
 		//Use Math to calculate the angle.
 		double ratio = WMath.divide(opositeSideLength, tiltedSideLength);
 		float f = (float)(180 / Math.PI * Math.acos(ratio)) - 90;
-		System.out.println("Angle: " + (f + 90));
 		//Apply some corrections dealing with negative rotation errors and right to left motion rotation
 		if(dest.getX() - getX() < 0) {
 			f -= 180;

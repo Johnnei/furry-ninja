@@ -57,7 +57,7 @@ public class Projectile extends Entity {
 		VertexHelper vertex = new VertexHelper(2 * 4);
 		vertex.put(x, y, width, height);
 		
-		Point dest = new Point(x + xMotion, y + yMotion);		
+		Point dest = new Point(x + xMotion, y - yMotion);
 		vertex.rotate(getPoint().getAngleBetween(dest));
 		
 		renderObject.updateVertex(vertex);

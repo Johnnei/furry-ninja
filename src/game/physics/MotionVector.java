@@ -39,8 +39,8 @@ public class MotionVector implements IMotionVector {
 		lifetime = 1;
 		this.xMotion = xMotion;
 		this.yMotion = yMotion;
-		this.xMotionLifetime = xMotionLifetime;
-		this.yMotionLifetime = yMotionLifetime;
+		this.xMotionLifetime = xMotionLifetime + 1;
+		this.yMotionLifetime = yMotionLifetime + 1;
 	}
 	
 	/* (non-Javadoc)
@@ -64,7 +64,9 @@ public class MotionVector implements IMotionVector {
 	 */
 	@Override
 	public float getMotionY() {
-		return yMotion / lifetime;
+		final int ticks = Math.min(lifetime, yMotionLifetime);
+		final float reductionPerTick = yMotion / yMotionLifetime; 
+		return yMotion - (ticks * reductionPerTick);
 	}
 	
 	/* (non-Javadoc)
@@ -72,7 +74,9 @@ public class MotionVector implements IMotionVector {
 	 */
 	@Override
 	public float getMotionX() {
-		return xMotion / lifetime;
+		final int ticks = Math.min(lifetime, xMotionLifetime);
+		final float reductionPerTick = xMotion / xMotionLifetime; 
+		return xMotion - (ticks * reductionPerTick);
 	}
 
 }
