@@ -14,10 +14,15 @@ public class Weapon {
 	
 	private IWeapon weapon;
 	private int ammo;
+	/**
+	 * The firepower of this gun
+	 */
+	private float charge;
 	
 	public Weapon(IWeapon weapon) {
 		this.weapon = weapon;
 		ammo = weapon.getStartingAmmo();
+		charge = 0;
 	}
 	
 	/**
@@ -30,13 +35,13 @@ public class Weapon {
 		float dCos = (float)Math.cos(crosshair.getAngle() * (Math.PI / 180));
 		float dSin = (float)Math.sin(crosshair.getAngle() * (Math.PI / 180));
 		
-		int power = 10; //TODO Add Crosshair power
-		int yPower = power;
+		float yPower = charge;
 		if(owner.isFacingLeft())
-			power = -power;
-		p.addMotionVector(new MotionVector(power * dSin, yPower * dCos, 150, 150));
+			charge = -charge;
+		p.addMotionVector(new MotionVector(charge * dSin, yPower * dCos, 150, 150));
 		owner.getWormsGame().addProjectile(p);
 		addAmmo(-1);
+		charge = 0; //Reset Charge
 	}
 	
 	/**
@@ -55,6 +60,23 @@ public class Weapon {
 	 */
 	public int getAmmo() {
 		return ammo;
+	}
+	
+	public void charge() {
+		if(charge < weapon.getMaxFirePower()) {
+			charge += 0.25F;
+			if(charge < weapon.getMinFirePower()) {
+				charge = weapon.getMinFirePower();
+			}
+		}
+	}
+	
+	public boolean isCharging() {
+		return charge > 0;
+	}
+	
+	public boolean isMaxCharge() {
+		return charge == weapon.getMaxFirePower();
 	}
 	
 	public IWeapon getStats() {

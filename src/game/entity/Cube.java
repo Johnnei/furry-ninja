@@ -96,8 +96,16 @@ public class Cube extends LivingEntity {
 				addMotionVector(new MotionVector(0, -7.5F, 0, 20));
 			}
 			if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
-				team.getWeapon(selectedWeapon).fire(this, crosshair);
-				myTurn = false;
+				team.getWeapon(selectedWeapon).charge();
+				if(team.getWeapon(selectedWeapon).isMaxCharge()) {
+					team.getWeapon(selectedWeapon).fire(this, crosshair);
+					myTurn = false;
+				}
+			} else {
+				if(team.getWeapon(selectedWeapon).isCharging()) {
+					team.getWeapon(selectedWeapon).fire(this, crosshair);
+					myTurn = false;
+				}
 			}
 		}
 		

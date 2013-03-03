@@ -22,14 +22,12 @@ public class Bazooka implements IWeapon {
 
 	@Override
 	public int getMinFirePower() {
-		// TODO Auto-generated method stub
-		return 0;
+		return 2;
 	}
 
 	@Override
 	public int getMaxFirePower() {
-		// TODO Auto-generated method stub
-		return 0;
+		return 10;
 	}
 
 	@Override
