@@ -46,11 +46,13 @@ public class FRectangle {
 	}
 	
 	public float getOriginX() {
-		return width / 2;
+		//return width / 2;
+		return 0;
 	}
 	
 	public float getOriginY() {
-		return height / 2;
+		//return height / 2;
+		return 0;
 	}
 	
 	public int getOffset() {

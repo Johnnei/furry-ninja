@@ -1,8 +1,8 @@
 package game.physics;
 
-public class MotionVector {
-	
-	public final int NO_DECREASE = 1;
+import game.entity.Entity;
+
+public class MotionVector implements IMotionVector {
 	
 	/**
 	 * The xMotion gained from this vector
@@ -29,7 +29,6 @@ public class MotionVector {
 	
 	/**
 	 * Creates a motionVector with degradation<br/>
-	 * Use the value {@link #NO_DECREASE} (1) to have no degradation in a motion<br/>
 	 * The degradation is defined in this starting from most to least
 	 * @param xMotion
 	 * @param yMotion
@@ -37,42 +36,43 @@ public class MotionVector {
 	 * @param yMotionLifetime
 	 */
 	public MotionVector(float xMotion, float yMotion, int xMotionLifetime, int yMotionLifetime) {
-		lifetime = NO_DECREASE;
+		lifetime = 1;
 		this.xMotion = xMotion;
 		this.yMotion = yMotion;
-		this.xMotionLifetime = xMotionLifetime + NO_DECREASE;
-		this.yMotionLifetime = yMotionLifetime + NO_DECREASE;
+		this.xMotionLifetime = xMotionLifetime;
+		this.yMotionLifetime = yMotionLifetime;
 	}
 	
-	/**
-	 * Creates a motionVector without degradation
-	 * @param xMotion
-	 * @param yMotion
+	/* (non-Javadoc)
+	 * @see game.physics.IMotionVector#canDelete()
 	 */
-	public MotionVector(float xMotion, float yMotion) {
-		this(xMotion, yMotion, 0, 0);
-	}
-	
+	@Override
 	public boolean canDelete() {
-		if(xMotionLifetime == NO_DECREASE && yMotionLifetime == NO_DECREASE)
-			return false;
 		return (xMotionLifetime <= lifetime) && (yMotionLifetime <= lifetime);
 	}
 	
-	public void onTick() {
+	/* (non-Javadoc)
+	 * @see game.physics.IMotionVector#onTick()
+	 */
+	@Override
+	public void onTick(Entity entity) {
 		++lifetime;
 	}
 	
+	/* (non-Javadoc)
+	 * @see game.physics.IMotionVector#getMotionY()
+	 */
+	@Override
 	public float getMotionY() {
-		if(yMotionLifetime != NO_DECREASE)
-			return yMotion / lifetime;
-		return yMotion;
+		return yMotion / lifetime;
 	}
 	
+	/* (non-Javadoc)
+	 * @see game.physics.IMotionVector#getMotionX()
+	 */
+	@Override
 	public float getMotionX() {
-		if(xMotionLifetime != NO_DECREASE)
-			return xMotion / lifetime;
-		return xMotion;
+		return xMotion / lifetime;
 	}
 
 }

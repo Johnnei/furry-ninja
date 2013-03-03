@@ -3,6 +3,8 @@ package game.weapon;
 import game.display.Crosshair;
 import game.entity.Cube;
 import game.entity.Projectile;
+import game.physics.MotionVector;
+import game.physics.StaticMotion;
 
 public class Weapon {
 	
@@ -32,7 +34,8 @@ public class Weapon {
 		int power = 10; //TODO Add Crosshair power
 		if(owner.isFacingLeft())
 			power = -power;
-		p.addMotionVector(power * dSin, 15 * -dCos, 0, 100);
+		p.addMotionVector(new StaticMotion(power * dSin, 0));
+		p.addMotionVector(new MotionVector(0, 15 * dCos, 0, 100));
 		owner.getWormsGame().addProjectile(p);
 		addAmmo(-1);
 	}

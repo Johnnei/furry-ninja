@@ -7,16 +7,16 @@ import engine.WMath;
 import engine.math.Point;
 import engine.render.Renderable;
 import game.WormsGame;
-import game.data.Gamemode;
 import game.data.TurnPhase;
-import game.physics.MotionVector;
+import game.physics.GravityMotion;
+import game.physics.IMotionVector;
 
 public abstract class Entity extends Renderable {
 	
 	//Position and Size
 	protected float x, y, width, height;
 	//Movement
-	private ArrayList<MotionVector> motions;
+	private ArrayList<IMotionVector> motions;
 	protected float xMotion, yMotion;
 	protected float fallDuration;
 	protected float fallDistance;
@@ -46,7 +46,7 @@ public abstract class Entity extends Renderable {
 		this.height = height;
 		this.wormsGame = wormsGame;
 		motions = new ArrayList<>();
-		motions.add(new MotionVector(0, Gamemode.GRAVITY));
+		motions.add(new GravityMotion());
 		setFalling(false);
 		isJumping = false;
 		canDelete = false;
@@ -63,7 +63,7 @@ public abstract class Entity extends Renderable {
 	}
 	
 	public boolean isOnGround() {
-		return wormsGame.collides(this, 0, 1);
+		return wormsGame.collides(this, 0, 2);
 	}
 	
 	/**
@@ -75,12 +75,12 @@ public abstract class Entity extends Renderable {
 		yMotion = 0;
 		//Calculate new motions
 		for(int i = 0; i < motions.size(); i++) {
-			MotionVector vector = motions.get(i);
+			IMotionVector vector = motions.get(i);
 			
 			xMotion += vector.getMotionX();
 			yMotion += vector.getMotionY();
 			
-			vector.onTick();
+			vector.onTick(this);
 			if(vector.canDelete()) {
 				motions.remove(i);
 				i--;
@@ -88,20 +88,22 @@ public abstract class Entity extends Renderable {
 		}
 	}
 	
-	public void addMotionVector(float motionX, float motionY) {
-		addMotionVector(motionX, motionY, 0, 0);
+	public void addMotionVector(IMotionVector vector) {
+		motions.add(vector);
 	}
 	
-	public void addMotionVector(float motionX, float motionY, int xLifetime, int yLifetime) {
-		motions.add(new MotionVector(motionX, motionY, xLifetime, yLifetime));
-	}
-	
-	private float getStepSize(float motion) {
+	protected float getStepSize(float motion) {
 		if(WMath.abs_f(motion) < 0.01) {
 			return 0f;
 		} else {
 			return (motion > 0) ? WMath.min_f(motion, 1) : WMath.max_f(motion, -1);
 		}
+	}
+	
+	/**
+	 * Gets called on movement collision
+	 */
+	public void onCollide() {
 	}
 	
 	public void doMovement() {
@@ -112,77 +114,29 @@ public abstract class Entity extends Renderable {
 			while(true) {
 				float stepSizeX = getStepSize(xMotion - allowedMoveX);
 				float stepSizeY = getStepSize(yMotion - allowedMoveY);
-				System.out.println("xMotion: " + xMotion + ", yMotion: " + yMotion);
 				boolean canMoveX = stepSizeX != 0 && !wormsGame.collides(this, allowedMoveX + stepSizeX, 0);
 				boolean canMoveY = stepSizeY != 0 && !wormsGame.collides(this, 0, 1 + allowedMoveY + stepSizeY);
-				System.out.println("collides(" + (int)(allowedMoveX + stepSizeX) + ", " + (int)(allowedMoveY + stepSizeY) + ") -> " + canMoveX + ", " + canMoveY + " Total Accepted Speed: (" + allowedMoveX + ", " + allowedMoveY + ")");
 				if(canMoveX) {
 					allowedMoveX += stepSizeX;
+				} else if(stepSizeX != 0) {
+					onCollide();
 				}
 				if(canMoveY) {
 					allowedMoveY += stepSizeY;
+				} else if(stepSizeY != 0) {
+					onCollide();
 				}
 				if(!canMoveX && !canMoveY) { //No movement in any of the axis
 					break;
 				}
 			}
 			if(allowedMoveX != 0 || allowedMoveY != 0) {
-				System.out.print("Updating position from (" + x + ", " +  y + ") to ");
 				setRenderUpdate(true);
 				x += allowedMoveX;
 				y += allowedMoveY;
-				System.out.println("(" + x + ", " +  y + ")");
 			}
 		}
 	}
-	
-	/*public void doMovement() {
-		if(xMotion != 0 || yMotion != 0) {
-			if(yMotion != 0) {
-				//Apply Global Gravity
-				yMotion *= 1 + (fallDuration * Gamemode.GRAVITY);
-			}
-			
-			setRenderUpdate(true);
-			while(xMotion != 0) {
-				if(xMotion > 0) {
-					if(wormsGame.collides(this, 1, 0)) {
-						xMotion = 0;
-					} else {
-						xMotion--;
-						x++;
-					}
-				} else {
-					if(wormsGame.collides(this, -1, 0)) {
-						xMotion = 0;
-					} else {
-						xMotion++;
-						x--;
-					}
-				}
-			}
-			y -= yMotion;
-			while(wormsGame.collides(this)) {
-				--y;
-				if(yMotion < 0)
-					++yMotion;
-				else
-					--yMotion;
-				if(!wormsGame.collides(this, 0, 0)) {
-					fallDuration = 0F;
-					break;
-				}
-			}
-			if(fallDuration > 0 && yMotion < 0)
-				fallDistance += WMath.abs_f(yMotion);
-			xMotion = 0;
-			if(isOnGround()) {
-				yMotion = 0;
-				isJumping = false;
-				setFalling(false);
-			}
-		}
-	}*/
 	
 	public abstract void onTick(TurnPhase turn);
 	public abstract void onTurnChange(TurnPhase turn);

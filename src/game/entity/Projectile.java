@@ -32,15 +32,15 @@ public class Projectile extends Entity {
 		owner.getWormsGame().addRenderable(e);
 		e.explode();
 	}
+	
+	@Override
+	public void onCollide() {
+		explode();
+	}
 
 	@Override
 	public void onTick(TurnPhase turn) {
 		doMovement();
-		
-		//Test if it should explode
-		if(isOnGround()) {
-			explode();
-		}
 		
 		if(x < 0 || x > 1280 || y < 0 || y > 720)
 			canDelete = true;

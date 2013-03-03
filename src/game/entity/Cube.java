@@ -9,6 +9,7 @@ import game.Team;
 import game.WormsGame;
 import game.data.TurnPhase;
 import game.display.Crosshair;
+import game.physics.MotionVector;
 import game.weapon.IWeapon;
 
 import java.nio.FloatBuffer;
@@ -92,16 +93,16 @@ public class Cube extends LivingEntity {
 		if(myTurn && turn == TurnPhase.PLAY) {
 			if(Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
 				//xMotion -= 5;
-				addMotionVector(-1.2F, 0, 10, 0);
+				addMotionVector(new MotionVector(-1.2F, 0, 10, 0));
 				facingLeft = true;
 			}
 			if(Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
-				addMotionVector(1.2F, 0, 10, 0);
+				addMotionVector(new MotionVector(1.2F, 0, 10, 0));
 				facingLeft = false;
 			}
 			if((Keyboard.isKeyDown(Keyboard.KEY_RETURN) && isOnGround())) {
 				setJumping(true);
-				addMotionVector(0, -25, 0, 20);
+				addMotionVector(new MotionVector(0, -25, 0, 20));
 			}
 			if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
 				team.getWeapon(selectedWeapon).fire(this, crosshair);
