@@ -81,14 +81,6 @@ public class Cube extends LivingEntity {
 	@Override
 	public void onTick(TurnPhase turn) {
 		super.onTick(turn);
-		//Calculate Movement
-		if(!isOnGround()) {
-			yMotion = -1;
-			setFalling(true);
-		} else {
-			yMotion = 0;
-			setFalling(false);
-		}
 		//Add Keyboard input
 		if(myTurn && turn == TurnPhase.PLAY) {
 			if(Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
@@ -101,7 +93,6 @@ public class Cube extends LivingEntity {
 				facingLeft = false;
 			}
 			if((Keyboard.isKeyDown(Keyboard.KEY_RETURN) && isOnGround())) {
-				setJumping(true);
 				addMotionVector(new MotionVector(0, -7.5F, 0, 20));
 			}
 			if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {

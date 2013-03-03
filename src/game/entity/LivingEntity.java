@@ -1,12 +1,12 @@
 package game.entity;
 
+import static game.data.TurnPhase.DAMAGE;
 import engine.render.TextRender;
 import game.WormsGame;
 import game.data.Gamemode;
 import game.data.TurnPhase;
 import game.display.Explosion;
 import game.weapon.EntityExplode;
-import static game.data.TurnPhase.*;
 
 public abstract class LivingEntity extends Entity {
 
@@ -32,8 +32,6 @@ public abstract class LivingEntity extends Entity {
 	}
 
 	public void onTick(TurnPhase turn) {
-		if (isFalling())
-			fallDuration++;
 		if (turn == DAMAGE) {
 			if (takeDamage > 0) {
 				if (health <= 0) {
@@ -53,22 +51,7 @@ public abstract class LivingEntity extends Entity {
 		}
 	}
 
-	public void setFalling(boolean newIsFalling) {
-		if (isFalling() && !newIsFalling && fallDistance > 0) {
-			int dmgDistance = (int) fallDistance - Gamemode.FREE_FALL_DISTANCE;
-			if (dmgDistance > 0) {
-				int fallDamage = (int) (dmgDistance * 0.1);
-				System.out.println("Taking " + fallDamage + " fall dmg over " + dmgDistance + " units");
-				takeDamgage(fallDamage);
-			}
-			fallDistance = 0F;
-		}
-		if (!isFalling()) {
-			fallDuration = (newIsFalling) ? 1 : 0;
-		}
-	}
-
-	public void takeDamgage(int dmg) {
+	public void takeDamage(int dmg) {
 		if(isDead())
 			return;
 		takeDamage += dmg;
@@ -82,7 +65,16 @@ public abstract class LivingEntity extends Entity {
 	public int getHealth() {
 		return health;
 	}
+	
+	@Override
+	public void onFall() {
+		float fallSpeed = yMotion - Gamemode.FREE_FALL_SPEED;
+		if(fallSpeed > 0) {
+			takeDamage((int)(fallSpeed * 2));
+		}
+	}
 
+	@Override
 	public void onTurnChange(TurnPhase turn) {
 		if (turn == DAMAGE) {
 			if (fullDamage > 0) {

@@ -18,8 +18,6 @@ public abstract class Entity extends Renderable {
 	//Movement
 	private ArrayList<IMotionVector> motions;
 	protected float xMotion, yMotion;
-	protected float fallDuration;
-	protected float fallDistance;
 	/**
 	 * If the Entity is jumping
 	 */
@@ -47,19 +45,8 @@ public abstract class Entity extends Renderable {
 		this.wormsGame = wormsGame;
 		motions = new ArrayList<>();
 		motions.add(new GravityMotion());
-		setFalling(false);
 		isJumping = false;
 		canDelete = false;
-	}
-	
-	public void setFalling(boolean fallState) {
-		if(fallState) {
-			if(!isJumping)
-				fallDuration = 1;
-		} else {
-			if(!isJumping)
-				fallDuration = 0;
-		}
 	}
 	
 	public boolean isOnGround() {
@@ -111,6 +98,7 @@ public abstract class Entity extends Renderable {
 		if(xMotion != 0 || yMotion != 0) {
 			float allowedMoveX = 0;
 			float allowedMoveY = 0;
+			boolean hasCollided = false;
 			while(true) {
 				float stepSizeX = getStepSize(xMotion - allowedMoveX);
 				float stepSizeY = getStepSize(yMotion - allowedMoveY);
@@ -118,13 +106,16 @@ public abstract class Entity extends Renderable {
 				boolean canMoveY = stepSizeY != 0 && !wormsGame.collides(this, 0, 1 + allowedMoveY + stepSizeY);
 				if(canMoveX) {
 					allowedMoveX += stepSizeX;
-				} else if(stepSizeX != 0) {
+				} else if(stepSizeX != 0 && !hasCollided) {
 					onCollide();
+					hasCollided = true;
 				}
 				if(canMoveY) {
 					allowedMoveY += stepSizeY;
-				} else if(stepSizeY != 0) {
+				} else if(stepSizeY != 0 && !hasCollided) {
 					onCollide();
+					onFall();
+					hasCollided = true;
 				}
 				if(!canMoveX && !canMoveY) { //No movement in any of the axis
 					break;
@@ -138,21 +129,22 @@ public abstract class Entity extends Renderable {
 		}
 	}
 	
+	/**
+	 * Is called when the player has landed
+	 */
+	public void onFall() {
+		
+	}
+	
 	public abstract void onTick(TurnPhase turn);
 	public abstract void onTurnChange(TurnPhase turn);
 	
 	public boolean isFalling() {
-		return fallDuration > 0;
+		return yMotion > 0;
 	}
 	
 	public Rectangle getCollisionBox() {
 		return new Rectangle((int)x, (int)y, (int)width, (int)height);
-	}
-	
-	public void setJumping(boolean b) {
-		isJumping = b;
-		if(b)
-			fallDuration = 1F;
 	}
 	
 	public void setCanDelete(boolean b) {

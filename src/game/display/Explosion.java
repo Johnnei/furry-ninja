@@ -51,7 +51,7 @@ public class Explosion extends FrameRenderable {
 				int dmg = getDamage(dSquared);
 				if (dmg > 0) {
 					System.out.println("Taking Damage " + dmg + " from projectile at " + dSquared + " distance^2");
-					c.takeDamgage(dmg);
+					c.takeDamage(dmg);
 				}
 			}
 		}
