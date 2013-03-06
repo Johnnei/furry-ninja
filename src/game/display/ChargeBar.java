@@ -38,8 +38,6 @@ public class ChargeBar extends Renderable {
 		float pCharged = 255 * getPercentCharged();
 		float r = pCharged;
 		float g = (255F / 2F) - (0.5F * pCharged);
-		//float g = 0;
-		System.out.println("{" + r +", " + g + ", " + g + "}");
 		ColorHelper helper = new ColorHelper(r, g, g);
 		renderObject.updateColor(helper);
 	}
