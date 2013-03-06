@@ -7,7 +7,7 @@ import static org.lwjgl.opengl.GL11.glMatrixMode;
 import static org.lwjgl.opengl.GL11.glOrtho;
 import engine.render.TextRender;
 import game.menu.Gui;
-import game.menu.GuiGame;
+import game.menu.GuiMenu;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
@@ -30,13 +30,13 @@ public class Game {
 	public void run() {
 		initOpenGL();
 		gui = new Gui(null, 0);
-		gui.addComponent(new GuiGame(gui));
+		gui.addComponent(new GuiMenu(gui));
 		textRenderer = new TextRender();
 		long lastTick = getCurrentMillis();
 		long lastFps = getCurrentMillis();
 		int fps = 0;
 		
-		while(!Display.isCloseRequested()) {
+		while(!Display.isCloseRequested() && !gui.isCloseRequested()) {
 			
 			//Game Logic Section
 			while(getCurrentMillis() - lastTick >= 50) { //20 ticks per second
@@ -49,6 +49,7 @@ public class Game {
 			
 			//LWJGL Updating
 			Display.update();
+			GameMouse.getInstance().poll();
 			//Display.sync(60);
 			
 			++fps;

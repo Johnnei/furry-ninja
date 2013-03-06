@@ -21,5 +21,10 @@ public class GuiGame extends Gui {
 	public void render(TextRender textRenderer) {
 		game.render(textRenderer);
 	}
+	
+	@Override
+	public void setFps(int fps) {
+		game.setFps(fps);
+	}
 
 }

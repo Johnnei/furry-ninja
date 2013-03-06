@@ -15,11 +15,22 @@ public class Gui extends GuiComponent {
 	 * The parent Gui
 	 */
 	private Gui parent;
+	/**
+	 * Requests the game to close
+	 */
+	private boolean gameClose;
 	
 	public Gui(Gui parent, int flags) {
 		super(flags);
 		this.parent = parent;
+		gameClose = false;
 		components = new ArrayList<>();
+	}
+	
+	public void requestClose() {
+		if(parent != null)
+			parent.requestClose();
+		gameClose = true;
 	}
 	
 	/**
@@ -39,7 +50,15 @@ public class Gui extends GuiComponent {
 		components.remove(component);
 	}
 	
+	@Override
 	public void setFps(int fps) {
+		for(GuiComponent component : components) {
+			component.setFps(fps);
+		}
+	}
+	
+	protected Gui getParent() {
+		return parent;
 	}
 	
 	@Override
@@ -59,6 +78,10 @@ public class Gui extends GuiComponent {
 		for(GuiComponent component : components) {
 			component.render(textRenderer);
 		}
+	}
+	
+	public boolean isCloseRequested() {
+		return gameClose;
 	}
 
 }

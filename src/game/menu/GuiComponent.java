@@ -6,9 +6,14 @@ public class GuiComponent extends Renderable {
 	
 	protected float x;
 	protected float y;
+	protected float width;
+	protected float height;
 	
 	public GuiComponent(int flags) {
 		super(flags);
+	}
+	
+	public void setFps(int fps) {
 	}
 
 	@Override

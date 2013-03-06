@@ -108,5 +108,13 @@ public class TextRender {
 		if (renderObject != null && renderObject.hasFlag(COLOR))
 			glDisableClientState(GL_COLOR_ARRAY);
 	}
+	
+	public static int getTextWidth(String s) {
+		return s.length() * 9;
+	}
+	
+	public static int getTextHeight() {
+		return 16;
+	}
 
 }
