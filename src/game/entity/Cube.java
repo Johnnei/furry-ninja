@@ -3,18 +3,18 @@ package game.entity;
 import static engine.render.RenderObject.COLOR;
 import static engine.render.RenderObject.TEXTURE;
 import static engine.render.RenderObject.VERTEX;
+import engine.render.ColorHelper;
 import engine.render.TextRender;
 import engine.render.VertexHelper;
 import game.Team;
 import game.WormsGame;
 import game.data.TurnPhase;
+import game.display.ChargeBar;
 import game.display.Crosshair;
 import game.physics.MotionVector;
 import game.weapon.IWeapon;
+import game.weapon.Weapon;
 
-import java.nio.FloatBuffer;
-
-import org.lwjgl.BufferUtils;
 import org.lwjgl.input.Keyboard;
 
 public class Cube extends LivingEntity {
@@ -35,6 +35,7 @@ public class Cube extends LivingEntity {
 	 * The cube aiming tool
 	 */
 	private Crosshair crosshair;
+	private ChargeBar chargeBar;
 	/**
 	 * if the cube "face" is looking to the left
 	 */
@@ -47,6 +48,7 @@ public class Cube extends LivingEntity {
 		facingLeft = (x > 640);
 		selectedWeapon = 0;
 		crosshair = new Crosshair(this, x, y);
+		chargeBar = new ChargeBar(this, crosshair);
 		generateVertexData();
 		generateTextureData();
 		generateColorData();
@@ -54,12 +56,9 @@ public class Cube extends LivingEntity {
 	
 	@Override
 	public void generateColorData() {
-		FloatBuffer color = BufferUtils.createFloatBuffer(3 * 4);
 		float[] colors = team.getColor();
-		color.put(new float[] { colors[0], colors[1], colors[2], colors[0], colors[1], colors[2], colors[0], colors[1], colors[2], colors[0], colors[1], colors[2] });
-		color.flip();
-		
-		renderObject.updateColor(color);
+		ColorHelper helper = new ColorHelper(colors[0], colors[1], colors[2]);
+		renderObject.updateColor(helper);
 	}
 	
 	@Override
@@ -117,7 +116,8 @@ public class Cube extends LivingEntity {
 			setRenderUpdate(false);
 		}
 		
-		crosshair.onTick(getX(), getY());
+		crosshair.onTick();
+		chargeBar.onTick();
 	}
 
 	@Override
@@ -128,6 +128,7 @@ public class Cube extends LivingEntity {
 		textRenderer.drawCentered(x + (width / 2), y - 20, "" + getHealth(), renderObject);
 		
 		if(myTurn) {
+			chargeBar.render(textRenderer);
 			crosshair.render(textRenderer);
 		}
 		super.render(textRenderer);
@@ -141,11 +142,15 @@ public class Cube extends LivingEntity {
 		return team;
 	}
 	
+	public Weapon getSelectedWeapon() {
+		return team.getWeapon(selectedWeapon);
+	}
+	
 	public IWeapon getWeapon() {
 		return team.getWeapon(selectedWeapon).getStats();
 	}
 	
-	public int getSelectedWeapon() {
+	public int getSelectedWeaponIndex() {
 		return selectedWeapon;
 	}
 	

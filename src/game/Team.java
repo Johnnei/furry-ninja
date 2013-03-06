@@ -27,13 +27,13 @@ public class Team {
 	private Weapon[] weapons;
 	
 	public Team(int size, float[] color, WormsGame wormsGame, int[] spawnsX, int[] spawnsY) {
+		weapons = new WeaponFactory(Gamemode.weaponSet).createWeapons();
 		this.color = color;
 		cubes = new Cube[size];
 		for(int i = 0; i < size; i++) {
 			cubes[i] = new Cube(spawnsX[i], spawnsY[i], 100, this, wormsGame);
 		}
 		turnIndex = -1;
-		weapons = new WeaponFactory(Gamemode.weaponSet).createWeapons();
 	}
 	
 	public void render(TextRender textRenderer) {

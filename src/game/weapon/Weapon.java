@@ -82,5 +82,9 @@ public class Weapon {
 	public IWeapon getStats() {
 		return weapon;
 	}
+	
+	public float getCharge() {
+		return charge;
+	}
 
 }

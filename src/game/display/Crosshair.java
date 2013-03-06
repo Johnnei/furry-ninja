@@ -27,10 +27,11 @@ public class Crosshair extends Renderable {
 		this.owner = owner;
 		angle = 0;
 		generateTextureData();
-		onTick(x, y);
+		onTick();
 	}
 
-	public void onTick(float baseX, float baseY) {
+	@Override
+	public void onTick() {
 		if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
 			angle += Gamemode.CROSSHAIR_SPEED;
 			if(angle > owner.getWeapon().getMaxAngle()) {
@@ -47,10 +48,10 @@ public class Crosshair extends Renderable {
 		float dCos = (float) Math.cos(angle * (Math.PI / 180D));
 
 		if (owner.isFacingLeft())
-			x = baseX - (dSin * 32);
+			x = owner.getX() - (dSin * 32);
 		else
-			x = baseX + (dSin * 32);
-		y = baseY + (dCos * 32);
+			x = owner.getX() + (dSin * 32);
+		y = owner.getY() + (dCos * 32);
 
 		generateVertexData();
 	}

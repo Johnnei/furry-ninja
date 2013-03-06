@@ -165,6 +165,10 @@ public class RenderObject {
 		}
 	}
 	
+	public void updateColor(ColorHelper helper) {
+		updateColor(helper.getBuffer());
+	}
+	
 	public void updateColor(FloatBuffer buffer) {
 		if(hasFlag(COLOR)) {
 			glBindBuffer(GL_ARRAY_BUFFER, glId);
