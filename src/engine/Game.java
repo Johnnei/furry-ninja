@@ -1,17 +1,21 @@
 package engine;
 
+import static org.lwjgl.opengl.GL11.GL_MODELVIEW;
+import static org.lwjgl.opengl.GL11.GL_PROJECTION;
+import static org.lwjgl.opengl.GL11.glLoadIdentity;
+import static org.lwjgl.opengl.GL11.glMatrixMode;
+import static org.lwjgl.opengl.GL11.glOrtho;
 import engine.render.TextRender;
-import game.WormsGame;
+import game.menu.Gui;
+import game.menu.GuiGame;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 
-import static org.lwjgl.opengl.GL11.*;
-
 public class Game {
 
-	private WormsGame game;
+	private Gui gui;
 	private TextRender textRenderer;
 	
 	/**
@@ -25,7 +29,8 @@ public class Game {
 	 */
 	public void run() {
 		initOpenGL();
-		game = new WormsGame();
+		gui = new Gui(null, 0);
+		gui.addComponent(new GuiGame(gui));
 		textRenderer = new TextRender();
 		long lastTick = getCurrentMillis();
 		long lastFps = getCurrentMillis();
@@ -36,11 +41,11 @@ public class Game {
 			//Game Logic Section
 			while(getCurrentMillis() - lastTick >= 50) { //20 ticks per second
 				lastTick += 50;
-				game.onTick();
+				gui.onTick();
 			}
 			
 			//Game Render Section
-			game.render(textRenderer);
+			gui.render(textRenderer);
 			
 			//LWJGL Updating
 			Display.update();
@@ -48,7 +53,7 @@ public class Game {
 			
 			++fps;
 			if(getCurrentMillis() - lastFps >= 1000) {
-				game.setFps(fps);
+				gui.setFps(fps);
 				fps = 0;
 				lastFps += 1000;
 			}
