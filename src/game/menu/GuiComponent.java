@@ -13,6 +13,11 @@ public class GuiComponent extends Renderable {
 		super(flags);
 	}
 	
+	/**
+	 * Sets the measured fps<br/>
+	 * Only used in {@link GuiGame}
+	 * @param fps The measured fps
+	 */
 	public void setFps(int fps) {
 	}
 

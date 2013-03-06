@@ -64,14 +64,11 @@ public class TextRender {
 	}
 
 	/**
-	 * Draws the text and will recalculate the x to make it centered if
-	 * glColorId param is 0 (GL_NONE) it wont use any color. Therefore it will
-	 * be white
-	 * 
-	 * @param x
-	 * @param y
-	 * @param text
-	 * @param glColorId
+	 * Draws a string with the center at the given location
+	 * @param x The x-Coordinate
+	 * @param y The y-Coordinate
+	 * @param text The String to be drawn
+	 * @param renderObject The Color in which this string should be drawn (Null = white)
 	 */
 	public void drawCentered(float x, float y, String text, RenderObject renderObject) {
 		x -= (text.length() * 4.5F);
@@ -79,13 +76,11 @@ public class TextRender {
 	}
 
 	/**
-	 * Draws the text if glColorId param is 0 (GL_NONE) it wont use any color.
-	 * therefore it will be white
-	 * 
-	 * @param x
-	 * @param y
-	 * @param text
-	 * @param glColorId
+	 * Draws a string with the left-top at the given location
+	 * @param x The x-Coordinate
+	 * @param y The y-Coordinate
+	 * @param text The String to be drawn
+	 * @param renderObject The Color in which this string should be drawn (Null = white)
 	 */
 	public void draw(float x, float y, String text, RenderObject renderObject) {
 		if (renderObject != null && renderObject.hasFlag(COLOR))

@@ -27,6 +27,10 @@ public class Gui extends GuiComponent {
 		components = new ArrayList<>();
 	}
 	
+	/**
+	 * Requests a close of the entire game<br/>
+	 * This function will cascade up to all Gui's
+	 */
 	public void requestClose() {
 		if(parent != null)
 			parent.requestClose();
@@ -42,10 +46,18 @@ public class Gui extends GuiComponent {
 		parent.addComponent(newGui);
 	}
 	
+	/**
+	 * Adds a component to the Gui
+	 * @param component The component to be added
+	 */
 	public void addComponent(GuiComponent component) {
 		components.add(component);
 	}
 	
+	/**
+	 * Removes a component from the Gui
+	 * @param component The component to be removed
+	 */
 	public void removeComponent(GuiComponent component) {
 		components.remove(component);
 	}
@@ -57,7 +69,12 @@ public class Gui extends GuiComponent {
 		}
 	}
 	
-	protected Gui getParent() {
+	/**
+	 * Gets the parent of this Gui<br/>
+	 * This should only be used to create new Gui's
+	 * @return
+	 */
+	final protected Gui getParent() {
 		return parent;
 	}
 	
@@ -80,6 +97,10 @@ public class Gui extends GuiComponent {
 		}
 	}
 	
+	/**
+	 * Checks if a close has been requested
+	 * @return true on closeRequest else false
+	 */
 	public boolean isCloseRequested() {
 		return gameClose;
 	}

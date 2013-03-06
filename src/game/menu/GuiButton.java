@@ -53,6 +53,10 @@ public class GuiButton extends GuiComponent {
 		generateColorData();
 	}
 	
+	/**
+	 * Checks if the mouse is clicked within the borders of this button
+	 * @return true if the mouse is clicked on this button
+	 */
 	public boolean isClicked() {
 		if(GameMouse.getInstance().getX() < x || GameMouse.getInstance().getX() > x + width)
 			return false; //X is outside our button
