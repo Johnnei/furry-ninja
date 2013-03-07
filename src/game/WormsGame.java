@@ -1,12 +1,5 @@
 package game;
 
-import static org.lwjgl.opengl.GL11.GL_BLEND;
-import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
-import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
-import static org.lwjgl.opengl.GL11.glBlendFunc;
-import static org.lwjgl.opengl.GL11.glClear;
-import static org.lwjgl.opengl.GL11.glEnable;
 import engine.render.RenderObject;
 import engine.render.Renderable;
 import engine.render.TextRender;
@@ -201,10 +194,6 @@ public class WormsGame {
 	 * Renders everything to the screen
 	 */
 	public void render(TextRender textRenderer) {
-		glClear(GL_COLOR_BUFFER_BIT);
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		
 		//Render World
 		world.render();
 		
