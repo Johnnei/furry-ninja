@@ -42,7 +42,7 @@ public class Projectile extends Entity {
 	public void onTick(TurnPhase turn) {
 		doMovement();
 		
-		if(x < 0 || x > 1280 || y < 0 || y > 720)
+		if(x < 0 || x > 1280 || y > 720)
 			canDelete = true;
 		
 		generateVertexData();
