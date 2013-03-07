@@ -18,6 +18,7 @@ public class FloatingText extends Entity {
 	public FloatingText(String text, RenderObject renderObject, WormsGame wormsGame, float x, float y) {
 		super(0, wormsGame, x, y, 0, 0);
 		this.text = text;
+		this.renderObject = renderObject;
 		clearMotions();
 		addMotionVector(new InverseGravityMotion());
 		Random r = new Random();
@@ -27,6 +28,12 @@ public class FloatingText extends Entity {
 			xMotion = -xMotion;
 		}
 		addMotionVector(new MotionVector(xMotion, 0, xLifetime, 0));
+	}
+	
+	@Override
+	public void onDelete() {
+		if(renderObject != null)
+			renderObject.delete();
 	}
 
 	@Override

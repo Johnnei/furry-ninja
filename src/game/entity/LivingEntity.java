@@ -1,6 +1,9 @@
 package game.entity;
 
+import static engine.render.RenderObject.COLOR;
 import static game.data.TurnPhase.DAMAGE;
+import engine.render.ColorHelper;
+import engine.render.RenderObject;
 import engine.render.TextRender;
 import game.WormsGame;
 import game.data.Gamemode;
@@ -78,7 +81,13 @@ public abstract class LivingEntity extends Entity {
 	public void onTurnChange(TurnPhase turn) {
 		if (turn == DAMAGE) {
 			if (fullDamage > 0) {
-				getWormsGame().addText(x, y - 20, "" + fullDamage, renderObject);
+				RenderObject color = null;
+				if(fullDamage >= 10) {
+					color = new RenderObject(COLOR);
+					int r = Math.min(255, 128 + (int)((fullDamage / (float)health) * 227));
+					color.updateColor(new ColorHelper(r, 0x22, 0x22));
+				}
+				getWormsGame().addText(x, y - 20, "" + fullDamage, color);
 				showDamage = true;
 			}
 		}
