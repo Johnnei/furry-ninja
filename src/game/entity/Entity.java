@@ -129,6 +129,10 @@ public abstract class Entity extends Renderable {
 		}
 	}
 	
+	protected void clearMotions() {
+		motions.clear();
+	}
+	
 	/**
 	 * Is called when the player has landed
 	 */

@@ -5,25 +5,33 @@ import engine.render.TextRender;
 import game.WormsGame;
 import game.data.TurnPhase;
 import game.entity.Entity;
+import game.physics.InverseGravityMotion;
+import game.physics.MotionVector;
+
+import java.util.Random;
 
 public class FloatingText extends Entity {
 	
 	private RenderObject renderObject;
 	private String text;
-	private float floatingTime;
 
 	public FloatingText(String text, RenderObject renderObject, WormsGame wormsGame, float x, float y) {
 		super(0, wormsGame, x, y, 0, 0);
 		this.text = text;
-		floatingTime = 10;
+		clearMotions();
+		addMotionVector(new InverseGravityMotion());
+		Random r = new Random();
+		int xLifetime = 50 + r.nextInt(50);
+		int xMotion = r.nextInt(3);
+		if(r.nextBoolean()) {
+			xMotion = -xMotion;
+		}
+		addMotionVector(new MotionVector(xMotion, 0, xLifetime, 0));
 	}
 
 	@Override
 	public void onTick(TurnPhase turn) {
-		float f = floatingTime * 0.1F;
-		if(f > 6)
-			f = 6;
-		floatingTime += f;
+		doMovement();
 		if(y < 0)
 			setCanDelete(true);
 	}
@@ -34,7 +42,7 @@ public class FloatingText extends Entity {
 
 	@Override
 	public void render(TextRender textRenderer) {
-		textRenderer.drawCentered(x, y - floatingTime, text, renderObject);
+		textRenderer.drawCentered(x, y, text, renderObject);
 	}
 
 }
