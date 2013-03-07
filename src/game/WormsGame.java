@@ -101,8 +101,8 @@ public class WormsGame {
 		
 		for(int i = 0; i < projectiles.size(); i++) {
 			if(projectiles.get(i).canDelete()) {
-				/*Projectile p = */projectiles.remove(i);
-				//p.onDelete(); 
+				Projectile p = projectiles.remove(i);
+				p.onDelete(); 
 				--i;
 			} else
 				projectiles.get(i).onTick(turnPhase);
@@ -111,15 +111,18 @@ public class WormsGame {
 		for(int i = 0; i < entities.size(); i++) {
 			entities.get(i).onTick(turnPhase);
 			if(entities.get(i).canDelete()) {
-				entities.remove(i);
+				Entity e = entities.remove(i);
+				e.onDelete();
 				--i;
 			}
 		}
 		
 		for(int i = 0; i < renderables.size(); i++) {
 			renderables.get(i).onTick();
-			if(renderables.get(i).canDelete())
-				renderables.remove(i--);
+			if(renderables.get(i).canDelete()) {
+				Renderable r = renderables.remove(i--);
+				r.onDelete();
+			}
 		}
 		
 		if(turnTime > 0)
