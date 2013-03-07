@@ -12,7 +12,6 @@ import java.util.Random;
 
 public class FloatingText extends Entity {
 	
-	private RenderObject renderObject;
 	private String text;
 
 	public FloatingText(String text, RenderObject renderObject, WormsGame wormsGame, float x, float y) {

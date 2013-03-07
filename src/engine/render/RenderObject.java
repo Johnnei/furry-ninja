@@ -75,9 +75,11 @@ public class RenderObject {
 		if(texture != null)
 			this.texture = texture;
 		verticesPoints = (is3D) ? 3 : 2;
-		glId = glGenBuffers();
 		bufferOffset = new long[2];
-		calculateOffsets();
+		if(flags != 0) {
+			glId = glGenBuffers();
+			calculateOffsets();
+		}
 	}
 	
 	public RenderObject(int flags, boolean is3D, int vertexCount) {
