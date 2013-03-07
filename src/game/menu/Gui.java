@@ -92,6 +92,7 @@ public class Gui extends GuiComponent {
 	
 	@Override
 	public void render(TextRender textRenderer) {
+		super.render(textRenderer);
 		for(GuiComponent component : components) {
 			component.render(textRenderer);
 		}
