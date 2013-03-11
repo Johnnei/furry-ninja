@@ -2,6 +2,7 @@ package engine;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.Display;
 
 public class GameMouse {
 	
@@ -43,7 +44,7 @@ public class GameMouse {
 	 * @return The mouse Y position 
 	 */
 	public int getY() {
-		return 720 - Mouse.getY();
+		return Display.getHeight() - Mouse.getY();
 	}
 	
 	/**
