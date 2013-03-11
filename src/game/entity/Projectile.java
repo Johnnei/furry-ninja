@@ -28,9 +28,11 @@ public class Projectile extends Entity {
 	 */
 	public void explode() {
 		canDelete = true;
-		Explosion e = new Explosion(owner, getExplosionPoint(), weapon);
-		owner.getWormsGame().addRenderable(e);
-		e.explode();
+		if(weapon.hasExplosion()) {
+			Explosion e = new Explosion(owner, getExplosionPoint(), weapon);
+			owner.getWormsGame().addRenderable(e);
+			e.explode();
+		}
 	}
 	
 	@Override

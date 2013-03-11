@@ -46,7 +46,7 @@ public class Cube extends LivingEntity {
 		this.team = team;
 		myTurn = false;
 		facingLeft = (x > 640);
-		selectedWeapon = 0;
+		selectedWeapon = 1;
 		crosshair = new Crosshair(this, x, y);
 		chargeBar = new ChargeBar(this, crosshair);
 		generateVertexData();

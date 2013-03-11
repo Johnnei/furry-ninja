@@ -16,17 +16,11 @@ public interface IWeapon {
 	public String getName();
 	
 	/**
-	 * If this weapon has a custom fire implementation
-	 * @return if it has a custom fire method
-	 */
-	public boolean isCustomFire();
-	
-	/**
 	 * If <tt>isCustomFire();</tt> returns true this fire method will be called instead of the default projectile launching
 	 * @param owner The cube which fired this weapon
 	 * @param crosshair The aiming the cube used
 	 */
-	public void fire(Cube owner, Crosshair crosshair);
+	public void fire(Cube owner, Crosshair crosshair, float charge);
 	
 	//Ammo
 	
@@ -87,7 +81,19 @@ public interface IWeapon {
 	 */
 	public int getMinAngle();
 	
+	/**
+	 * Checks if the projectile should explode with a texture
+	 * @return true if a texture will de drawn
+	 */
+	public boolean hasExplosion();
+	
 	//Texture Information
+	
+	/**
+	 * The texture which should be used on the explosion of the fired projectile
+	 * @return the filename of the explosion texture
+	 */
+	public String getExplosionTextureName();
 	
 	/**
 	 * The scale of the explosion<br/>

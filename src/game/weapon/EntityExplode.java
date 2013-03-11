@@ -9,6 +9,11 @@ public class EntityExplode implements IWeapon {
 	public String getName() {
 		return "entity_death";
 	}
+	
+	@Override
+	public boolean hasExplosion() {
+		return true;
+	}
 
 	@Override
 	public int getStartingAmmo() {
@@ -66,12 +71,7 @@ public class EntityExplode implements IWeapon {
 	}
 
 	@Override
-	public boolean isCustomFire() {
-		return true;
-	}
-
-	@Override
-	public void fire(Cube owner, Crosshair crosshair) {
+	public void fire(Cube owner, Crosshair crosshair, float charge) {
 		//Don't fire any projectiles
 	}
 
@@ -83,6 +83,11 @@ public class EntityExplode implements IWeapon {
 	@Override
 	public int getMinAngle() {
 		return 0;
+	}
+
+	@Override
+	public String getExplosionTextureName() {
+		return "explosion";
 	}
 
 }

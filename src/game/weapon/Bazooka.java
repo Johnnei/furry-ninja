@@ -2,12 +2,24 @@ package game.weapon;
 
 import game.display.Crosshair;
 import game.entity.Cube;
+import game.entity.Projectile;
+import game.physics.MotionVector;
 
 public class Bazooka implements IWeapon {
 
 	@Override
 	public String getName() {
 		return "bazooka";
+	}
+	
+	@Override
+	public String getExplosionTextureName() {
+		return "explosion";
+	}
+	
+	@Override
+	public boolean hasExplosion() {
+		return true;
 	}
 
 	@Override
@@ -66,12 +78,16 @@ public class Bazooka implements IWeapon {
 	}
 
 	@Override
-	public boolean isCustomFire() {
-		return false;
-	}
-
-	@Override
-	public void fire(Cube owner, Crosshair crosshair) {
+	public void fire(Cube owner, Crosshair crosshair, float charge) {
+		Projectile p = new Projectile(owner.getWormsGame(), owner, (int)crosshair.getX(), (int)crosshair.getY(), this);
+		float dCos = (float)Math.cos(crosshair.getAngle() * (Math.PI / 180));
+		float dSin = (float)Math.sin(crosshair.getAngle() * (Math.PI / 180));
+		
+		float yPower = charge;
+		if(owner.isFacingLeft())
+			charge = -charge;
+		p.addMotionVector(new MotionVector(charge * dSin, yPower * dCos, 150, 150));
+		owner.getWormsGame().addProjectile(p);
 	}
 
 	@Override
