@@ -29,6 +29,8 @@ public class GuiMenu extends Gui {
 	public void onTick() {
 		if(startGame.isClicked()) {
 			switchGui(new GuiGame(getParent()));
+		} else if(settings.isClicked()) {
+			switchGui(new GuiSettings(getParent()));
 		} else if(quit.isClicked()) {
 			requestClose();
 		}
