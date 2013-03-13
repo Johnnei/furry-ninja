@@ -35,7 +35,6 @@ public class GameMouse {
 		}
 		mouseRatioWidth = (float)Game.WIDTH / Display.getWidth();
 		mouseRatioHeight = (float)Game.HEIGHT / Display.getHeight();
-		System.out.println("Mouse Ratio: " + mouseRatioWidth + ":" + mouseRatioHeight);
 		mode = CLICK_ON_RELEASE;
 		buttonStates = new boolean[Mouse.getButtonCount()];
 		clickStates = new boolean[Mouse.getButtonCount()];
@@ -127,7 +126,6 @@ public class GameMouse {
 				} else if(mode == CLICK_ON_DOWN) {
 					clickStates[Mouse.getEventButton()] = !oldState && newState;
 				}
-				System.out.println("Mousebutton clickState: " + clickStates[Mouse.getEventButton()]);
 			}
 		}
 	}

@@ -116,7 +116,6 @@ public class Game {
 					}
 				}
 			}
-			System.out.println(selectedMode);
 			Display.setDisplayMode(selectedMode);
 			Display.setTitle("Furry Ninja v0.1a");
 			// Display.setVSyncEnabled(true);
