@@ -1,6 +1,7 @@
 package game.menu;
 
 import static engine.render.RenderObject.VERTEX_COLOR;
+import engine.Game;
 import engine.GameMouse;
 import engine.render.ColorHelper;
 import engine.render.RenderObject;
@@ -11,7 +12,6 @@ public class GuiButton extends GuiComponent {
 	
 	private final int PADDING = 5;
 	private final int TOTAL_PADDING = 2 * PADDING;
-	private final int WIDTH = 1280;
 	
 	private boolean centered;
 	private String text;
@@ -25,11 +25,11 @@ public class GuiButton extends GuiComponent {
 	 * @param buttonCollor
 	 * @param color
 	 */
-	public GuiButton(int y, String text, ColorHelper buttonColor, RenderObject textColor) {
-		super(VERTEX_COLOR);
+	public GuiButton(Gui parent, int y, String text, ColorHelper buttonColor, RenderObject textColor) {
+		super(parent, VERTEX_COLOR);
 		width = TOTAL_PADDING + TextRender.getTextWidth(text);
 		height = TOTAL_PADDING + TextRender.getTextHeight();
-		this.x = (WIDTH / 2) - (width / 2);
+		this.x = (Game.WIDTH / 2) - (width / 2);
 		this.y = y;
 		this.centered = false;
 		this.text = text;
@@ -39,11 +39,11 @@ public class GuiButton extends GuiComponent {
 		generateColorData();
 	}
 	
-	public GuiButton(int y, int width, boolean centered, String text, ColorHelper buttonColor, RenderObject textColor) {
-		super(VERTEX_COLOR);
+	public GuiButton(Gui parent, int y, int width, boolean centered, String text, ColorHelper buttonColor, RenderObject textColor) {
+		super(parent, VERTEX_COLOR);
 		this.width = width;
 		this.height = TOTAL_PADDING + TextRender.getTextHeight();
-		this.x = (WIDTH / 2) - (width / 2);
+		this.x = (Game.WIDTH / 2) - (width / 2);
 		this.y = y;
 		this.centered = centered;
 		this.text = text;
@@ -58,10 +58,12 @@ public class GuiButton extends GuiComponent {
 	 * @return true if the mouse is clicked on this button
 	 */
 	public boolean isClicked() {
-		if(GameMouse.getInstance().getX() < x || GameMouse.getInstance().getX() > x + width)
+		if(GameMouse.getInstance().getX() < x || GameMouse.getInstance().getX() > x + width) {
 			return false; //X is outside our button
-		if(GameMouse.getInstance().getY() < y || GameMouse.getInstance().getY() > y + height)
+		}
+		if(GameMouse.getInstance().getY() < y || GameMouse.getInstance().getY() > y + height) {
 			return false; //X is outside our button
+		}
 		return GameMouse.getInstance().isClicked(GameMouse.LEFT_BUTTON);
 	}
 	

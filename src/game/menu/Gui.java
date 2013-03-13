@@ -2,6 +2,8 @@ package game.menu;
 
 import java.util.ArrayList;
 
+import org.lwjgl.opengl.Display;
+
 import engine.render.TextRender;
 
 
@@ -21,7 +23,11 @@ public class Gui extends GuiComponent {
 	private boolean gameClose;
 	
 	public Gui(Gui parent, int flags) {
-		super(flags);
+		this(parent, flags, 0, 0, Display.getWidth(), Display.getHeight());
+	}
+	
+	public Gui(Gui parent, int flags, float x, float y, float height, float width) {
+		super(parent, flags);
 		this.parent = parent;
 		gameClose = false;
 		components = new ArrayList<>();
@@ -67,15 +73,6 @@ public class Gui extends GuiComponent {
 		for(GuiComponent component : components) {
 			component.setFps(fps);
 		}
-	}
-	
-	/**
-	 * Gets the parent of this Gui<br/>
-	 * This should only be used to create new Gui's
-	 * @return
-	 */
-	final protected Gui getParent() {
-		return parent;
 	}
 	
 	@Override

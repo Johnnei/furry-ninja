@@ -13,10 +13,10 @@ public class GuiMenu extends Gui {
 	
 	public GuiMenu(Gui parent) {
 		super(parent, VERTEX_TEXTURE);
-		startGame = new GuiButton(300, 125, true, "Quick Match", new ColorHelper(0x66, 0x66, 0x66), null);
-		customGame = new GuiButton(330, 125, true, "Custom Game", new ColorHelper(0x66, 0x66, 0x66), null);
-		settings = new GuiButton(360, 125, true, "Settings", new ColorHelper(0x66, 0x66, 0x66), null);
-		quit = new GuiButton(390, 125, true, "Quit", new ColorHelper(0x66, 0x66, 0x66), null);
+		startGame = new GuiButton(this, 300, 125, true, "Quick Match", new ColorHelper(0x66, 0x66, 0x66), null);
+		customGame = new GuiButton(this, 330, 125, true, "Custom Game", new ColorHelper(0x66, 0x66, 0x66), null);
+		settings = new GuiButton(this, 360, 125, true, "Settings", new ColorHelper(0x66, 0x66, 0x66), null);
+		quit = new GuiButton(this, 390, 125, true, "Quit", new ColorHelper(0x66, 0x66, 0x66), null);
 		addComponent(startGame);
 		addComponent(customGame);
 		addComponent(settings);
