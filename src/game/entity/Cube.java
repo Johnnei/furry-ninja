@@ -46,7 +46,7 @@ public class Cube extends LivingEntity {
 		this.team = team;
 		myTurn = false;
 		facingLeft = (x > 640);
-		selectedWeapon = 1;
+		selectedWeapon = 0;
 		crosshair = new Crosshair(this, x, y);
 		chargeBar = new ChargeBar(this, crosshair);
 		generateVertexData();
@@ -135,6 +135,11 @@ public class Cube extends LivingEntity {
 	}
 	
 	public void setMyTurn(boolean b) {
+		if(myTurn) {
+			if(getSelectedWeapon().isCharging()) {
+				getSelectedWeapon().fire(this, crosshair);
+			}
+		}
 		myTurn = b;
 	}
 
