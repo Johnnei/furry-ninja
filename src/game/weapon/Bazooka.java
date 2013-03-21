@@ -49,7 +49,7 @@ public class Bazooka implements IWeapon {
 
 	@Override
 	public int getLandscapeCut() {
-		return 32;
+		return 40;
 	}
 
 	@Override
