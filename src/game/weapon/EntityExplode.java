@@ -66,12 +66,12 @@ public class EntityExplode implements IWeapon {
 	}
 
 	@Override
-	public int getTextureWidth() {
+	public int getProjectileTextureWidth() {
 		return 0;
 	}
 
 	@Override
-	public int getTextureHeight() {
+	public int getProjectileTextureHeight() {
 		return 0;
 	}
 

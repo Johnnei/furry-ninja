@@ -11,6 +11,7 @@ import game.WormsGame;
 import game.data.TurnPhase;
 import game.display.ChargeBar;
 import game.display.Crosshair;
+import game.display.WeaponRenderer;
 import game.physics.MotionVector;
 import game.weapon.IWeapon;
 import game.weapon.Weapon;
@@ -19,6 +20,10 @@ import org.lwjgl.input.Keyboard;
 
 public class Cube extends LivingEntity {
 
+	/**
+	 * Renderable to paint the weapon which we currently have equiped
+	 */
+	private WeaponRenderer weaponRender;
 	/**
 	 * The Team this Cube is part of
 	 */
@@ -49,6 +54,8 @@ public class Cube extends LivingEntity {
 		selectedWeapon = 0;
 		crosshair = new Crosshair(this, x, y);
 		chargeBar = new ChargeBar(this, crosshair);
+		weaponRender = new WeaponRenderer(this, crosshair);
+		weaponRender.setWeapon(getSelectedWeapon());
 		generateVertexData();
 		generateTextureData();
 		generateColorData();
@@ -112,6 +119,7 @@ public class Cube extends LivingEntity {
 		if(myTurn) {
 			crosshair.onTick();
 			chargeBar.onTick();
+			weaponRender.onTick();
 		}
 		
 		if(needRenderUpdate()) {
@@ -132,11 +140,13 @@ public class Cube extends LivingEntity {
 		
 		textRenderer.drawCentered(x + (width / 2), y - 20, "" + getHealth(), renderObject);
 		
+		super.render(textRenderer);
+		
 		if(myTurn) {
 			chargeBar.render(textRenderer);
 			crosshair.render(textRenderer);
+			weaponRender.render(textRenderer);
 		}
-		super.render(textRenderer);
 	}
 	
 	public void setMyTurn(boolean b) {
@@ -151,6 +161,7 @@ public class Cube extends LivingEntity {
 	
 	public void setSelectedWeaponIndex(int weaponIndex) {
 		selectedWeapon = weaponIndex;
+		weaponRender.setWeapon(getSelectedWeapon());
 	}
 
 	public Team getTeam() {

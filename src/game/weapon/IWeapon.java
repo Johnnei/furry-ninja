@@ -107,11 +107,11 @@ public interface IWeapon {
 	 * The width of the texture for this weapon
 	 * @return The texture width
 	 */
-	public int getTextureWidth();
+	public int getProjectileTextureWidth();
 	/**
 	 * The height of the texture for this weapon
 	 * @return The texture height
 	 */
-	public int getTextureHeight();
+	public int getProjectileTextureHeight();
 
 }

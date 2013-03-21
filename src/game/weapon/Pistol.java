@@ -91,12 +91,12 @@ public class Pistol implements IWeapon {
 	}
 
 	@Override
-	public int getTextureWidth() {
+	public int getProjectileTextureWidth() {
 		return 8;
 	}
 
 	@Override
-	public int getTextureHeight() {
+	public int getProjectileTextureHeight() {
 		return 8;
 	}
 	

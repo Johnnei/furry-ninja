@@ -15,7 +15,7 @@ public class Projectile extends Entity {
 	private boolean canDelete;
 	
 	public Projectile(WormsGame wormsGame, Cube owner, int x, int y, IWeapon weapon) {
-		super(VERTEX_TEXTURE, wormsGame, x, y, weapon.getTextureWidth(), weapon.getTextureHeight());
+		super(VERTEX_TEXTURE, wormsGame, x, y, weapon.getProjectileTextureWidth(), weapon.getProjectileTextureHeight());
 		this.weapon = weapon;
 		this.owner = owner;
 		generateTextureData();
