@@ -30,6 +30,7 @@ public class WeaponGui extends Renderable {
 	 * The weapon overlay
 	 */
 	private WeaponGuiOverlay weaponOverlay;
+	private int chosenWeapon;
 	
 	public WeaponGui(Team team) {
 		super(VERTEX_TEXTURE, false, TOTAL_ELEMENTS);
@@ -37,6 +38,7 @@ public class WeaponGui extends Renderable {
 		weaponOverlay = new WeaponGuiOverlay(team.getWeapons());
 		generateVertexData();
 		generateTextureData();
+		chosenWeapon = team.getActiveCube().getSelectedWeaponIndex();
 	}
 	
 	private void addVertex(VertexHelper vertex, int i) {
@@ -67,31 +69,37 @@ public class WeaponGui extends Renderable {
 		//Background
 		vertex.put(416, 242, 448, 235);
 		//Select Weapon Icon
-		int weaponIndex = team.getActiveCube().getSelectedWeaponIndex();
-		addVertex(vertex, weaponIndex);
+		addVertex(vertex, chosenWeapon);
 		//Weapon Slots
 		for(int i = 0; i < TOTAL_ELEMENTS - 1; i++) {
-			if(i != weaponIndex) {
+			if(i != chosenWeapon) {
 				addVertex(vertex, i);
 			}
 		}
 		renderObject.updateVertex(vertex);
 	}
 	
+	public void onTurnChange() {
+		
+	}
+	
 	@Override
 	public void onTick() {
-		int weaponIndex = team.getActiveCube().getSelectedWeaponIndex();
 		if(GameKeyboard.getInstance().isKeyPressed(Keyboard.KEY_RIGHT)) {
-			if(weaponIndex + 1 < team.getWeapons().length) {
-				team.getActiveCube().setSelectedWeaponIndex(weaponIndex + 1);
+			if(chosenWeapon + 1 < team.getWeapons().length) {
+				++chosenWeapon;
 				generateVertexData();
 			}
 		}
 		if(GameKeyboard.getInstance().isKeyPressed(Keyboard.KEY_LEFT)) {
-			if(weaponIndex - 1 >= 0) {
-				team.getActiveCube().setSelectedWeaponIndex(weaponIndex - 1);
+			if(chosenWeapon - 1 >= 0) {
+				--chosenWeapon;
 				generateVertexData();
 			}
+		}
+		if(GameKeyboard.getInstance().isKeyPressed(Keyboard.KEY_RETURN)) {
+			team.getActiveCube().setSelectedWeaponIndex(chosenWeapon);
+			team.closeWeaponMenu();
 		}
 	}
 	

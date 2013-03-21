@@ -97,26 +97,32 @@ public class Cube extends LivingEntity {
 			if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
 				team.getWeapon(selectedWeapon).charge();
 				if(team.getWeapon(selectedWeapon).isMaxCharge()) {
-					team.getWeapon(selectedWeapon).fire(this, crosshair);
-					myTurn = false;
+					fireWeapon();
 				}
 			} else {
 				if(team.getWeapon(selectedWeapon).isCharging()) {
-					team.getWeapon(selectedWeapon).fire(this, crosshair);
-					myTurn = false;
+					fireWeapon();
 				}
 			}
-			crosshair.onTick();
-			chargeBar.onTick();
 		}
 		
 		//Do movement
 		doMovement();
 		
+		if(myTurn) {
+			crosshair.onTick();
+			chargeBar.onTick();
+		}
+		
 		if(needRenderUpdate()) {
 			generateVertexData();
 			setRenderUpdate(false);
 		}
+	}
+	
+	private void fireWeapon() {
+		team.getWeapon(selectedWeapon).fire(this, crosshair);
+		myTurn = false;
 	}
 
 	@Override
@@ -136,7 +142,8 @@ public class Cube extends LivingEntity {
 	public void setMyTurn(boolean b) {
 		if(myTurn) {
 			if(getSelectedWeapon().isCharging()) {
-				getSelectedWeapon().fire(this, crosshair);
+				fireWeapon();
+				team.closeWeaponMenu();
 			}
 		}
 		myTurn = b;

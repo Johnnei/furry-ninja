@@ -32,13 +32,13 @@ public class Crosshair extends Renderable {
 
 	@Override
 	public void onTick() {
-		if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
+		if (Keyboard.isKeyDown(Keyboard.KEY_UP) && !owner.getTeam().isWeaponGuiOpen()) {
 			angle += Gamemode.CROSSHAIR_SPEED;
 			if(angle > owner.getWeapon().getMaxAngle()) {
 				angle = owner.getWeapon().getMaxAngle();
 			}
 		}
-		if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
+		if (Keyboard.isKeyDown(Keyboard.KEY_DOWN) && !owner.getTeam().isWeaponGuiOpen()) {
 			angle = (angle - Gamemode.CROSSHAIR_SPEED) % 180;
 			if(angle < owner.getWeapon().getMinAngle()) {
 				angle = owner.getWeapon().getMinAngle();

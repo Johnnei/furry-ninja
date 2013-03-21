@@ -2,6 +2,7 @@ package game.display;
 
 import static engine.render.RenderObject.VERTEX_TEXTURE;
 import engine.render.Renderable;
+import engine.render.TextRender;
 import engine.render.Texture;
 import engine.render.VertexHelper;
 import game.weapon.Weapon;
@@ -46,6 +47,11 @@ public class WeaponGuiOverlay extends Renderable {
 			vertex.put(x, y, 16, 16);
 		}
 		renderObject.updateVertex(vertex);
+	}
+	
+	@Override
+	public void render(TextRender textRenderer) {
+		super.render(textRenderer);
 	}
 
 	@Override

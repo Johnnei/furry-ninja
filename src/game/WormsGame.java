@@ -84,6 +84,7 @@ public class WormsGame {
 		GameKeyboard.getInstance().trackKey(Keyboard.KEY_LEFT);
 		GameKeyboard.getInstance().trackKey(Keyboard.KEY_RIGHT);
 		GameKeyboard.getInstance().trackKey(Keyboard.KEY_DOWN);
+		GameKeyboard.getInstance().trackKey(Keyboard.KEY_RETURN);
 	}
 	
 	/**

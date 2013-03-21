@@ -59,20 +59,23 @@ public class Team {
 		for(int i = 0; i < cubes.length; i++) {
 			cubes[i].onTick(turn);
 		}
-		if(GameKeyboard.getInstance().isKeyPressed(Keyboard.KEY_A)) {
-			weaponMenuOpen = !weaponMenuOpen;
-		}
-		if(weaponMenuOpen) {
-			weaponMenu.onTick();
+		if(turn == TurnPhase.PLAY && getActiveCube().hasTurn()) {
+			if(GameKeyboard.getInstance().isKeyPressed(Keyboard.KEY_A)) {
+				weaponMenuOpen = !weaponMenuOpen;
+			}
+			if(weaponMenuOpen) {
+				weaponMenu.onTick();
+			}
 		}
 	}
 	
 	public void onTurnCompleted() {
 		cubes[turnIndex].setMyTurn(false);
-		weaponMenuOpen = false;
+		closeWeaponMenu();
 	}
 	
 	public void onAdvanceTurn() {
+		closeWeaponMenu();
 		while(true) {
 			if(++turnIndex == cubes.length)
 				turnIndex = 0;
@@ -122,6 +125,10 @@ public class Team {
 
 	public int getCubeCount() {
 		return cubes.length;
+	}
+	
+	public void closeWeaponMenu() {
+		weaponMenuOpen = false;
 	}
 
 	public void renderWeaponGui(TextRender textRenderer) {
