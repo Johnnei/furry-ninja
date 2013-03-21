@@ -52,6 +52,18 @@ public class WeaponGuiOverlay extends Renderable {
 	@Override
 	public void render(TextRender textRenderer) {
 		super.render(textRenderer);
+		for(int i = 0; i < weaponList.length; i++) {
+			if(weaponList[i].getAmmo() != 0) {
+				int xIndex = i % WeaponGui.WEAPONS_PER_ROW;
+				int yIndex = i / WeaponGui.WEAPONS_PER_ROW;
+				
+				float x = 32 * xIndex + 447;
+				float y = 48 * yIndex + 315;
+				if(weaponList[i].getAmmo() != Weapon.INFINITIVE) {
+					textRenderer.drawCentered(x, y, weaponList[i].getAmmo() + "x", null);
+				}
+			}
+		}
 	}
 
 	@Override
