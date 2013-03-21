@@ -15,6 +15,8 @@ public interface IWeapon {
 	
 	public String getName();
 	
+	public int getTextureMapId();
+	
 	/**
 	 * If <tt>isCustomFire();</tt> returns true this fire method will be called instead of the default projectile launching
 	 * @param owner The cube which fired this weapon

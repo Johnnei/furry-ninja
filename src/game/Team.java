@@ -1,11 +1,15 @@
 package game;
 
+import engine.GameKeyboard;
 import engine.render.TextRender;
 import game.data.Gamemode;
 import game.data.TurnPhase;
+import game.display.WeaponGui;
 import game.entity.Cube;
 import game.weapon.Weapon;
 import game.weapon.set.WeaponFactory;
+
+import org.lwjgl.input.Keyboard;
 
 public class Team {
 	
@@ -25,6 +29,8 @@ public class Team {
 	 * List of the shared team weapons
 	 */
 	private Weapon[] weapons;
+	private WeaponGui weaponMenu;
+	private boolean weaponMenuOpen;
 	
 	public Team(int size, float[] color, WormsGame wormsGame, int[] spawnsX, int[] spawnsY) {
 		weapons = new WeaponFactory(Gamemode.weaponSet).createWeapons();
@@ -34,12 +40,15 @@ public class Team {
 			cubes[i] = new Cube(spawnsX[i], spawnsY[i], 100, this, wormsGame);
 		}
 		turnIndex = -1;
+		weaponMenuOpen = false;
+		weaponMenu = new WeaponGui(this);
 	}
 	
 	public void render(TextRender textRenderer) {
 		for(int i = 0; i < cubes.length; i++) {
 			cubes[i].render(textRenderer);
 		}
+		renderWeaponGui(textRenderer);
 	}
 	
 	public float[] getColor() {
@@ -50,10 +59,17 @@ public class Team {
 		for(int i = 0; i < cubes.length; i++) {
 			cubes[i].onTick(turn);
 		}
+		if(GameKeyboard.getInstance().isKeyPressed(Keyboard.KEY_A)) {
+			weaponMenuOpen = !weaponMenuOpen;
+		}
+		if(weaponMenuOpen) {
+			weaponMenu.onTick();
+		}
 	}
 	
 	public void onTurnCompleted() {
 		cubes[turnIndex].setMyTurn(false);
+		weaponMenuOpen = false;
 	}
 	
 	public void onAdvanceTurn() {
@@ -83,6 +99,10 @@ public class Team {
 		return true;
 	}
 	
+	public Weapon[] getWeapons() {
+		return weapons;
+	}
+	
 	public Weapon getWeapon(int i) {
 		return weapons[i];
 	}
@@ -93,9 +113,25 @@ public class Team {
 		}
 		
 	}
+	
+	public Cube getActiveCube() {
+		if(turnIndex < 0 || turnIndex >= cubes.length)
+			return cubes[0];
+		return cubes[turnIndex];
+	}
 
 	public int getCubeCount() {
 		return cubes.length;
+	}
+
+	public void renderWeaponGui(TextRender textRenderer) {
+		if(weaponMenuOpen) {
+			weaponMenu.render(textRenderer);
+		}
+	}
+	
+	public boolean isWeaponGuiOpen() {
+		return weaponMenuOpen;
 	}
 
 }

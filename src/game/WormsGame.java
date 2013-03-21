@@ -1,5 +1,6 @@
 package game;
 
+import engine.GameKeyboard;
 import engine.render.RenderObject;
 import engine.render.Renderable;
 import engine.render.TextRender;
@@ -14,6 +15,8 @@ import game.entity.Projectile;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
+
+import org.lwjgl.input.Keyboard;
 
 public class WormsGame {
 	
@@ -74,6 +77,13 @@ public class WormsGame {
 		teams[turnIndex].onAdvanceTurn();
 		turnTime = Gamemode.TURN_TIME;
 		turnPhase = TurnPhase.PLAY;
+		
+		//Prepare Keyboard Tracking
+		GameKeyboard.getInstance().trackKey(Keyboard.KEY_A);
+		GameKeyboard.getInstance().trackKey(Keyboard.KEY_UP);
+		GameKeyboard.getInstance().trackKey(Keyboard.KEY_LEFT);
+		GameKeyboard.getInstance().trackKey(Keyboard.KEY_RIGHT);
+		GameKeyboard.getInstance().trackKey(Keyboard.KEY_DOWN);
 	}
 	
 	/**
@@ -219,6 +229,8 @@ public class WormsGame {
 		for(int i = 0; i < renderables.size(); i++) {
 			renderables.get(i).render(textRenderer);
 		}
+		
+		teams[turnIndex].renderWeaponGui(textRenderer);
 		
 		//Render GUI
 		hud.render(textRenderer);

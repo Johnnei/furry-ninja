@@ -81,7 +81,7 @@ public class Cube extends LivingEntity {
 	public void onTick(TurnPhase turn) {
 		super.onTick(turn);
 		//Add Keyboard input
-		if(myTurn && turn == TurnPhase.PLAY) {
+		if(myTurn && turn == TurnPhase.PLAY && !team.isWeaponGuiOpen()) {
 			if(Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
 				//xMotion -= 5;
 				addMotionVector(new MotionVector(-0.75F, 0, 10, 0));
@@ -106,6 +106,8 @@ public class Cube extends LivingEntity {
 					myTurn = false;
 				}
 			}
+			crosshair.onTick();
+			chargeBar.onTick();
 		}
 		
 		//Do movement
@@ -115,9 +117,6 @@ public class Cube extends LivingEntity {
 			generateVertexData();
 			setRenderUpdate(false);
 		}
-		
-		crosshair.onTick();
-		chargeBar.onTick();
 	}
 
 	@Override
@@ -141,6 +140,10 @@ public class Cube extends LivingEntity {
 			}
 		}
 		myTurn = b;
+	}
+	
+	public void setSelectedWeaponIndex(int weaponIndex) {
+		selectedWeapon = weaponIndex;
 	}
 
 	public Team getTeam() {

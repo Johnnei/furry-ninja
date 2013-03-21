@@ -11,6 +11,11 @@ public class EntityExplode implements IWeapon {
 	}
 	
 	@Override
+	public int getTextureMapId() {
+		return 0;
+	}
+	
+	@Override
 	public boolean hasExplosion() {
 		return true;
 	}

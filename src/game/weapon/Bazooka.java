@@ -13,6 +13,11 @@ public class Bazooka implements IWeapon {
 	}
 	
 	@Override
+	public int getTextureMapId() {
+		return 0;
+	}
+	
+	@Override
 	public String getExplosionTextureName() {
 		return "explosion";
 	}

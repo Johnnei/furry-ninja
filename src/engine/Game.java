@@ -52,6 +52,7 @@ public class Game {
 			while (getCurrentMillis() - lastTick >= 50) { // 20 ticks per second
 				lastTick += 50;
 				GameMouse.getInstance().poll();
+				GameKeyboard.getInstance().poll();
 				gui.onTick();
 			}
 

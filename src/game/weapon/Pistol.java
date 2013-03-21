@@ -13,6 +13,11 @@ public class Pistol implements IWeapon {
 	}
 	
 	@Override
+	public int getTextureMapId() {
+		return 1;
+	}
+	
+	@Override
 	public boolean hasExplosion() {
 		return false;
 	}
